@@ -9,7 +9,7 @@ public class Champ {
     public int hp = 50;
     public int depense = 0;
     public int cost = 3;
-    public Dec dec;
+    public Dec dec = new Dec();
     public Inventory inventory = new Inventory();
 
     public Champ(String name) {

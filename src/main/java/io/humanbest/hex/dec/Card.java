@@ -11,10 +11,9 @@ public class Card {
     public String name;
     public String description;
 
-    public Card(Type type, int cost, String name, String description) {
+    public Card(Type type, int cost, String name) {
         this.type = type;
         this.cost = cost;
         this.name = name;
-        this. description = description;
     }
 }
