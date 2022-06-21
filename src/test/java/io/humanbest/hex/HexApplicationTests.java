@@ -9,6 +9,7 @@ class HexApplicationTests {
 	@Test
 	void contextLoads() {
 		System.out.println("aa");
+		System.out.println("aa");
 	}
 
 }
