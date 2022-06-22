@@ -1,4 +1,4 @@
-package io.humanbest.hex.dec;
+package io.humanbest.hex.card;
 
 import java.util.ArrayList;
 
