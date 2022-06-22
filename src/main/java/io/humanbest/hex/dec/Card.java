@@ -3,7 +3,7 @@ package io.humanbest.hex.dec;
 public class Card {
 
     public static enum Type {
-        ATTACK, DEPNSE, BUFF, DEBUFF
+        ATTACK, DEFNSE, BUFF, DEBUFF
     }
 
     public Type type;
