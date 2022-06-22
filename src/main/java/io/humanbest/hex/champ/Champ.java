@@ -7,6 +7,7 @@ public class Champ {
     
     public String name;
     public int hp = 50;
+    public int maxhp = 50;
     public int defense = 0;
     public int cost = 3;
     public Dec dec = new Dec();
