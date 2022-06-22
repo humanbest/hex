@@ -10,15 +10,14 @@ public class Card {
     }
 
     public Type type;
+    public String name;
     public int typeValue;
     public int cost;
-    public String name;
-    public String description;
-
+    
     public Card(String name, Type type, int typeValue, int cost) {
+        this.name = name;
         this.type = type;
         this.typeValue = typeValue;
         this.cost = cost;
-        this.name = name;
     }
 }
