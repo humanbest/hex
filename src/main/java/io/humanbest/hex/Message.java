@@ -1,8 +1,8 @@
 package io.humanbest.hex;
 
 import io.humanbest.hex.Monster.Monster;
+import io.humanbest.hex.card.Dec;
 import io.humanbest.hex.champ.Champ;
-import io.humanbest.hex.dec.Dec;
 
 public class Message {
 
