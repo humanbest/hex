@@ -10,6 +10,10 @@
 ## FlowChart
 
 ### Action 클래스의 처리 메소드
-![Action_FlowChart](./image/Action_Flow_Chart.png) 
+![Action_FlowChart](./image/Action_Flow_Chart.png)
+
+
+### 클래스 다이어그램
+![Class_Diagram](./image/HEX_Class_Diagram.png)
 
 [version-shield]: https://img.shields.io/badge/version-v1.0.0_alpha-orange.svg
