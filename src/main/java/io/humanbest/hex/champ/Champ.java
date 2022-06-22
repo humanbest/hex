@@ -1,7 +1,6 @@
 package io.humanbest.hex.champ;
 
 import io.humanbest.hex.dec.Card;
-import io.humanbest.hex.dec.Dec;
 import io.humanbest.hex.inventory.Inventory;
 
 import java.util.ArrayList;
