@@ -13,6 +13,4 @@ public class Dec {
         this.selectedCardList = selectedCardList;
         this.usedCardList = usedCardList;
     }
-
-
 }
