@@ -8,14 +8,27 @@ import java.util.ArrayList;
 public class Champ {
     
     public String name;
-    public int hp = 50;
-    public int maxHp = 50;
-    public int defense = 0;
-    public int cost = 3;
-    public ArrayList<Card> cardList = new ArrayList<>();
-    public ArrayList<Item> itemList = new ArrayList<>();
+    public int hp;
+    public int defense;
+    public int cost;
+    public ArrayList<Card> cardList;
+    public ArrayList<Item> itemList;
 
-    public Champ(String name) {
+    public Champ(String name, int hp, int defense, int cost) {
         this.name = name;
+        this.defense = defense;
+        this.hp = hp;
+        this.cost = cost;
+        this.cardList = new ArrayList<>();
+        this.itemList = new ArrayList<>();
     }
+    public Champ(String name, int hp, int defense, int cost,ArrayList<Card> cardList, ArrayList<Item> itemList){
+        this.name = name;
+        this.defense = defense;
+        this.hp = hp;
+        this.cost = cost;
+        this.cardList = cardList;
+        this.itemList = itemList;
+    }
+
 }
