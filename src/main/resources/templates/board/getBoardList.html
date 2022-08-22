@@ -1,12 +1,50 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}"
+      th:with="isSuggestBoard=${act != null}">
+
+<title layout:fragment="title" th:text="${isSuggestBoard} ? '관련된 글' : '게시글 목록'"></title>
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/board.css}">
+</th:block>
+
+<th:block layout:fragment="content">
+    <h1 th:align="center" th:text="${isSuggestBoard} ? '관련된 글' : '게시글 목록'"></h1>
+    <table id="board">
+        <thead>
+            <tr>
+                <th scope="col" class="seq">번호</th>
+                <th scope="col" class="title">제목</th>
+                <th scope="col" class="writer">작성자</th>
+                <th scope="col" class="regdate">등록일</th>
+                <th scope="col" class="cnt">조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="board : ${boardList}">
+                <td class="seq" th:text="${board.documentId}"></td>
+                <td class="title">
+                    <a th:unless="${isSuggestBoard}" th:href="|/board/${board.documentId}|">
+                        <span th:text="${board.title}"></span>
+                        <div class="summary">
+                            <div th:with="content=${board.content}"
+                                 th:text="${content.length < 20 ? content : content.substring(0,20)} + ${content.length > 20 ? '...' : ''}"></div>
+                        </div>
+                    </a>
+                    <a th:if="${isSuggestBoard}" th:href="|/board/${board.documentId}|" th:text="${board.title}"></a>
+                </td>
+                <td class="writer" th:text="${board.member.nickName}"></td>
+                <td class="regdate" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
+                <td class="cnt" th:text="${board.readedCount}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:unless="${isSuggestBoard}" class="btn_area clear">
+        <div class="fr">
+            <a class="btn write" th:href="@{/board(act='write')}">쓰기</a>
+        </div>
+    </div>
+</th:block>
 </html>
