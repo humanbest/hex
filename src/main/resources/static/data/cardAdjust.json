@@ -1,0 +1,92 @@
+{
+    "adrenaline": {
+        "position": {
+            "x": 0,
+            "y": -35
+        },
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    },
+    "bamboo_spear": {
+        "position": {
+            "x": 0,
+            "y": -35
+        },
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    },
+    "chain_mail": {
+        "position": {
+            "x": 0,
+            "y": -35
+        },
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    },
+    "dempsey_roll": {
+        "position": {
+            "x": 0,
+            "y": -35
+        },
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    },
+    "fireball": {
+        "position": {
+            "x": 0,
+            "y": -35
+        },
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    },
+    "fist": {
+        "position": {
+            "x": 0,
+            "y": -35
+        },
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    },
+    "leather_armor": {
+        "position": {
+            "x": 0,
+            "y": -35
+        },
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    },
+    "revolver": {
+        "position": {
+            "x": 0,
+            "y": -35
+        },
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    },
+    "shadow_partner": {
+        "position": {
+            "x": 0,
+            "y": -35
+        },
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    }
+}

@@ -1,0 +1,377 @@
+{
+	"textures": [
+		{
+			"image": "card_image",
+			"format": "RGBA8888",
+			"size": {
+				"w": 580,
+				"h": 506
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "dempsey_roll",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 147,
+						"h": 147
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 147,
+						"h": 147
+					}
+				},
+				{
+					"filename": "adrenaline",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 3,
+						"w": 144,
+						"h": 144
+					},
+					"frame": {
+						"x": 1,
+						"y": 150,
+						"w": 144,
+						"h": 144
+					}
+				},
+				{
+					"filename": "throwed_dice",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 0,
+						"w": 134,
+						"h": 150
+					},
+					"frame": {
+						"x": 1,
+						"y": 296,
+						"w": 134,
+						"h": 150
+					}
+				},
+				{
+					"filename": "bamboo_spear",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 8,
+						"w": 139,
+						"h": 134
+					},
+					"frame": {
+						"x": 137,
+						"y": 296,
+						"w": 139,
+						"h": 134
+					}
+				},
+				{
+					"filename": "mind_control",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 41,
+						"w": 139,
+						"h": 73
+					},
+					"frame": {
+						"x": 137,
+						"y": 432,
+						"w": 139,
+						"h": 73
+					}
+				},
+				{
+					"filename": "blizzard",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 12,
+						"w": 139,
+						"h": 130
+					},
+					"frame": {
+						"x": 147,
+						"y": 150,
+						"w": 139,
+						"h": 130
+					}
+				},
+				{
+					"filename": "fallen_coin",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 3,
+						"w": 116,
+						"h": 139
+					},
+					"frame": {
+						"x": 150,
+						"y": 1,
+						"w": 116,
+						"h": 139
+					}
+				},
+				{
+					"filename": "mana_release",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 22,
+						"y": 8,
+						"w": 111,
+						"h": 142
+					},
+					"frame": {
+						"x": 268,
+						"y": 1,
+						"w": 111,
+						"h": 142
+					}
+				},
+				{
+					"filename": "shadow_partner",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 12,
+						"w": 116,
+						"h": 126
+					},
+					"frame": {
+						"x": 278,
+						"y": 282,
+						"w": 116,
+						"h": 126
+					}
+				},
+				{
+					"filename": "revolver",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 27,
+						"w": 150,
+						"h": 92
+					},
+					"frame": {
+						"x": 278,
+						"y": 410,
+						"w": 150,
+						"h": 92
+					}
+				},
+				{
+					"filename": "chain_mail",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 17,
+						"w": 116,
+						"h": 111
+					},
+					"frame": {
+						"x": 288,
+						"y": 145,
+						"w": 116,
+						"h": 111
+					}
+				},
+				{
+					"filename": "leather_armor",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 17,
+						"w": 116,
+						"h": 111
+					},
+					"frame": {
+						"x": 381,
+						"y": 1,
+						"w": 116,
+						"h": 111
+					}
+				},
+				{
+					"filename": "magic_robe",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 27,
+						"y": 0,
+						"w": 92,
+						"h": 150
+					},
+					"frame": {
+						"x": 396,
+						"y": 258,
+						"w": 92,
+						"h": 150
+					}
+				},
+				{
+					"filename": "fist",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 36,
+						"w": 134,
+						"h": 73
+					},
+					"frame": {
+						"x": 430,
+						"y": 410,
+						"w": 134,
+						"h": 73
+					}
+				},
+				{
+					"filename": "normal_jewel",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 36,
+						"y": 22,
+						"w": 83,
+						"h": 106
+					},
+					"frame": {
+						"x": 406,
+						"y": 114,
+						"w": 83,
+						"h": 106
+					}
+				},
+				{
+					"filename": "unique_jewel",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 36,
+						"y": 22,
+						"w": 83,
+						"h": 106
+					},
+					"frame": {
+						"x": 490,
+						"y": 222,
+						"w": 83,
+						"h": 106
+					}
+				},
+				{
+					"filename": "fireball",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 150,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 31,
+						"w": 88,
+						"h": 83
+					},
+					"frame": {
+						"x": 491,
+						"y": 114,
+						"w": 88,
+						"h": 83
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:404b68746b8cd7f904f77a2d9b042187:af4007f05f705eb278285cdf8e7dca25:ef0eb609416530f216529588f27d4b65$"
+	}
+}
