@@ -15,13 +15,45 @@ import kr.kro.hex.domain.Board;
 
 public interface BoardService {
 
+    /**
+     * 게시글 등록하기
+     *
+     * @param board 게시글
+     * @author Rubisco
+     */
     void insertBoard(Board board);
 
+    /**
+     * 게시글 목록 가져오기
+     *
+     * @author Rubisco
+     * @return 게시글 목록
+     */
     List<Board> getBoardList();
 
+    /**
+     * 게시글 가져오기
+     *
+     * @author Rubisco
+     * @param board 게시글
+     * @return 게시글
+     */
     Board getBoard(Board board);
 
+    /**
+     * 게시글 수정하기
+     *
+     * @param board 게시글
+     * @author Rubisco
+     */
     void updateBoard(Board board);
 
+    
+    /**
+     * 게시글 삭제하기
+     *
+     * @param board 게시글
+     * @author Rubisco
+     */
     void deleteBoard(Board board);
 }

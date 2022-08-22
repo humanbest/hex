@@ -1,0 +1,41 @@
+main {
+    width: 100%;
+    margin-bottom: 30px;
+}
+main > .row:first-of-type {
+    padding: 11px;
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    background: #FCFCFC;
+    line-height: 1.5em;
+}
+main > .row:nth-of-type(2) {
+    border-bottom: 1px solid #EEE;
+}
+.category {
+    padding: 0 6px;
+    font-size: 11px;
+    color: #888;
+}
+.title {
+    margin: 0;
+    padding: 0 8px;
+    font-size: 12px;
+}
+.name, .date, .cnt {
+    padding: 9px;
+    font-size: 12px;
+}
+article.content {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #444;
+    padding: 15px;
+    min-height: 200px;
+}
+.btn.write {
+    background: cornflowerblue;
+    color: white;
+    text-shadow: 0 1px 0 black;
+}
+.btn.write::after { content: '수정' }
