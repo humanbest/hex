@@ -57,7 +57,7 @@ public class BoardController {
      * @param model 모델
      * @return getBoard.html
      */
-    @GetMapping("/{documentSrl}")
+    @GetMapping("/{documentId}")
     public String getBoardView(Board board, Model model) {
         model.addAttribute("nl", System.getProperty("line.separator"));
         model.addAttribute("board", boardService.getBoard(board));
@@ -86,7 +86,7 @@ public class BoardController {
      * @return insertBoard.html
      * @author Rubisco
      */
-    @GetMapping(params = {"documentSrl","act=update"})
+    @GetMapping(params = {"documentId","act=update"})
     public String updateBoardView(Board board, Model model) {
         model.addAttribute("board", boardService.getBoard(board));
         model.addAttribute("categoryList", categoryService.getCategoryList());
@@ -112,8 +112,8 @@ public class BoardController {
      *
      * @see Board
      * @param board 게시글
-     * @return redirect:/board/documentSrl
      * @author Rubisco
+     * @return redirect:/board/{documentSrl}
      */
     @PatchMapping(params = "documentSrl")
     public String updateBoard(Board board) {
@@ -126,9 +126,9 @@ public class BoardController {
      *
      * @author Rubisco
      * @param board
-     * @return string
+     * @return redirect:/board
      */
-    @DeleteMapping(params = "documentSrl")
+    @DeleteMapping(params = "documentId")
     public String deleteBoard(Board board) {
         boardService.deleteBoard(board);
         return "redirect:/board";
