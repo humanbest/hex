@@ -15,28 +15,49 @@
     <table id="board">
         <thead>
             <tr>
+<<<<<<< HEAD
                 <th scope="col" class="category">카테고리</th>
                 <th scope="col" class="title">제목</th>
                 <th scope="col" class="nickName">닉네임</th>
                 <th scope="col" class="createDate">등록일</th>
+=======
+                <th scope="col" class="seq">번호</th>
+                <th scope="col" class="title">제목</th>
+                <th scope="col" class="writer">작성자</th>
+                <th scope="col" class="regdate">등록일</th>
+>>>>>>> a9796561881b06797f9327837a149691b5ce555c
                 <th scope="col" class="cnt">조회수</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="board : ${boardList}">
+<<<<<<< HEAD
                 <td class="title">
                     <a th:unless="${isSuggestBoard}" th:href="|/board/${board.documentSrl}|">
+=======
+                <td class="seq" th:text="${board.documentId}"></td>
+                <td class="title">
+                    <a th:unless="${isSuggestBoard}" th:href="|/board/${board.documentId}|">
+>>>>>>> a9796561881b06797f9327837a149691b5ce555c
                         <span th:text="${board.title}"></span>
                         <div class="summary">
                             <div th:with="content=${board.content}"
                                  th:text="${content.length < 20 ? content : content.substring(0,20)} + ${content.length > 20 ? '...' : ''}"></div>
                         </div>
                     </a>
+<<<<<<< HEAD
                     <a th:if="${isSuggestBoard}" th:href="|/board/${board.documentSrl}|" th:text="${board.title}"></a>
                 </td>
                 <td class="writer" th:text="${board.member.nickName}"></td>
                 <td class="regdate" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
                 <td class="cnt" th:text="${board.cnt}"></td>
+=======
+                    <a th:if="${isSuggestBoard}" th:href="|/board/${board.documentId}|" th:text="${board.title}"></a>
+                </td>
+                <td class="writer" th:text="${board.member.nickName}"></td>
+                <td class="regdate" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
+                <td class="cnt" th:text="${board.readedCount}"></td>
+>>>>>>> a9796561881b06797f9327837a149691b5ce555c
             </tr>
         </tbody>
     </table>

@@ -1,6 +1,10 @@
 package kr.kro.hex.persistance;
 
+import java.util.List;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import kr.kro.hex.domain.Board;
 
@@ -14,4 +18,7 @@ import kr.kro.hex.domain.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Long>  {
     
+    @Override
+    @Query("select distinct b from Board b join fetch b.member join fetch b.category join fetch b.group")
+    List<Board> findAll(Sort sort);
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/document.css}">
+    <link rel="stylesheet" th:href="@{/css/comment.css}">
+</th:block>
+
+<th:block layout:fragment="content">
+    <h1 th:align="center">게시글 상세</h1>
+    <main>
+        <div class="row">
+            <div class="category" th:text="${board.category.category}"></div>
+            <div class="title" th:text="${board.title}"></div>
+        </div>
+        <div class="row between">
+            <div class="name fl" th:text="${board.member.nickName}"></div>
+            <div class="fr">
+                <div class="date fl" th:text="${board.createDate}"></div>
+                <div class="cnt fl">
+                    <b>조회 수</b>
+                    <span th:text="${board.cnt}"></span>
+                </div>
+            </div>
+        </div>
+        <article class="content" th:utext="${#strings.replace(board.content, nl, '&lt;br&gt;')}"></article>
+        <div class="row between">
+            <a class="btn back fl" th:href="@{/board}"></a>
+            <div class="row fr gap">
+                <a class="btn write fl" th:href="@{/board(documentSrl=${board.documentSrl}, act='update')}"></a>
+                <form class="fl" action="/board" th:method="delete">
+                    <input type="hidden" name="documentSrl" th:value="${board.documentSrl}">
+                    <button class="btn delete" onclick="this.submit()"></button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <section th:replace="fragments/comment :: comment"></section>
+
+    <script>
+        window.onload=function(){
+            document.getElementById('comment').querySelector('input[name=writer]').addEventListener('keydown', function(e) {
+                if(e.keyCode == 13) {
+                    document.getElementById('comment').querySelector('textarea').focus();
+                }
+            });
+        }
+    </script>
+</th:block>
+</html>

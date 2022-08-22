@@ -1,0 +1,34 @@
+#content {
+    width: initial;
+}
+#member .info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+#member .info > div:nth-child(-n+2) {
+    border-top: 1px solid #CCC;
+}
+
+#member .info > div:nth-child(odd) {
+    background: linear-gradient(to right,#FFF 0%,#F9F9F9 100%);
+    border-left: 1px solid #CCC;
+    border-right: 1px solid #BBB;
+    border-bottom: 1px solid #EEE;
+    color: #555;
+    padding: 9px 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+#member .info > div:nth-child(even) {
+    border-right: 1px solid #BBB;
+    border-bottom: 1px solid #EEE;
+    padding: 8px 12px;
+    font-size: 11px;
+    text-align: center;
+}
+
+#member .info > div:nth-last-child(-n+2) {
+    border-bottom: 1px solid #BBB;
+}
