@@ -90,7 +90,7 @@ public class BoardController {
     public String updateBoardView(Board board, Model model) {
         model.addAttribute("board", boardService.getBoard(board));
         model.addAttribute("categoryList", categoryService.getCategoryList());
-        return "insertBoard";
+        return "/board/insertBoard";
     }
 
     /**

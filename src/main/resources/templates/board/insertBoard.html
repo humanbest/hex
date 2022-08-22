@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" th:with="isBoardExist=${board != null}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/write.css">
+    <title th:text="${!isBoardExist} ? '새글등록' : '글수정'"></title>
+</head>
+<body>
+    <header>
+        <h3 th:text="${!isBoardExist} ? '새글 등록하기' : '글 수정하기'"></h3>
+        <a th:if="${isBoardExist}" class="btn back fl" th:href="|/board/${board.documentSrl}|"></a>
+        <a th:unless="${isBoardExist}" class="btn back fl" th:href="@{/board}"></a>
+    </header>
+    <form id="write" th:object="${board}" action="/board" th:method="${isBoardExist} ? 'patch' : 'post'">
+        <input th:if="${isBoardExist}" type="hidden" name="documentSrl" th:value="*{documentSrl}">
+        <input type="hidden" name="memberSrl" th:value="${isBoardExist} ? *{member.memberSrl} : 1">
+        <div class="row">
+            <select name="categorySrl" class="col category">
+                <option th:with="categorySrl=${isBoardExist ? board.category.categorySrl : categoryList.get(0).categorySrl}"
+                        th:each="category : ${categoryList}"
+                        th:object="${category}"
+                        th:value="*{categorySrl}"
+                        th:selected="${category.categorySrl} == ${categorySrl}"
+                        th:text="*{category}"></option>
+            </select>
+            <input class="col title" name="title" type="text"
+                   th:placeholder="제목" th:value="${isBoardExist} ? *{title}">
+        </div>
+        <textarea class="content" name="content" th:rows="20" th:placeholder="내용"
+                  th:text="${isBoardExist} ? *{content}"></textarea>
+        <div class="row between">
+            <label class="row label is_notice">
+                <input th:if="${isBoardExist}" type="checkbox" th:field="*{isNotice}">
+                <input th:unless="${isBoardExist}" type="checkbox" name="isNotice">
+            </label>
+            <div class="row fr">
+                <button class="btn write fl" th:classappend="${isBoardExist} ? 'update'"
+                        type="submit" onclick="this.submit()"></button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
