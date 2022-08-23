@@ -113,9 +113,9 @@ public class BoardController {
      * @see Board
      * @param board 게시글
      * @author Rubisco
-     * @return redirect:/board/{documentSrl}
+     * @return redirect:/board/{documentId}
      */
-    @PatchMapping(params = "documentSrl")
+    @PatchMapping(params = "documentId")
     public String updateBoard(Board board) {
         boardService.updateBoard(board);
         return "redirect:/board/"+board.getDocumentId();
