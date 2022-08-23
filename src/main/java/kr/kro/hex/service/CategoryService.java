@@ -15,14 +15,6 @@ import kr.kro.hex.domain.Category;
 public interface CategoryService {
 
     /**
-     * 카테고리 목록 가져오기
-     *
-     * @return 카테고리 목록
-     * @author Rubisco
-     */
-    List<Category> getCategoryList();
-
-    /**
      * 카테고리 추가하기
      *
      * @param category 카테고리
@@ -31,13 +23,20 @@ public interface CategoryService {
     void insertCategory(Category category);
 
     /**
-     * 카테고리 가져오기
+     * 카테고리 목록 가져오기
      *
-     * @param category 카테고리
-     * @return 카테고리
+     * @return 카테고리 목록
      * @author Rubisco
      */
-    Category getCategory(Category category);
+    List<Category> getCategoryList();
+    
+    /**
+     * 카테고리 가져오기
+     *
+     * @param categoryId 카테고리 ID
+     * @author Rubisco
+     */
+    Category getCategory(Long categoryId);
 
     /**
      * 카테고리 수정하기
@@ -50,8 +49,8 @@ public interface CategoryService {
     /**
      * 카테고리 삭제하기
      *
-     * @param category 카테고리
+     * @param categoryId 카테고리 ID
      * @author Rubisco
      */
-    void deleteCategory(Category category);
+    void deleteCategory(Long categoryId);
 }
