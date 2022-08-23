@@ -44,7 +44,7 @@ public class Board extends BaseTime {
     @Column(length = 1)
     @ColumnDefault("'N'")
     @Convert(converter = BooleanToYNConverter.class)
-    private boolean isNotice;
+    private Boolean isNotice;
 
     @Column(length = 250, nullable = false)
     private String title;
@@ -93,7 +93,7 @@ public class Board extends BaseTime {
     @Builder
     public Board(
         Long documentId,
-        boolean isNotice, 
+        Boolean isNotice, 
         String title, 
         String content,
         Long categoryId,

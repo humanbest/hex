@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.kro.hex.domain.Board;
+import kr.kro.hex.domain.Category;
+import kr.kro.hex.domain.Group;
+import kr.kro.hex.domain.Member;
 import kr.kro.hex.persistance.BoardRepository;
 import kr.kro.hex.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +34,16 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void insertBoard(Board board) {
+        board.setMember(Member.builder().memberId(board.getMemberId()).build());
+        board.setCategory(Category.builder().categoryId(board.getCategoryId()).build());
+        board.setGroup(Group.builder().GroupId(1L).build());
+
         boardRepo.save(board);
     }
 
     @Override
     public List<Board> getBoardList() {
-        return boardRepo.findAll(Sort.by(Sort.Direction.DESC, "documentSrl"));
+        return boardRepo.findAll(Sort.by(Sort.Direction.DESC, "documentId"));
     }
 
     @Override

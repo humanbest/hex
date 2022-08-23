@@ -42,4 +42,10 @@ public class Group extends BaseTime {
         this.GroupId = GroupId;
         this.group = group;
     }
+
+    public Group update(Group group) {
+        this.group = group.group;
+
+        return this;
+    }
 }
