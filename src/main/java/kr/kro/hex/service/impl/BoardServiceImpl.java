@@ -32,6 +32,12 @@ public class BoardServiceImpl implements BoardService {
     /** 게시판 레포지토리 */
     private final BoardRepository boardRepo;
 
+    /**
+     * 게시글을 등록합니다.
+     *
+     * @param board 게시글
+     * @author Rubisco
+     */
     @Override
     public void insertBoard(Board board) {
         board.setMember(Member.builder().memberId(board.getMemberId()).build());
@@ -41,25 +47,50 @@ public class BoardServiceImpl implements BoardService {
         boardRepo.save(board);
     }
 
+    /**
+     * 게시글 목록을 조회합니다.
+     *
+     * @return 게시글 목록
+     * @author Rubisco
+     */
     @Override
     public List<Board> getBoardList() {
         return boardRepo.findAll(Sort.by(Sort.Direction.DESC, "documentId"));
     }
 
+    /**
+     * documentId에 해당하는 게시글을 조회합니다.
+     *
+     * @param documentId 게시글 ID
+     * @return 게시글
+     * @author Rubisco
+     */
     @Override
-    public Board getBoard(Board board) {
-        return boardRepo.findById(board.getDocumentId()).get();
+    public Board getBoard(Long documentId) {
+        return boardRepo.findById(documentId).get();
     }
 
+    /**
+     * 게시글을 수정합니다.
+     *
+     * @param board 게시글
+     * @author Rubisco
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateBoard(Board board) {
-        boardRepo.save(getBoard(board).update(board));
+        boardRepo.save(getBoard(board.getDocumentId()).update(board));
     }
 
+    /**
+     * 게시글을 삭제합니다.
+     *
+     * @param documentId 게시글 ID
+     * @author Rubisco
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteBoard(Board board) {
-        boardRepo.deleteById(board.getDocumentId());
+    public void deleteBoard(Long documentId) {
+        boardRepo.deleteById(documentId);
     }
 }
