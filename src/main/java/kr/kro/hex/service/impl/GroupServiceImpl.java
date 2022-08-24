@@ -26,10 +26,10 @@ import lombok.RequiredArgsConstructor;
 public class GroupServiceImpl implements GroupService {
 
     /** 그룹 레포지토리 */
-    private GroupRepository groupRepo;
+    private final GroupRepository groupRepo;
 
     /**
-     * 그룹 추가하기
+     * 그룹을 등록합니다.
      *
      * @param group 그룹
      * @author Rubisco
@@ -39,7 +39,7 @@ public class GroupServiceImpl implements GroupService {
     };
 
     /**
-     * 그룹 목록 가져오기
+     * 그룹 목록을 조회합니다.
      *
      * @return 그룹 목록
      * @author Rubisco
@@ -49,32 +49,32 @@ public class GroupServiceImpl implements GroupService {
     };
     
     /**
-     * 그룹 가져오기
+     * groupId에 해당하는 그룹을 조회합니다.
      *
-     * @param groupId 그룹 ID
+     * @param group 그룹
      * @author Rubisco
      */
-    public Group getGroup(Long groupId) {
-        return groupRepo.findById(groupId).get();
+    public Group getGroup(Group group) {
+        return groupRepo.findById(group.getGroupId()).get();
     };
 
     /**
-     * 그룹 수정하기
+     * 그룹을 수정합니다.
      *
      * @param group 그룹
      * @author Rubisco
      */
     public void updateGroup(Group group) {
-        groupRepo.save(getGroup(group.getGroupId()).update(group));
+        groupRepo.save(getGroup(group).update(group));
     };
 
     /**
-     * 그룹 삭제하기
+     * groupId에 해당하는 그룹을 삭제합니다.
      *
-     * @param groupId 그룹 ID
+     * @param group 그룹
      * @author Rubisco
      */
-    public void deleteGroup(Long groupId) {
-        groupRepo.deleteById(groupId);
+    public void deleteGroup(Group group) {
+        groupRepo.deleteById(group.getGroupId());
     };
 }

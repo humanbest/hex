@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<section th:fragment="comment" class="comment" th:object="${board}">
+  <form id="comment" class="row gap" action="/comment" th:method="post">
+    <input type="hidden" name="documentId" th:value="*{documentId}">
+    <input type="hidden" name="memberId" th:value="1">
+    <div class="row column gap full">
+      <p th:text="*{member.nickName}"></p>
+      <textarea name="content" cols="30" rows="5" placeholder="내용"></textarea>
+    </div>
+    <button class="btn confirm"></button>
+  </form>
+  <div class="comment_list_count"><b th:text="*{commentList.size()}"></b></div>
+  <ul id="comment_list">
+    <li th:each="comment : *{commentList}" th:object="${comment}">
+      <div class="row comment_meta">
+        <div class="comment_name" th:text="*{member.nickName}"></div>
+        <small class="comment_date" th:text="*{createDate}"></small>
+      </div>
+      <div class="comment_content" th:text="*{content}"></div>
+      <div class="comment_menu row gap">
+        <a class="comment_btn comment_update" href="#"></a>
+        <form class="row" action="/comment" th:method="delete">
+          <input type="hidden" name="commentId" th:value="*{commentId}">
+          <input type="hidden" name="documentId" th:value="${board.documentId}">
+          <button class="comment_btn comment_delete"></button>
+        </form>
+      </div>
+    </li>
+  </ul>
+</section>
+</html>

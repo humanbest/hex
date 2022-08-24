@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepo;
 
     /**
-     * 카테고리 추가하기
+     * 카테고리를 추가합니다.
      *
      * @author Rubisco
      */
@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     /**
-     * 카테고리 목록 가져오기
+     * 카테고리 목록을 조회합니다.
      *
      * @param category 카테고리
      * @return 카테고리 목록
@@ -51,35 +51,35 @@ public class CategoryServiceImpl implements CategoryService {
     };
 
     /**
-     * 카테고리 가져오기
+     * 카테고리를 조회합니다.
      *
-     * @param categoryId 카테고리 ID
+     * @param category 카테고리
      * @author Rubisco
      */
     @Override
-    public Category getCategory(Long categoryId) {
-        return categoryRepo.findById(categoryId).get();
+    public Category getCategory(Category category) {
+        return categoryRepo.findById(category.getCategoryId()).get();
     }
 
     /**
-     * 카테고리 수정하기
+     * 카테고리를 수정합니다.
      *
      * @param category 카테고리
      * @author Rubisco
      */
     @Override
     public void updateCategory(Category category) {
-        categoryRepo.save(getCategory(category.getCategoryId()).update(category));
+        categoryRepo.save(getCategory(category).update(category));
     }
 
     /**
-     * 카테고리 삭제하기
+     * 카테고리를 삭제합니다.
      *
      * @param categoryId 카테고리 ID
      * @author Rubisco
      */
     @Override
-    public void deleteCategory(Long categoryId) {
-        categoryRepo.deleteById(categoryId);
+    public void deleteCategory(Category category) {
+        categoryRepo.deleteById(category.getCategoryId());
     }
 }

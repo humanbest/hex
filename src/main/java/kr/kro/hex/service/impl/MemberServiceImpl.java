@@ -52,13 +52,11 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원 정보 가져오기
      *
-     * @param memberId 회원 ID
+     * @param member 회원
      * @author Rubisco
      */
-    public Member getMember(Long memberId) {
-        Member findMember = memberRepo.findById(memberId).get();
-        findMember.setBoardList(boardRepo.findTop3ByMemberOrderByCreateDateDesc(findMember));
-        return findMember;
+    public Member getMember(Member member) {
+        return memberRepo.findById(member.getMemberId()).get();
     };
 
 
@@ -69,16 +67,16 @@ public class MemberServiceImpl implements MemberService {
      * @author Rubisco
      */
     public void updateMember(Member member) {
-
+        memberRepo.save(getMember(member).update(member));
     };
 
     /**
      * 회원 삭제하기
      *
-     * @param memberId 회원 ID
+     * @param member 회원
      * @author Rubisco
      */
-    public void deleteMember(Long memberId) {
-
+    public void deleteMember(Member member) {
+        memberRepo.deleteById(member.getMemberId());
     };
 }

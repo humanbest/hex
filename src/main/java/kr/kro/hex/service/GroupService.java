@@ -33,10 +33,10 @@ public interface GroupService {
     /**
      * 그룹 가져오기
      *
-     * @param groupId 그룹 ID
+     * @param group 그룹
      * @author Rubisco
      */
-    Group getGroup(Long groupId);
+    Group getGroup(Group group);
 
     /**
      * 그룹 수정하기
@@ -49,8 +49,8 @@ public interface GroupService {
     /**
      * 그룹 삭제하기
      *
-     * @param groupId 그룹 ID
+     * @param group 그룹
      * @author Rubisco
      */
-    void deleteGroup(Long groupId);
+    void deleteGroup(Group group);
 }
