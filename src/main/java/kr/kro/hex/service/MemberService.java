@@ -32,10 +32,10 @@ public interface MemberService {
     /**
      * 회원 정보 가져오기
      *
-     * @param memberId 회원 ID
+     * @param member 회원
      * @author Rubisco
      */
-    Member getMember(Long memberId);
+    Member getMember(Member member);
 
 
     /**
@@ -49,8 +49,8 @@ public interface MemberService {
     /**
      * 회원 삭제하기
      *
-     * @param memberId 회원 ID
+     * @param member 회원
      * @author Rubisco
      */
-    void deleteMember(Long memberId);
+    void deleteMember(Member member);
 }

@@ -90,7 +90,7 @@ public class Member extends BaseTime {
         this.groupId = groupId;
     }
 
-    public void setGroup(Group group) {
+    public Member setGroup(Group group) {
 
         Assert.notNull(group, "group must not be null");
 
@@ -100,5 +100,24 @@ public class Member extends BaseTime {
 
         this.group = group;
         group.getMemberList().add(this);
+
+        return this;
+    }
+    
+    public Member setBoardList(List<Board> boardList) {
+        this.boardList = boardList;
+        return this;
+    }
+
+    public Member update(Member member) {
+        Assert.notNull(email, "email must not be null");
+        Assert.notNull(name, "name must not be null");
+        Assert.notNull(nickName, "nickName must not be null");
+
+        email = member.email;
+        name = member.name;
+        nickName = member.nickName;
+
+        return this;
     }
 }

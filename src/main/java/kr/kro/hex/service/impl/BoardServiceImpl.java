@@ -40,9 +40,9 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     public void insertBoard(Board board) {
-        board.setMember(Member.builder().memberId(board.getMemberId()).build());
-        board.setCategory(Category.builder().categoryId(board.getCategoryId()).build());
-        board.setGroup(Group.builder().GroupId(1L).build());
+        board.setMember(Member.builder().memberId(board.getMemberId()).build())
+            .setCategory(Category.builder().categoryId(board.getCategoryId()).build())
+            .setGroup(Group.builder().GroupId(1L).build());
 
         boardRepo.save(board);
     }
@@ -59,15 +59,15 @@ public class BoardServiceImpl implements BoardService {
     }
 
     /**
-     * documentId에 해당하는 게시글을 조회합니다.
+     * 게시글을 조회합니다.
      *
-     * @param documentId 게시글 ID
+     * @param board 게시글
      * @return 게시글
      * @author Rubisco
      */
     @Override
-    public Board getBoard(Long documentId) {
-        return boardRepo.findById(documentId).get();
+    public Board getBoard(Board board) {
+        return boardRepo.findById(board.getDocumentId()).get();
     }
 
     /**
@@ -79,18 +79,18 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateBoard(Board board) {
-        boardRepo.save(getBoard(board.getDocumentId()).update(board));
+        boardRepo.save(getBoard(board).update(board));
     }
 
     /**
      * 게시글을 삭제합니다.
      *
-     * @param documentId 게시글 ID
+     * @param board 게시글
      * @author Rubisco
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteBoard(Long documentId) {
-        boardRepo.deleteById(documentId);
+    public void deleteBoard(Board board) {
+        boardRepo.deleteById(board.getDocumentId());
     }
 }

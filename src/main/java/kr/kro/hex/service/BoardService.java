@@ -35,10 +35,10 @@ public interface BoardService {
      * documentId에 해당하는 게시글을 조회합니다.
      *
      * @author Rubisco
-     * @param documentId 게시글 ID
+     * @param boadr 게시글
      * @return 게시글
      */
-    Board getBoard(Long documentId);
+    Board getBoard(Board board);
 
     /**
      * 게시글 수정하기
@@ -48,12 +48,11 @@ public interface BoardService {
      */
     void updateBoard(Board board);
 
-    
     /**
      * 게시글 삭제하기
      *
-     * @param documentId 게시글 ID
+     * @param board 게시글
      * @author Rubisco
      */
-    void deleteBoard(Long documentId);
+    void deleteBoard(Board board);
 }

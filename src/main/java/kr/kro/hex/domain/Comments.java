@@ -79,7 +79,7 @@ public class Comments extends BaseTime {
         return this;
     }
 
-    public void setBoard(Board board) {
+    public Comments setBoard(Board board) {
 
         if (this.board != null) {
             this.board.getCommentList().remove(this);
@@ -87,9 +87,11 @@ public class Comments extends BaseTime {
 
         this.board = board;
         board.getCommentList().add(this);
+
+        return this;
     }
 
-    public void setMember(Member member) {
+    public Comments setMember(Member member) {
 
         if (this.member != null) {
             this.member.getCommentList().remove(this);
@@ -97,5 +99,7 @@ public class Comments extends BaseTime {
 
         this.member = member;
         member.getCommentList().add(this);
+
+        return this;
     }
 }

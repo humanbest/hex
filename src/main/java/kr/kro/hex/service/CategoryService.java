@@ -33,10 +33,10 @@ public interface CategoryService {
     /**
      * 카테고리 가져오기
      *
-     * @param categoryId 카테고리 ID
+     * @param category 카테고리
      * @author Rubisco
      */
-    Category getCategory(Long categoryId);
+    Category getCategory(Category category);
 
     /**
      * 카테고리 수정하기
@@ -49,8 +49,8 @@ public interface CategoryService {
     /**
      * 카테고리 삭제하기
      *
-     * @param categoryId 카테고리 ID
+     * @param categoryId 카테고리
      * @author Rubisco
      */
-    void deleteCategory(Long categoryId);
+    void deleteCategory(Category category);
 }

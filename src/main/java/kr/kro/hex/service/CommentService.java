@@ -32,10 +32,10 @@ public interface CommentService {
     /**
      * 댓글 가져오기
      *
-     * @param commentId 댓글 ID
+     * @param comment 댓글
      * @author Rubisco
      */
-    Comments getComment(Long commentId);
+    Comments getComment(Comments comment);
 
     /**
      * 댓글 수정하기
@@ -48,8 +48,8 @@ public interface CommentService {
     /**
      * 댓글 삭제하기
      *
-     * @param commentId 댓글 ID
+     * @param comment 댓글
      * @author Rubisco
      */
-    void deleteComment(Long commentId);
+    void deleteComment(Comments comment);
 }

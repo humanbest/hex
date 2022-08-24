@@ -31,19 +31,20 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepo;
 
     /**
-     * 댓글 등록하기
+     * 댓글을 등록합니다.
      *
      * @param comments 댓글
      * @author Rubisco
      */
     public void insertComment(Comments comment) {
-        comment.setBoard(Board.builder().documentId(comment.getDocumentId()).build());
-        comment.setMember(Member.builder().memberId(comment.getMemberId()).build());
+        comment.setBoard(Board.builder().documentId(comment.getDocumentId()).build())
+            .setMember(Member.builder().memberId(comment.getMemberId()).build());
+
         commentRepo.save(comment);
     };
 
     /**
-     * 댓글 전체 목록 가져오기
+     * 댓글 전체 목록을 조회합니다.
      *
      * @author Rubisco
      * @return 전체 댓글 목록
@@ -53,32 +54,34 @@ public class CommentServiceImpl implements CommentService {
     };
 
     /**
-     * 댓글 가져오기
+     * 댓글을 조회합니다.
      *
-     * @param commentId 댓글 ID
+     * @param comment 댓글
      * @author Rubisco
      */
-    public Comments getComment(Long commentId) {
-        return commentRepo.findById(commentId).get();
+    public Comments getComment(Comments comment) {
+        return commentRepo.findById(comment.getCommentId()).get();
     };
 
     /**
-     * 댓글 수정하기
+     * 댓글을 수정합니다.
      *
      * @param comments 댓글
      * @author Rubisco
      */
+    @Transactional(rollbackFor = Exception.class)
     public void updateComment(Comments comment) {
-        commentRepo.save(getComment(comment.getCommentId()).update(comment));
+        commentRepo.save(getComment(comment).update(comment));
     };
 
     /**
-     * 댓글 삭제하기
+     * 댓글을 삭제합니다.
      *
-     * @param commentId 댓글 ID
+     * @param comment 댓글
      * @author Rubisco
      */
-    public void deleteComment(Long commentId) {
-        commentRepo.deleteById(commentId);
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteComment(Comments comment) {
+        commentRepo.deleteById(comment.getCommentId());
     };
 }
