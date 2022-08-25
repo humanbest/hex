@@ -1,6 +1,6 @@
 import { Vector } from "matter";
 import { CONFIG } from "../config";
-import { cardAdjust, CardAttribute, CardConfig } from "../interface/Interface";
+import { cardAdjust, CardAttribute, CardData } from "../interface/Interface";
 
 export default class Card extends Phaser.GameObjects.Container 
 {
@@ -24,7 +24,7 @@ export default class Card extends Phaser.GameObjects.Container
     
     private isSelected: boolean = false;
 
-    constructor(parentContainer: Phaser.GameObjects.Container, cardName: string, config: CardConfig, isFront?: boolean) 
+    constructor(parentContainer: Phaser.GameObjects.Container, cardName: string, cardData: CardData, isFront?: boolean) 
     {
         super(parentContainer.scene, 0, 0);
 
@@ -43,12 +43,12 @@ export default class Card extends Phaser.GameObjects.Container
         {
             let type: string;
 
-            if(config.effect instanceof Array) {
+            if(cardData.effect instanceof Array) {
                 type = "attack";
             }
             else
             {
-                switch (config.effect.type) {
+                switch (cardData.effect.type) {
                     case CardAttribute.ATTACK: type = "attack"; break;
                     case CardAttribute.DEFENSE: type = "defense"; break;
                     default: type = "buff"; break;
@@ -77,8 +77,8 @@ export default class Card extends Phaser.GameObjects.Container
             const cardColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.CARD_COLOR).setOrigin(0.5, 0).setTint(Card.imageColor[type]);
             const titleColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.TITLE_COLOR).setOrigin(0.5, 0).setTint(Card.titleColor[type]);
             const costBoxImage = scene.add.image(cardFrontImage.getTopLeft().x + 7, cardFrontImage.getTopLeft().y + 10, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.COST_BOX).setScale(0.8);
-            const costValueText = scene.add.text(costBoxImage.getCenter().x, costBoxImage.getCenter().y, config.cost == -1 ? "∞" : config.cost.toString(), costValueTextStyle).setOrigin(0.5);
-            const cardNameText = scene.add.text(-10, cardFrontImage.getTopCenter().y + 27, config.name, cardNameTextStyle).setOrigin(0.5);
+            const costValueText = scene.add.text(costBoxImage.getCenter().x, costBoxImage.getCenter().y, cardData.cost == -1 ? "∞" : cardData.cost.toString(), costValueTextStyle).setOrigin(0.5);
+            const cardNameText = scene.add.text(-10, cardFrontImage.getTopCenter().y + 27, cardData.name, cardNameTextStyle).setOrigin(0.5);
             const cardImageImage = scene.add.image(adjust.position.x, adjust.position.y, CONFIG.SPRITE.CARD_IMAGE, cardName).setScale(adjust.scale.x, adjust.scale.y);
             
             this.add([cardFrontImage, cardColorImage, titleColorImage, costBoxImage, costValueText, cardNameText, cardImageImage]);
