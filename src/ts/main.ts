@@ -36,7 +36,6 @@ window.WebFontConfig = {
         game.player = {
             nickName: CONFIG.PLAYER.NICK_NAME,
             champion: {
-                owner: CONFIG.PLAYER.CHAMP.OWNER,
                 name: CONFIG.PLAYER.CHAMP.NAME,
                 hp: CONFIG.PLAYER.CHAMP.HP,
                 maxHp: CONFIG.PLAYER.CHAMP.MAX_HP,

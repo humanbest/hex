@@ -22,7 +22,7 @@ export interface CardEffect {
 export interface CardData {
     name: string;
     effect: Array<CardEffect> | CardEffect;
-    ownership: number;
+    ownership: ChampionName | "공통";
     cost: number;
 }
 
@@ -58,18 +58,18 @@ export interface Item {
 }
 
 /**
- * 챔피언 PK
+ * 챔피언 이름
  */
-export enum Owner {
-    COMMON, SMUGGLER, PHANTOM
+export enum ChampionName {
+    SMUGGLER = "스머글러",
+    PHANTOM = "팬텀"
 }
 
 /**
  * 챔피언 인터페이스
  */
 export interface Champion {
-    owner: Owner;
-    name: string;
+    name: ChampionName;
     hp: number;
     maxHp: number;
     defense: number;

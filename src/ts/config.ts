@@ -1,3 +1,5 @@
+import { ChampionName } from "./interface/Interface";
+
 export const CONFIG = {
     SCENES: {
         LOAD: "LOAD",
@@ -54,8 +56,7 @@ export const CONFIG = {
     PLAYER: {
         NICK_NAME: "루비스코",
         CHAMP: {
-            OWNER: 1,
-            NAME: "스머글러",
+            NAME: ChampionName.PHANTOM,
             HP: 80,
             MAX_HP: 80,
             DEFENSE: 0,
