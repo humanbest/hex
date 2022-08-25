@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { CONFIG } from "../config";
 import Card from "../ui/CardUI";
-import { CardConfig, HexGame } from "./Interface";
+import { CardData, HexGame } from "./Interface";
 
 export default class CardManager extends Phaser.GameObjects.Container 
 {
@@ -22,8 +22,8 @@ export default class CardManager extends Phaser.GameObjects.Container
 
     private init(): void 
     {
-        this.setSize(this.scene.game.canvas.width * CardManager.maxScale, this.scene.game.canvas.height - CONFIG.CONTAINER.TOP.HEIGHT)
-        .setPosition(0, CONFIG.CONTAINER.TOP.HEIGHT);
+        this.setSize(this.scene.game.canvas.width * CardManager.maxScale, this.scene.game.canvas.height - CONFIG.CONTAINER.TOP_MENU.HEIGHT)
+        .setPosition(0, CONFIG.CONTAINER.TOP_MENU.HEIGHT);
 
         for(let i = 0; i < CardManager.initCardCount; i++) this.addCard();
     }
@@ -106,7 +106,7 @@ export default class CardManager extends Phaser.GameObjects.Container
         return this;
     }
 
-    private getCardData(cardName: string): CardConfig | undefined 
+    private getCardData(cardName: string): CardData | undefined 
     {
         const cardData: any = this.scene.game.cache.json.get(CONFIG.DATA.CARD_DATA);
 

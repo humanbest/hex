@@ -46,9 +46,8 @@ window.WebFontConfig = {
             dec: [],
             inventory: {
                 coin: CONFIG.PLAYER.INVENTORY.COIN,
-                item: CONFIG.PLAYER.INVENTORY.ITEM
-            },
-            time: '00:21'
+                items: CONFIG.PLAYER.INVENTORY.ITEM
+            }
         }
     }
 };

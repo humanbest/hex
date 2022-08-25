@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import kr.kro.hex.domain.Board;
-import kr.kro.hex.domain.Member;
 
 /**
  * 게시판 레포지토리

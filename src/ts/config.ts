@@ -28,8 +28,8 @@ export const CONFIG = {
         CARD_ADJUST: "cardAdjust"
     },
     CONTAINER: {
-        TOP: {
-            NAME: "top",
+        TOP_MENU: {
+            NAME: "topMenu",
             BACKGROUND: "background",
             HEIGHT: 40,
             LEFT: {
