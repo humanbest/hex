@@ -1,6 +1,5 @@
 import { Vector } from "matter";
 import { Game } from "phaser"
-import { Player } from "./Player";
 
 export enum CardAttribute {
     ATTACK, DEFENSE, AT_BUFF, DF_BUFF, DEBUFF
@@ -53,6 +52,14 @@ export interface Champion {
 export interface Inventory {
     coin: number;
     item: Array<Item>
+}
+
+export interface Player {
+    nickName: string;
+    champion: Champion;
+    inventory: Inventory;
+    dec: Array<string>;
+    time?: string;
 }
 
 export interface HexGame extends Game {
