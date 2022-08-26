@@ -217,7 +217,7 @@ export default class CardManager extends Phaser.GameObjects.Container
     }
 
     /**
-     * 카드가 포인터 이치를 따라 움직입니다.
+     * 카드가 포인터 위치를 따라 움직입니다.
      * 
      * @param card 카드
      * @param pointer 포인터 위치
