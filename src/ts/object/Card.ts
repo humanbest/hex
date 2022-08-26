@@ -1,26 +1,39 @@
 import { Vector } from "matter";
 import { CONFIG } from "../config";
-import { cardAdjust, CardAttribute, CardData } from "../interface/Interface";
+import { cardAdjust, CardData, CardType } from "../interface/Interface";
 
+/**
+ * 카드 오브젝트 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-08-25 오후 7:41
+ */
 export default class Card extends Phaser.GameObjects.Container 
 {
+    /** 카드 넓이 */
     public static width: number = 200;
+
+    /** 카드 높이 */
     public static height: number = 300;
+
+    /** 카드 배열 최대 각도 */
     public static maxAngle: number = 30;
+
+    /** 카드 크기 */
     public static scale: number = 0.5;
 
+    /** 카드 이미지 위치 오차 조절 */
     private static imagePosition: Vector = { x: 0, y: -35 };
+    
+    /** 카드 이미지 크기 오차 조절 */
     private static imageScale: Vector = { x: 0.7, y: 0.7 };
-    private static imageColor: {[key: string] : number} = {
-        attack: 0x923a37,
-        defense: 0x252a37,
-        buff: 0x71915c
-    }
-    private static titleColor: {[key: string] : number} = {
-        attack:0xffbb9d,
-        defense: 0x9fdbe1,
-        buff: 0xc2d6b5
-    }
+
+    /** 
+     * 카드 타입에 따른 이미지 영역 색상
+     * @see 
+     */
+    private static imageColor: number[] = [0x923a37, 0x252a37, 0x71915c, 0x71915c, 0x71915c];
+    private static titleColor: number[] = [0xffbb9d, 0x9fdbe1, 0xc2d6b5, 0xc2d6b5, 0xc2d6b5];
     
     private isSelected: boolean = false;
 
@@ -41,19 +54,10 @@ export default class Card extends Phaser.GameObjects.Container
 
         if(isFront)
         {
-            let type: string;
+            let type: CardType;
 
-            if(cardData.effect instanceof Array) {
-                type = "attack";
-            }
-            else
-            {
-                switch (cardData.effect.type) {
-                    case CardAttribute.ATTACK: type = "attack"; break;
-                    case CardAttribute.DEFENSE: type = "defense"; break;
-                    default: type = "buff"; break;
-                }
-            }
+            if(cardData.type instanceof Array) type = cardData.type[0];
+            else type = cardData.type;
             
             const costValueTextStyle: Phaser.Types.GameObjects.Text.TextStyle = {
                 fontFamily: "neodgm",

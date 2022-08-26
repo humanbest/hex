@@ -3,7 +3,10 @@ import { ChampionName } from "./interface/Interface";
 export const CONFIG = {
     SCENES: {
         LOAD: "LOAD",
-        MAIN: "MAIN"
+        MAP: "MAP",
+        SHOP: "SHOP",
+        CHRACTER_SELECT: "CHARCTER_SELECT",
+        BATTLE: "BATTLE"
     },
     IMAGE: {
         CLOCK: "clock",
@@ -63,7 +66,7 @@ export const CONFIG = {
             COST: 3
         },
         INVENTORY: {
-            COIN: 99,
+            COIN: 100,
             ITEM: []
         }
     }
