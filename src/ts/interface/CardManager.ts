@@ -3,16 +3,35 @@ import { CONFIG } from "../config";
 import Card from "../object/Card";
 import { HexGame } from "./Interface";
 
+/**
+ * 카드 관리 컨테이너
+ * 
+ * @author Rubisco
+ * @since 2022-08-26 오후 5:02
+ */
 export default class CardManager extends Phaser.GameObjects.Container 
 {
+    /** 초기 카드 수 */
     private static initCardCount: number = 5;
+    
+    /** 컨테이너 최대 배율*/
     private static maxScale: number = 0.6;
 
+    /** 나머지 카드 */
     private remainCards: Array<string> = [];
+    
+    /** 선택된 카드 */
     private selectedCards: Array<string> = [];
     
     // private usedCards: Array<string> = [];
 
+    /**
+     * 카드 관리 컨테이너를 생성합니다.
+     * 
+     * @param scene 씬
+     * @param x x좌표
+     * @param y y좌표
+     */
     constructor(scene: Scene, x: number, y: number)
     {
         super(scene, x, y);
@@ -20,6 +39,9 @@ export default class CardManager extends Phaser.GameObjects.Container
         this.init();
     }
 
+    /** 
+     * 카드 관리자 초기화
+     */
     private init(): void 
     {
         this.setSize(this.scene.game.canvas.width * CardManager.maxScale, this.scene.game.canvas.height - CONFIG.CONTAINER.TOP_MENU.HEIGHT)
@@ -28,6 +50,12 @@ export default class CardManager extends Phaser.GameObjects.Container
         for(let i = 0; i < CardManager.initCardCount; i++) this.addCard();
     }
 
+    /**
+     * 카드를 한 장 추가합니다.
+     * 
+     * @param doTween 애니메이션 효과 여부
+     * @returns 카드 관리 컨테이너
+     */
     public addCard(doTween?: boolean): this 
     {
         if(doTween == undefined) doTween = true;
@@ -53,6 +81,12 @@ export default class CardManager extends Phaser.GameObjects.Container
         return this;
     }
 
+    /**
+     * 카드를 섞습니다.
+     * 
+     * @param arr 카드 배열
+     * @returns 카드 관리 컨테이너
+     */
     public shuffle(arr?: Array<string>): this 
     {
         if(!arr?.length) arr = (this.scene.game as HexGame).player.dec.slice();
@@ -61,6 +95,12 @@ export default class CardManager extends Phaser.GameObjects.Container
         return this;
     }
 
+    /**
+     * 카드를 정렬합니다.
+     * 
+     * @param doTween 애니메이션 효과 여부
+     * @returns 카드 관리 컨테이너
+     */
     private arangeCard(doTween?: boolean): this 
     {
         if(doTween == undefined) doTween = true;
@@ -120,6 +160,11 @@ export default class CardManager extends Phaser.GameObjects.Container
         return this;
     }
 
+    /**
+     * 카드에 포인터를 올리면 카드가 커집니다.
+     * 
+     * @param card 카드
+     */
     private pointerOver(card: Card): void
     {
         if(!card.isSelected)
@@ -136,6 +181,11 @@ export default class CardManager extends Phaser.GameObjects.Container
         }
     }
 
+    /**
+     * 카드에서 포인터가 벗어나면 원래 상태로 돌아갑니다.
+     * 
+     * @param card 카드
+     */
     private pointerOut(card: Card): void 
     {   
         card.isSelected = false;
@@ -153,6 +203,11 @@ export default class CardManager extends Phaser.GameObjects.Container
         });
     }
 
+    /**
+     * 카드를 클릭하면 isSelected 상태가 토글됩니다.
+     * 
+     * @param card 카드
+     */
     private pointerDown(card: Card): void 
     {
         if(!card.isSelected) card.isSelected = true;
@@ -161,6 +216,12 @@ export default class CardManager extends Phaser.GameObjects.Container
         }
     }
 
+    /**
+     * 카드가 포인터 이치를 따라 움직입니다.
+     * 
+     * @param card 카드
+     * @param pointer 포인터 위치
+     */
     private pointerMove(card: Card, pointer: Phaser.Input.Pointer): void 
     {
         if(card.isSelected) card.setPosition(pointer.x, pointer.y);
