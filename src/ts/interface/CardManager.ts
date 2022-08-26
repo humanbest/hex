@@ -35,14 +35,20 @@ export default class CardManager extends Phaser.GameObjects.Container
         this.shuffle(this.remainCards);
 
         const cardName = this.remainCards.pop() as string;
-        const cardData = this.getCardData(cardName);
         
-        if(cardData)
-        {
-            this.add(new Card(this, cardName, cardData, true))
-                .arrangeCard(doTween)
-                .selectedCards.push(cardName);
-        }
+        const card = new Card(this.scene, cardName, true)
+                .setSize(Card.width, Card.height)
+                .setPosition(-Card.width, this.height / 2)
+                .setScale(Card.scale)
+                .setInteractive()
+                .on("pointerover", () => this.pointerOver(card))
+                .on("pointerout", () => this.pointerOut(card))
+                .on("pointerdown", () => this.pointerDown(card))
+                .on("pointermove", (pointer: Phaser.Input.Pointer) => this.pointerMove(card, pointer));
+
+        this.add(card)
+            .arangeCard(doTween)
+            .selectedCards.push(cardName);
 
         return this;
     }
@@ -55,7 +61,7 @@ export default class CardManager extends Phaser.GameObjects.Container
         return this;
     }
 
-    private arrangeCard(doTween?: boolean): this 
+    private arangeCard(doTween?: boolean): this 
     {
         if(doTween == undefined) doTween = true;
 
@@ -99,13 +105,22 @@ export default class CardManager extends Phaser.GameObjects.Container
                 originPosition: new Phaser.Math.Vector2(xPos, yPos),
                 originScale: new Phaser.Math.Vector2(card.scaleX, card.scaleY),
                 originAngle: angle
-            }).arrange({x: xPos, y: yPos}, angle, doTween);
-
+            })
+            
+            this.scene.add.tween({
+                targets: card,
+                x: xPos,
+                y: yPos,
+                angle: angle,
+                duration: 300,
+                delay: doTween ? count * 300 : 0
+            });
         });
 
         return this;
     }
 
+<<<<<<< Updated upstream
     private getCardData(cardName: string): CardConfig | undefined 
     {
         const cardData: any = this.scene.game.cache.json.get(CONFIG.DATA.CARD_DATA);
@@ -120,8 +135,51 @@ export default class CardManager extends Phaser.GameObjects.Container
                 ownership: cardData[cardName].ownership,
                 cost: cardData[cardName].cost
             }
+=======
+    private pointerOver(card: Card): void
+    {
+        if(!card.isSelected)
+        {
+            this.bringToTop(card);
+            this.scene.add.tween({
+                targets: card,
+                y: this.height - Card.height / 2,
+                angle: 0,
+                duration: 100,
+                scale: 1,
+                ease: 'Quad.easeInOut'
+            });
+>>>>>>> Stashed changes
         }
+    }
 
-        return undefined;
+    private pointerOut(card: Card): void 
+    {   
+        card.isSelected = false;
+        this.moveTo(card, card.data.values.originIndex);
+        this.scene.add.tween({
+            targets: card,
+            x: card.data.values.originPosition.x,
+            y: card.data.values.originPosition.y,
+            angle: card.data.values.originAngle,
+            duration: 100,
+            delay: 0,
+            scaleX: card.data.values.originScale.x,
+            scaleY: card.data.values.originScale.y,
+            ease: 'Quad.easeInOut'
+        });
+    }
+
+    private pointerDown(card: Card): void 
+    {
+        if(!card.isSelected) card.isSelected = true;
+        else {
+            this.pointerOut(card);
+        }
+    }
+
+    private pointerMove(card: Card, pointer: Phaser.Input.Pointer): void 
+    {
+        if(card.isSelected) card.setPosition(pointer.x, pointer.y);
     }
 }
