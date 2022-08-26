@@ -16,7 +16,7 @@ import kr.kro.hex.domain.Board;
 public interface BoardService {
 
     /**
-     * 게시글 등록하기
+     * 게시글을 등록합니다.
      *
      * @param board 게시글
      * @author Rubisco
@@ -24,7 +24,7 @@ public interface BoardService {
     void insertBoard(Board board);
 
     /**
-     * 게시글 목록 가져오기
+     * 게시글 목록을 조회합니다.
      *
      * @author Rubisco
      * @return 게시글 목록
@@ -32,10 +32,10 @@ public interface BoardService {
     List<Board> getBoardList();
 
     /**
-     * 게시글 가져오기
+     * documentId에 해당하는 게시글을 조회합니다.
      *
      * @author Rubisco
-     * @param board 게시글
+     * @param boadr 게시글
      * @return 게시글
      */
     Board getBoard(Board board);
@@ -48,7 +48,6 @@ public interface BoardService {
      */
     void updateBoard(Board board);
 
-    
     /**
      * 게시글 삭제하기
      *

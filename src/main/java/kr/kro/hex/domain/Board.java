@@ -44,7 +44,7 @@ public class Board extends BaseTime {
     @Column(length = 1)
     @ColumnDefault("'N'")
     @Convert(converter = BooleanToYNConverter.class)
-    private boolean isNotice;
+    private Boolean isNotice;
 
     @Column(length = 250, nullable = false)
     private String title;
@@ -93,7 +93,7 @@ public class Board extends BaseTime {
     @Builder
     public Board(
         Long documentId,
-        boolean isNotice, 
+        Boolean isNotice, 
         String title, 
         String content,
         Long categoryId,
@@ -122,7 +122,7 @@ public class Board extends BaseTime {
         return this;
     }
 
-    public void setCategory(Category category) {
+    public Board setCategory(Category category) {
 
         Assert.notNull(category, "member must not be null");
 
@@ -132,9 +132,11 @@ public class Board extends BaseTime {
 
         this.category = category;
         category.getBoardList().add(this);
+
+        return this;
     }
 
-    public void setMember(Member member) {
+    public Board setMember(Member member) {
 
         Assert.notNull(member, "member must not be null");
 
@@ -144,9 +146,11 @@ public class Board extends BaseTime {
 
         this.member = member;
         member.getBoardList().add(this);
+
+        return this;
     }
 
-    public void setGroup(Group group) {
+    public Board setGroup(Group group) {
 
         Assert.notNull(group, "group must not be null");
 
@@ -156,5 +160,7 @@ public class Board extends BaseTime {
 
         this.group = group;
         group.getBoardList().add(this);
+
+        return this;
     }
 }

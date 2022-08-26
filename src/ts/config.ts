@@ -1,7 +1,12 @@
+import { ChampionName } from "./interface/Interface";
+
 export const CONFIG = {
     SCENES: {
         LOAD: "LOAD",
-        MAIN: "MAIN"
+        MAP: "MAP",
+        SHOP: "SHOP",
+        CHRACTER_SELECT: "CHARCTER_SELECT",
+        BATTLE: "BATTLE"
     },
     IMAGE: {
         CLOCK: "clock",
@@ -28,8 +33,8 @@ export const CONFIG = {
         CARD_ADJUST: "cardAdjust"
     },
     CONTAINER: {
-        TOP: {
-            NAME: "top",
+        TOP_MENU: {
+            NAME: "topMenu",
             BACKGROUND: "background",
             HEIGHT: 40,
             LEFT: {
@@ -54,15 +59,14 @@ export const CONFIG = {
     PLAYER: {
         NICK_NAME: "루비스코",
         CHAMP: {
-            OWNER: 1,
-            NAME: "스머글러",
+            NAME: ChampionName.PHANTOM,
             HP: 80,
             MAX_HP: 80,
             DEFENSE: 0,
             COST: 3
         },
         INVENTORY: {
-            COIN: 99,
+            COIN: 100,
             ITEM: []
         }
     }

@@ -36,7 +36,6 @@ window.WebFontConfig = {
         game.player = {
             nickName: CONFIG.PLAYER.NICK_NAME,
             champion: {
-                owner: CONFIG.PLAYER.CHAMP.OWNER,
                 name: CONFIG.PLAYER.CHAMP.NAME,
                 hp: CONFIG.PLAYER.CHAMP.HP,
                 maxHp: CONFIG.PLAYER.CHAMP.MAX_HP,
@@ -46,9 +45,8 @@ window.WebFontConfig = {
             dec: [],
             inventory: {
                 coin: CONFIG.PLAYER.INVENTORY.COIN,
-                item: CONFIG.PLAYER.INVENTORY.ITEM
-            },
-            time: '00:21'
+                items: CONFIG.PLAYER.INVENTORY.ITEM
+            }
         }
     }
 };

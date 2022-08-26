@@ -95,7 +95,39 @@ export default class CardManager extends Phaser.GameObjects.Container
             let angle: number = 0;
             
             if(count > 3) 
-            {   
+            {   import Phaser from "phaser";
+            import { CONFIG } from "../config";
+            import CardManager from "../interface/CardManager";
+            import TopMenu from "../interface/TopMenu";
+            
+            export class BattleScene extends Phaser.Scene 
+            {
+                constructor() 
+                {
+                    super({
+                        key: CONFIG.SCENES.BATTLE 
+                    })
+                }
+            
+                preload(): void
+                {
+                    this.input.keyboard.on('keydown-F',  () => {
+                        if (this.scale.isFullscreen) {
+                            this.scale.stopFullscreen();
+                        } else {
+                            this.scale.startFullscreen();
+                        }
+                    })
+                }
+            
+                create(): void
+                {
+                    new TopMenu(this, 0, 0);
+                    const cardManager = new CardManager(this, 0, 0);
+            
+                    this.input.keyboard.on('keydown-SPACE',  () => cardManager.addCard(false));
+                }
+            }
                 yPos -= radius * Math.sqrt(Math.pow(0.5, 2) - Math.pow(lerps[idx] - 0.5, 2)) - 10;
                 angle = Phaser.Math.Linear(-15, 15, lerps[idx]);
             }
@@ -135,48 +167,7 @@ export default class CardManager extends Phaser.GameObjects.Container
                 ownership: cardData[cardName].ownership,
                 cost: cardData[cardName].cost
             }
-=======
-    private pointerOver(card: Card): void
-    {
-        if(!card.isSelected)
-        {
-            this.bringToTop(card);
-            this.scene.add.tween({
-                targets: card,
-                y: this.height - Card.height / 2,
-                angle: 0,
-                duration: 100,
-                scale: 1,
-                ease: 'Quad.easeInOut'
-            });
->>>>>>> Stashed changes
         }
-    }
-
-    private pointerOut(card: Card): void 
-    {   
-        card.isSelected = false;
-        this.moveTo(card, card.data.values.originIndex);
-        this.scene.add.tween({
-            targets: card,
-            x: card.data.values.originPosition.x,
-            y: card.data.values.originPosition.y,
-            angle: card.data.values.originAngle,
-            duration: 100,
-            delay: 0,
-            scaleX: card.data.values.originScale.x,
-            scaleY: card.data.values.originScale.y,
-            ease: 'Quad.easeInOut'
-        });
-    }
-
-    private pointerDown(card: Card): void 
-    {
-        if(!card.isSelected) card.isSelected = true;
-        else {
-            this.pointerOut(card);
-        }
-    }
 
     private pointerMove(card: Card, pointer: Phaser.Input.Pointer): void 
     {

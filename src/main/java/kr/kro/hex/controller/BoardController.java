@@ -36,7 +36,7 @@ public class BoardController {
     private final CategoryService categoryService;
 
     /**
-     * 게시글 목록 뷰를 반환
+     * 게시글 목록의 뷰를 반환합니다.
      *
      * @author Rubisco
      * @param model 모델
@@ -49,7 +49,7 @@ public class BoardController {
     }
 
     /**
-     * 게시글 뷰를 반환
+     * 게시글의 뷰를 반환합니다.
      *
      * @see Board
      * @author Rubisco
@@ -65,7 +65,7 @@ public class BoardController {
     }
 
     /**
-     * 게시글 작성 페이지 뷰를 반환
+     * 게시글 작성 페이지의 뷰를 반환합니다.
      *
      * @author Rubisco
      * @param model 모델
@@ -78,7 +78,7 @@ public class BoardController {
     }
 
     /**
-     * 게시글 수정 페이지 뷰를 반환
+     * 게시글 수정 페이지의 뷰를 반환합니다.
      *
      * @see Board
      * @param board 게시글
@@ -90,11 +90,11 @@ public class BoardController {
     public String updateBoardView(Board board, Model model) {
         model.addAttribute("board", boardService.getBoard(board));
         model.addAttribute("categoryList", categoryService.getCategoryList());
-        return "insertBoard";
+        return "/board/insertBoard";
     }
 
     /**
-     * 게시글 등록 요청을 처리
+     * 게시글 등록 요청을 처리합니다.
      *
      * @see Board
      * @author Rubisco
@@ -108,21 +108,21 @@ public class BoardController {
     }
 
     /**
-     * 게시글 수정 요청을 처리
+     * 게시글 수정 요청을 처리합니다.
      *
      * @see Board
      * @param board 게시글
      * @author Rubisco
-     * @return redirect:/board/{documentSrl}
+     * @return redirect:/board/{documentId}
      */
-    @PatchMapping(params = "documentSrl")
+    @PatchMapping(params = "documentId")
     public String updateBoard(Board board) {
         boardService.updateBoard(board);
         return "redirect:/board/"+board.getDocumentId();
     }
 
     /**
-     * 게시글 삭제 요청을 처리
+     * 게시글 삭제 요청을 처리합니다.
      *
      * @author Rubisco
      * @param board

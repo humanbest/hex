@@ -15,16 +15,16 @@
     <table id="board">
         <thead>
             <tr>
-                <th scope="col" class="seq">번호</th>
+                <th scope="col" class="category">분류</th>
                 <th scope="col" class="title">제목</th>
-                <th scope="col" class="writer">작성자</th>
-                <th scope="col" class="regdate">등록일</th>
-                <th scope="col" class="cnt">조회수</th>
+                <th scope="col" class="nickName">닉네임</th>
+                <th scope="col" class="createDate">등록일</th>
+                <th scope="col" class="readedCount">조회수</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="board : ${boardList}">
-                <td class="seq" th:text="${board.documentId}"></td>
+                <td class="category" th:text="${board.category.category}"></td>
                 <td class="title">
                     <a th:unless="${isSuggestBoard}" th:href="|/board/${board.documentId}|">
                         <span th:text="${board.title}"></span>
@@ -35,9 +35,9 @@
                     </a>
                     <a th:if="${isSuggestBoard}" th:href="|/board/${board.documentId}|" th:text="${board.title}"></a>
                 </td>
-                <td class="writer" th:text="${board.member.nickName}"></td>
-                <td class="regdate" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
-                <td class="cnt" th:text="${board.readedCount}"></td>
+                <td class="nickName" th:text="${board.member.nickName}"></td>
+                <td class="createDate" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
+                <td class="readedCount" th:text="${board.readedCount}"></td>
             </tr>
         </tbody>
     </table>
