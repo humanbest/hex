@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 import { CONFIG } from "../config";
-import Card from "../ui/CardUI";
+import Card from "../object/Card";
 import { CardData, HexGame } from "./Interface";
 
 export default class CardManager extends Phaser.GameObjects.Container 
@@ -113,10 +113,7 @@ export default class CardManager extends Phaser.GameObjects.Container
         if(cardData.hasOwnProperty(cardName)) {
             return {
                 name: cardData[cardName].name,
-                effect: {
-                    type: cardData[cardName].effect,
-                    value: 0
-                },
+                type: cardData[cardName].type,
                 ownership: cardData[cardName].ownership,
                 cost: cardData[cardName].cost
             }

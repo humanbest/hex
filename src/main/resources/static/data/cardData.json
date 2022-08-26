@@ -1,103 +1,103 @@
 {
     "adrenaline": {
         "name": "아드레날린",
-        "effect": 2,
+        "type": 2,
         "ownership": 1,
         "cost": 2
     },
     "bamboo_spear": {
         "name": "죽창",
-        "effect": 0,
+        "type": 0,
         "ownership": 1,
         "cost": 2
     },
     "chain_mail": {
         "name": "체인 메일",
-        "effect": 1,
+        "type": 1,
         "ownership": 1,
         "cost": 2
     },
     "dempsey_roll": {
         "name": "뎀프시롤",
-        "effect": 0,
+        "type": 0,
         "ownership": 1,
         "cost": -1
     },
     "fireball": {
         "name": "파이어볼",
-        "effect": 0,
+        "type": 0,
         "ownership": 2,
         "cost": 2
     },
     "fist": {
         "name": "붕권",
-        "effect": 0,
+        "type": 0,
         "ownership": 1,
         "cost": 2
     },
     "leather_armor": {
         "name": "가죽 자켓",
-        "effect": 1,
+        "type": 1,
         "ownership": 0,
         "cost": 1
     },
     "revolver": {
         "name": "리볼버 한 발",
-        "effect": 0,
+        "type": 0,
         "ownership": 1,
         "cost": 2
     },
     "shadow_partner": {
         "name": "쉐도우 파트너",
-        "effect": 0,
+        "type": 0,
         "ownership": 1,
         "cost": 2
     },
     "throwed_dice": {
         "name": "던져진 주사위",
-        "effect": 0,
+        "type": 0,
         "ownership": 1,
         "cost": 2
     },
     "blizzard": {
         "name": "블리자드",
-        "effect": 0,
+        "type": 0,
         "ownership": 2,
         "cost": 5
     },
     "mind_control": {
         "name": "정신공격",
-        "effect": 0,
+        "type": 0,
         "ownership": 2,
         "cost": 2
     },
     "fallen_coin": {
         "name": "떨어진 금화",
-        "effect": 2,
+        "type": 2,
         "ownership": 0,
         "cost": 0
     },
     "mana_release": {
         "name": "마력 방출",
-        "effect": 0,
+        "type": 0,
         "ownership": 2,
         "cost": 1
     },
     "magic_robe": {
         "name": "매직 로브",
-        "effect": 1,
+        "type": 1,
         "ownership": 2,
         "cost": 1
     },
     "normal_jewel": {
         "name": "평범한 보석",
-        "effect": 0,
+        "type": 0,
         "ownership": 2,
         "cost": 0
     },
     "unique_jewel": {
         "name": "희귀한 보석",
-        "effect": 0,
+        "type": 0,
         "ownership": 2,
         "cost": 0
     }

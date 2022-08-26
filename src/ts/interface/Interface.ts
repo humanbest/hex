@@ -4,15 +4,32 @@ import { Game } from "phaser"
 /**
  * 카드 속성
  */
-export enum CardAttribute {
-    ATTACK, DEFENSE, AT_BUFF, DF_BUFF, DEBUFF
+export enum CardType {
+    /** 공격 */
+    ATTACK,
+    
+    /** 방어 */
+    DEFENSE,
+    
+    /** 공격 버프 */
+    AT_BUFF,
+    
+    /** 방어 버프 */
+    DF_BUFF,
+    
+    /** 디버프 */
+    DEBUFF
 }
 
 /**
  * 카드 효과 인터페이스
  */
 export interface CardEffect {
-    type: CardAttribute;
+
+    /** 카드 타입 */
+    type: CardType;
+
+    /** 카드 효과 값 */
     value: number;
 }
 
@@ -20,9 +37,17 @@ export interface CardEffect {
  * 카드 데이터 인터페이스
  */
 export interface CardData {
+
+    /** 카드 이름 */
     name: string;
-    effect: Array<CardEffect> | CardEffect;
-    ownership: ChampionName | "공통";
+
+    /** 카드 타입 */
+    type: Array<CardType> | CardType;
+
+    /** 소지가능 챔피언 PK */
+    ownership: ChampionPrimaryKey;
+
+    /** 비용 */
     cost: number;
 }
 
@@ -30,14 +55,20 @@ export interface CardData {
  * 카드 세부 조정 인터페이스
  */
 export interface cardAdjust {
+
+    /** 카드 위치 오차값 */
     position: Vector,
+
+    /** 카드 크기 오차값 */
     scale: Vector
 }
 
 /**
  * 아이템 속성
  */
-export enum ItemAttribute {
+export enum ItemType {
+
+    /** HP 회복 */
     HP_RECOVERY
 }
 
@@ -45,8 +76,7 @@ export enum ItemAttribute {
  * 아이템 효과 인터페이스
  */
 export interface ItemEffect {
-    type: ItemAttribute;
-    value: number;
+    (player: Player, opponent: Player): void
 }
 
 /**
@@ -62,7 +92,14 @@ export interface Item {
  */
 export enum ChampionName {
     SMUGGLER = "스머글러",
-    PHANTOM = "팬텀"
+    PHANTOM = "팬텀",
+}
+
+/**
+ * 챔피언 PK
+ */
+enum ChampionPrimaryKey {
+    COMMON, SMUGGLER, PHANTOM
 }
 
 /**

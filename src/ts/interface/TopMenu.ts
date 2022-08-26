@@ -1,6 +1,6 @@
 import Phaser, { Scene } from "phaser";
 import { CONFIG } from "../config";
-import { HexGame } from "../interface/Interface";
+import { HexGame } from "./Interface";
 
 /**
  * 상단 메뉴를 나타냅니다.
