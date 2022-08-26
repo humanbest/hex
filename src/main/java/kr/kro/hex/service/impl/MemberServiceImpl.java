@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.kro.hex.domain.Member;
-import kr.kro.hex.persistance.BoardRepository;
 import kr.kro.hex.persistance.MemberRepository;
 import kr.kro.hex.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +25,6 @@ public class MemberServiceImpl implements MemberService {
 
     /** 회원 레포지토리 */
     private final MemberRepository memberRepo;
-
-    /** 게시판 레포지토리 */
-    private final BoardRepository boardRepo;
 
     /**
      * 회원 등록하기
