@@ -1,9 +1,10 @@
 import { Vector } from "matter";
+import { Scene } from "phaser";
 import { CONFIG } from "../config";
 import { cardAdjust, CardData, CardType } from "../interface/Interface";
 
 /**
- * 카드 오브젝트 입니다.
+ * 카드 오브젝트
  * 
  * @author Rubisco
  * @since 2022-08-25 오후 7:41
@@ -35,30 +36,32 @@ export default class Card extends Phaser.GameObjects.Container
     private static imageColor: number[] = [0x923a37, 0x252a37, 0x71915c, 0x71915c, 0x71915c];
     private static titleColor: number[] = [0xffbb9d, 0x9fdbe1, 0xc2d6b5, 0xc2d6b5, 0xc2d6b5];
     
-    private isSelected: boolean = false;
+    public isSelected: boolean = false;
 
-    constructor(parentContainer: Phaser.GameObjects.Container, cardName: string, cardData: CardData, isFront?: boolean) 
+    /**
+     * 카드 오브젝트를 생성합니다.
+     * 
+     * @param scene 씬
+     * @param cardName 카드 이름
+     * @param isFront 앞면 여부
+     * @returns 카드
+     */
+    constructor(scene: Scene, cardName: string, isFront?: boolean) 
     {
-        super(parentContainer.scene, 0, 0);
+        super(scene, 0, 0);
 
-        const scene = parentContainer.scene;
+        /** 카드 데이터 */
+        const cardData: CardData | undefined = this.getCardData(cardName);
 
-        this.setSize(Card.width, Card.height)
-            .setPosition(-Card.width, parentContainer.height / 2)
-            .setScale(Card.scale)
-            .setInteractive()
-            .on("pointerover", this.pointerOver)
-            .on("pointerout", this.pointerOut)
-            .on("pointerdown", this.pointerDown)
-            .on("pointermove", this.pointerMove);
-
-        if(isFront)
+        if(isFront && cardData)
         {
+            /** 카드 타입 */
             let type: CardType;
-
+            
             if(cardData.type instanceof Array) type = cardData.type[0];
             else type = cardData.type;
             
+            /** 카드 비용 텍스트 스타일 */
             const costValueTextStyle: Phaser.Types.GameObjects.Text.TextStyle = {
                 fontFamily: "neodgm",
                 fontSize: "20px",
@@ -67,6 +70,7 @@ export default class Card extends Phaser.GameObjects.Container
                 strokeThickness: 5
             }
 
+            /** 카드 이름 텍스트 스타일 */
             const cardNameTextStyle: Phaser.Types.GameObjects.Text.TextStyle = {
                 fontFamily: "neodgm",
                 fontSize: "18px",
@@ -75,20 +79,40 @@ export default class Card extends Phaser.GameObjects.Container
                 strokeThickness: 5
             }
 
+            /** 카드 오차 데이터 */
             const adjust = this.getCardAdjustData(cardName);
 
+            /** 카드 앞면 이미지 */
             const cardFrontImage = scene.add.image(0, 0, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.CARD_FRONT);
-            const cardColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.CARD_COLOR).setOrigin(0.5, 0).setTint(Card.imageColor[type]);
-            const titleColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.TITLE_COLOR).setOrigin(0.5, 0).setTint(Card.titleColor[type]);
-            const costBoxImage = scene.add.image(cardFrontImage.getTopLeft().x + 7, cardFrontImage.getTopLeft().y + 10, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.COST_BOX).setScale(0.8);
-            const costValueText = scene.add.text(costBoxImage.getCenter().x, costBoxImage.getCenter().y, cardData.cost == -1 ? "∞" : cardData.cost.toString(), costValueTextStyle).setOrigin(0.5);
-            const cardNameText = scene.add.text(-10, cardFrontImage.getTopCenter().y + 27, cardData.name, cardNameTextStyle).setOrigin(0.5);
-            const cardImageImage = scene.add.image(adjust.position.x, adjust.position.y, CONFIG.SPRITE.CARD_IMAGE, cardName).setScale(adjust.scale.x, adjust.scale.y);
             
-            this.add([cardFrontImage, cardColorImage, titleColorImage, costBoxImage, costValueText, cardNameText, cardImageImage]);
+            /** 카드 영역 색상 */
+            const cardColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.CARD_COLOR).setOrigin(0.5, 0).setTint(Card.imageColor[type]);
+            
+            /** 카드 이름 영역 색상 */
+            const titleColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.TITLE_COLOR).setOrigin(0.5, 0).setTint(Card.titleColor[type]);
+            
+            /** 카드 비용 영역 배경 이미지 */
+            const costBoxImage = scene.add.image(cardFrontImage.getTopLeft().x + 7, cardFrontImage.getTopLeft().y + 10, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.COST_BOX).setScale(0.8);
+            
+            /** 카드 비용 텍스트 */
+            const costValueText = scene.add.text(costBoxImage.getCenter().x, costBoxImage.getCenter().y, cardData.cost == -1 ? "∞" : cardData.cost.toString(), costValueTextStyle).setOrigin(0.5);
+            
+            /** 카드 이름 텍스트 */
+            const cardNameText = scene.add.text(-10, cardFrontImage.getTopCenter().y + 27, cardData.name, cardNameTextStyle).setOrigin(0.5);
+            
+            /** 카드 이미지 */
+            const cardImage = scene.add.image(adjust.position.x, adjust.position.y, CONFIG.SPRITE.CARD_IMAGE, cardName).setScale(adjust.scale.x, adjust.scale.y);
+            
+            this.add([cardFrontImage, cardColorImage, titleColorImage, costBoxImage, costValueText, cardNameText, cardImage]);
         }
     }
 
+    /**
+     * 카드의 오차 데이터를 반환합니다.
+     * 
+     * @param cardName 카드 이름
+     * @returns 카드 오차 데이터
+     */
     private getCardAdjustData(cardName: string): cardAdjust
     {
         const cartAdjustData = this.scene.game.cache.json.get(CONFIG.DATA.CARD_ADJUST);
@@ -96,65 +120,25 @@ export default class Card extends Phaser.GameObjects.Container
         return cartAdjustData.hasOwnProperty(cardName) ? cartAdjustData[cardName] as cardAdjust : { position: Card.imagePosition, scale: Card.imageScale };
     }
 
-    private pointerOver(): void
+    /**
+     * 카드 데이터를 반환합니다.
+     * 
+     * @param cardName 카드 이름
+     * @returns 카드 데이터
+     */
+    private getCardData(cardName: string): CardData | undefined 
     {
-        if(!this.isSelected)
-        {
-            this.parentContainer.bringToTop(this);
-            this.scene.add.tween({
-                targets: this,
-                y: this.parentContainer.height - Card.height / 2,
-                angle: 0,
-                duration: 100,
-                scale: 1,
-                ease: 'Quad.easeInOut'
-            });
+        const cardData: any = this.scene.game.cache.json.get(CONFIG.DATA.CARD_DATA);
+
+        if(cardData.hasOwnProperty(cardName)) {
+            return {
+                name: cardData[cardName].name,
+                type: cardData[cardName].type,
+                ownership: cardData[cardName].ownership,
+                cost: cardData[cardName].cost
+            }
         }
-    }
 
-    private pointerOut(): void 
-    {   
-        this.isSelected = false;
-        this.parentContainer.moveTo(this, this.data.values.originIndex);
-        this.scene.add.tween({
-            targets: this,
-            x: this.data.values.originPosition.x,
-            y: this.data.values.originPosition.y,
-            angle: this.data.values.originAngle,
-            duration: 100,
-            delay: 0,
-            scaleX: this.data.values.originScale.x,
-            scaleY: this.data.values.originScale.y,
-            ease: 'Quad.easeInOut'
-        });
-    }
-
-    private pointerDown(): void 
-    {
-        if(!this.isSelected) this.isSelected = true;
-        else {
-            this.pointerOut();
-        }
-    }
-
-    private pointerMove(pointer: Phaser.Input.Pointer ): void 
-    {
-        if(this.isSelected) this.setPosition(pointer.x, pointer.y);
-    }
-
-    public arrange(position: Vector, angle: number, doTween?: boolean): this 
-    {
-        if(doTween == undefined) doTween = false;
-
-        this.scene.add.tween({
-            targets: this,
-            x: position.x,
-            y: position.y,
-            angle: angle,
-            duration: 300,
-            delay: doTween ? (this.parentContainer.length - 1) * 300 : 0
-        });
-
-        return this;
+        return undefined;
     }
 }
