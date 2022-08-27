@@ -17,11 +17,11 @@ import lombok.RequiredArgsConstructor;
 /**
  * 게시판 서비스의 구현체
  *
+ * @since 2022-08-20 오후 11:04
+ * @version 20220823.0
+ * @author Rubisco
  * @see Board 게시판 Entity
  * @see BoardRepository 게시판 레포지토리
- * @author : Rubisco
- * @version : 1.0.0
- * @since : 2022-08-21 오후 11:04
  */
 
 @Service
@@ -36,6 +36,8 @@ public class BoardServiceImpl implements BoardService {
      * 게시글을 등록합니다.
      *
      * @param board 게시글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override
@@ -51,6 +53,8 @@ public class BoardServiceImpl implements BoardService {
      * 게시글 목록을 조회합니다.
      *
      * @return 게시글 목록
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override
@@ -63,6 +67,8 @@ public class BoardServiceImpl implements BoardService {
      *
      * @param board 게시글
      * @return 게시글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override
@@ -74,6 +80,8 @@ public class BoardServiceImpl implements BoardService {
      * 게시글을 수정합니다.
      *
      * @param board 게시글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override
@@ -86,6 +94,8 @@ public class BoardServiceImpl implements BoardService {
      * 게시글을 삭제합니다.
      *
      * @param board 게시글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override

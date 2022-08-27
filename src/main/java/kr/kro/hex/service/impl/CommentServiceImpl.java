@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 댓글 서비스 구현체
  * 
+ * @since 2022-08-20 오후 11:04
+ * @version 20220823.0
+ * @author Rubisco
  * @see Comments 댓글 Entity
  * @see CommentRepository 댓글 레포지토리
- * @author : Rubisco
- * @version : 1.0.0
- * @since : 2022-08-23 오전 11:23
  */
 
 @Service
@@ -34,8 +34,11 @@ public class CommentServiceImpl implements CommentService {
      * 댓글을 등록합니다.
      *
      * @param comments 댓글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
+    @Override
     public void insertComment(Comments comment) {
         comment.setBoard(Board.builder().documentId(comment.getDocumentId()).build())
             .setMember(Member.builder().memberId(comment.getMemberId()).build());
@@ -43,22 +46,28 @@ public class CommentServiceImpl implements CommentService {
         commentRepo.save(comment);
     };
 
-    /**
+        /**
      * 댓글 전체 목록을 조회합니다.
      *
-     * @author Rubisco
      * @return 전체 댓글 목록
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
+     * @author Rubisco
      */
+    @Override
     public List<Comments> getCommentList() {
         return commentRepo.findAll();
     };
-
+    
     /**
      * 댓글을 조회합니다.
      *
      * @param comment 댓글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
+    @Override
     public Comments getComment(Comments comment) {
         return commentRepo.findById(comment.getCommentId()).get();
     };
@@ -67,8 +76,11 @@ public class CommentServiceImpl implements CommentService {
      * 댓글을 수정합니다.
      *
      * @param comments 댓글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateComment(Comments comment) {
         commentRepo.save(getComment(comment).update(comment));
@@ -78,8 +90,11 @@ public class CommentServiceImpl implements CommentService {
      * 댓글을 삭제합니다.
      *
      * @param comment 댓글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteComment(Comments comment) {
         commentRepo.deleteById(comment.getCommentId());

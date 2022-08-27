@@ -6,11 +6,10 @@ import javax.persistence.Converter;
 /**
  * Boolean 타입을 YN 문자열로 전환
  *
- * @author : Rubisco
- * @version : 1.0.0
- * @since : 2022-08-21 오후 6:52
+ * @since 2022-08-21 오후 10:09
+ * @version 20220821.0
+ * @author Rubisco
  */
-
 @Converter
 public class BooleanToYNConverter implements AttributeConverter<Boolean, String> {
 

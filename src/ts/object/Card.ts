@@ -1,7 +1,7 @@
 import { Vector } from "matter";
 import { Scene } from "phaser";
 import { CONFIG } from "../config";
-import { cardAdjust, CardData, CardType } from "../interface/Interface";
+import { CardAdjust, CardData, CardType } from "../interface/Interface";
 
 /**
  * 카드 오브젝트
@@ -113,11 +113,11 @@ export default class Card extends Phaser.GameObjects.Container
      * @param cardName 카드 이름
      * @returns 카드 오차 데이터
      */
-    private getCardAdjustData(cardName: string): cardAdjust
+    private getCardAdjustData(cardName: string): CardAdjust
     {
         const cartAdjustData = this.scene.game.cache.json.get(CONFIG.DATA.CARD_ADJUST);
 
-        return cartAdjustData.hasOwnProperty(cardName) ? cartAdjustData[cardName] as cardAdjust : { position: Card.imagePosition, scale: Card.imageScale };
+        return cartAdjustData.hasOwnProperty(cardName) ? cartAdjustData[cardName] : { position: Card.imagePosition, scale: Card.imageScale };
     }
 
     /**

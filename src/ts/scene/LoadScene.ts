@@ -20,7 +20,6 @@ export class LoadScene extends Phaser.Scene
         sheet!.insertRule(styles, 0);
     }
 
-
     preload(): void 
     {
         this.load.atlas(CONFIG.SPRITE.TOP, "images/top.png", "images/top.json");

@@ -10,13 +10,11 @@ import kr.kro.hex.domain.Comments;
 import kr.kro.hex.service.CommentService;
 
 /**
- * @author : Rubisco
- * @version : 1.0.0
- * @package : practice.jpa.board.controller
- * @name : CommentController.java
- * @date : 2022-08-08 오후 6:24
- * @modifyed :
- * @description : 댓글 컨트롤러
+ * 댓글 컨트롤러
+ * 
+ * @since 2022-08-20 오후 6:24
+ * @version 20220823.0
+ * @@author Rubisco
  */
 @Controller
 @RequiredArgsConstructor
@@ -31,6 +29,8 @@ public class CommentController {
      *
      * @param comment
      * @return string
+     * @since 2022-08-23 오후 6:24
+     * @version 20220823.0
      * @author Rubisco
      */
     @PostMapping(params = "documentId")
@@ -44,9 +44,26 @@ public class CommentController {
      *
      * @param comment
      * @return string
+     * @since 2022-08-23 오후 6:24
+     * @version 20220823.0
      * @author Rubisco
      */
-    @DeleteMapping(params = "commentId")
+    @DeleteMapping(params = {"documentId", "commentId"})
+    public String updateComment(Comments comment) {
+        commentService.deleteComment(comment);
+        return "redirect:/board/"+ comment.getDocumentId();
+    }
+
+    /**
+     * 댓글 삭제 요청을 처리합니다.
+     *
+     * @param comment
+     * @return string
+     * @since 2022-08-23 오후 6:24
+     * @version 20220823.0
+     * @author Rubisco
+     */
+    @DeleteMapping(params = {"documentId", "commentId"})
     public String deleteComment(Comments comment) {
         commentService.deleteComment(comment);
         return "redirect:/board/"+ comment.getDocumentId();
