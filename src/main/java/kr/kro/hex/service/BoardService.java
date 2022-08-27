@@ -38,7 +38,7 @@ public interface BoardService {
     /**
      * documentId에 해당하는 게시글을 조회합니다.
      *
-     * @param boadr 게시글
+     * @param board 게시글
      * @return 게시글
      * @since 2022-08-20 오후 11:04
      * @version 20220823.0
