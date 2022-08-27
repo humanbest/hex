@@ -13,10 +13,10 @@
 <th:block layout:fragment="content">
     <header>
         <h3 th:text="${!isBoardExist} ? '새글 등록하기' : '글 수정하기'"></h3>
-        <a th:if="${isBoardExist}" class="btn back fl" th:href="|/board/${board.documentId}|"></a>
-        <a th:unless="${isBoardExist}" class="btn back fl" th:href="@{/board}"></a>
+        <a th:if="${isBoardExist}" class="btn back fl" th:href="|/community/${board.documentId}|"></a>
+        <a th:unless="${isBoardExist}" class="btn back fl" th:href="@{/community}"></a>
     </header>
-    <form id="write" th:object="${board}" action="/board" th:method="${isBoardExist} ? 'patch' : 'post'">
+    <form id="write" th:object="${board}" action="/community" th:method="${isBoardExist} ? 'patch' : 'post'">
         <input th:if="${isBoardExist}" type="hidden" name="documentId" th:value="*{documentId}">
         <input type="hidden" name="memberId" th:value="${isBoardExist} ? *{member.memberId} : 1">
         <div class="row">

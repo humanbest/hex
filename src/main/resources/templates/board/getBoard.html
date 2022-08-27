@@ -27,10 +27,10 @@
         </div>
         <article class="content" th:utext="${#strings.replace(board.content, nl, '&lt;br&gt;')}"></article>
         <div class="row between">
-            <a class="btn back fl" th:href="@{/board}"></a>
+            <a class="btn back fl" th:href="@{/community}"></a>
             <div class="row fr gap">
-                <a class="btn write fl" th:href="@{/board(documentId=${board.documentId}, act='update')}"></a>
-                <form class="fl" action="/board" th:method="delete">
+                <a class="btn write fl" th:href="@{/community(documentId=${board.documentId}, act='update')}"></a>
+                <form class="fl" action="/community" th:method="delete">
                     <input type="hidden" name="documentId" th:value="${board.documentId}">
                     <button class="btn delete" onclick="this.submit()"></button>
                 </form>

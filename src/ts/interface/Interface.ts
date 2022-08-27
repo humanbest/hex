@@ -54,7 +54,7 @@ export interface CardData {
 /**
  * 카드 세부 조정 인터페이스
  */
-export interface cardAdjust {
+export interface CardAdjust {
 
     /** 카드 위치 오차값 */
     position: Vector,

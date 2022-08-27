@@ -14,19 +14,18 @@ import kr.kro.hex.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 게시판 서비스 컨트롤러
+ * 게시판 컨트롤러
  *
+ * @since 2022-08-20 오후 6:24
+ * @version 20220823.0
+ * @@author Rubisco
  * @see BoardService 게시판 서비스
  * @see CategoryService 카테고리 서비스
- *
- * @author : Rubisco
- * @version : 1.0.0
- * @since : 2022-08-08 오후 6:24
  */
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(path = "/board")
+@RequestMapping(path = "/community")
 public class BoardController {
     
     /** 게시판 서비스 */
@@ -38,9 +37,11 @@ public class BoardController {
     /**
      * 게시글 목록의 뷰를 반환합니다.
      *
-     * @author Rubisco
      * @param model 모델
      * @return getBoardList.html
+     * @since 2022-08-20 오후 6:24
+     * @version 20220823.0
+     * @author Rubisco
      */
     @GetMapping()
     public String getBoardListView(Model model) {
@@ -51,11 +52,13 @@ public class BoardController {
     /**
      * 게시글의 뷰를 반환합니다.
      *
-     * @see Board
-     * @author Rubisco
      * @param board 게시글
      * @param model 모델
      * @return getBoard.html
+     * @since 2022-08-20 오후 6:24
+     * @version 20220823.0
+     * @author Rubisco
+     * @see Board
      */
     @GetMapping("/{documentId}")
     public String getBoardView(Board board, Model model) {
@@ -67,9 +70,11 @@ public class BoardController {
     /**
      * 게시글 작성 페이지의 뷰를 반환합니다.
      *
-     * @author Rubisco
      * @param model 모델
      * @return insertBoard.html
+     * @since 2022-08-20 오후 6:24
+     * @version 20220823.0
+     * @author Rubisco
      */
     @GetMapping(params = "act=write")
     public String insertBoardView(Model model) {
@@ -80,11 +85,13 @@ public class BoardController {
     /**
      * 게시글 수정 페이지의 뷰를 반환합니다.
      *
-     * @see Board
      * @param board 게시글
      * @param model 모델
      * @return insertBoard.html
+     * @since 2022-08-20 오후 6:24
+     * @version 20220823.0
      * @author Rubisco
+     * @see Board
      */
     @GetMapping(params = {"documentId","act=update"})
     public String updateBoardView(Board board, Model model) {
@@ -96,13 +103,15 @@ public class BoardController {
     /**
      * 게시글 등록 요청을 처리합니다.
      *
-     * @see Board
-     * @author Rubisco
      * @param board 게시글
      * @return redirect:/board
+     * @since 2022-08-20 오후 6:24
+     * @version 20220823.0
+     * @author Rubisco
+     * @see Board
      */
     @PostMapping()
-    public String insertBoardController(Board board) {
+    public String insertBoard(Board board) {
         boardService.insertBoard(board);
         return "redirect:/board";
     }
@@ -110,10 +119,12 @@ public class BoardController {
     /**
      * 게시글 수정 요청을 처리합니다.
      *
-     * @see Board
      * @param board 게시글
-     * @author Rubisco
      * @return redirect:/board/{documentId}
+     * @since 2022-08-20 오후 6:24
+     * @version 20220823.0
+     * @author Rubisco
+     * @see Board
      */
     @PatchMapping(params = "documentId")
     public String updateBoard(Board board) {
@@ -124,9 +135,11 @@ public class BoardController {
     /**
      * 게시글 삭제 요청을 처리합니다.
      *
-     * @author Rubisco
      * @param board
      * @return redirect:/board
+     * @since 2022-08-20 오후 6:24
+     * @version 20220823.0
+     * @author Rubisco
      */
     @DeleteMapping(params = "documentId")
     public String deleteBoard(Board board) {
