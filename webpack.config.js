@@ -1,5 +1,5 @@
 const path = require("path");
-// const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: "./src/ts/main.ts",
@@ -19,8 +19,8 @@ module.exports = {
     filename: "game.js",
     path: path.resolve(__dirname, "src/main/resources/static/js"),
   },
-  // optimization: {
-  //   minimize: true,
-  //   minimizer: [new TerserPlugin()],
-  // },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  },
 };
