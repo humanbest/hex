@@ -10,6 +10,6 @@
     "webpack-cli": "^4.10.0"
   },
   "scripts": {
-    "build": "webpack --mode=none"
+    "build": "webpack --mode=none -w"
   }
 }
