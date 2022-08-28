@@ -3,6 +3,7 @@ package kr.kro.hex.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,7 +15,7 @@ import kr.kro.hex.service.CommentService;
  * 
  * @since 2022-08-20 오후 6:24
  * @version 20220823.0
- * @@author Rubisco
+ * @author Rubisco
  */
 @Controller
 @RequiredArgsConstructor
@@ -27,10 +28,9 @@ public class CommentController {
     /**
      * 댓글 등록 요청을 처리합니다.
      *
-     * @param comment
+     * @param comment 댓글
      * @return string
      * @since 2022-08-23 오후 6:24
-     * @version 20220823.0
      * @author Rubisco
      */
     @PostMapping(params = "documentId")
@@ -40,27 +40,25 @@ public class CommentController {
     }
 
     /**
-     * 댓글 삭제 요청을 처리합니다.
+     * 댓글 수정 요청을 처리합니다.
      *
-     * @param comment
+     * @param comment 댓글
      * @return string
      * @since 2022-08-23 오후 6:24
-     * @version 20220823.0
      * @author Rubisco
      */
-    @DeleteMapping(params = {"documentId", "commentId"})
+    @PatchMapping(params = {"documentId", "commentId"})
     public String updateComment(Comments comment) {
-        commentService.deleteComment(comment);
+        commentService.updateComment(comment);
         return "redirect:/board/"+ comment.getDocumentId();
     }
 
     /**
      * 댓글 삭제 요청을 처리합니다.
      *
-     * @param comment
+     * @param comment 댓글
      * @return string
      * @since 2022-08-23 오후 6:24
-     * @version 20220823.0
      * @author Rubisco
      */
     @DeleteMapping(params = {"documentId", "commentId"})
