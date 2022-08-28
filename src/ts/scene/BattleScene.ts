@@ -64,6 +64,7 @@ export class BattleScene extends Phaser.Scene
             frameRate: 4,
             repeat: -1
         });
+        
         this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, "middle_boss").play("middle_boss").setScale(3);
         this.add.sprite(this.cameras.main.width - 200, this.cameras.main.height / 2, "enemy").play("enemy2").setScale(2);
     }
