@@ -27,6 +27,8 @@ export class LoadScene extends Phaser.Scene
         this.load.atlas(CONFIG.SPRITE.CARD_IMAGE, "images/card_image.png", "images/card_image.json");
         this.load.json(CONFIG.DATA.CARD_DATA, "data/cardData.json");
         this.load.json(CONFIG.DATA.CARD_ADJUST, "data/cardAdjust.json");
+        
+        
 
         let loadingBar = this.add.graphics({
             fillStyle: {
@@ -46,6 +48,6 @@ export class LoadScene extends Phaser.Scene
     create(): void 
     {
         (this.game as HexGame).player.dec.push(...Object.keys(this.game.cache.json.get(CONFIG.DATA.CARD_DATA)));
-        this.scene.start(CONFIG.SCENES.BATTLE);
+        this.scene.start(CONFIG.SCENES.CHRACTER_SELECT);
     }
 }

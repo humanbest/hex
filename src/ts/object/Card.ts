@@ -9,6 +9,7 @@ import { CardAdjust, CardData, CardType } from "../interface/Interface";
  * @author Rubisco
  * @since 2022-08-25 오후 7:41
  */
+
 export default class Card extends Phaser.GameObjects.Container 
 {
     /** 카드 넓이 */
