@@ -19,7 +19,6 @@ export default class TopMenu extends Phaser.GameObjects.Container {
      * @param y y좌표
      */
     constructor(scene: Scene, x: number, y: number) {
-
         const game = scene.game as HexGame;
 
         super(scene, x, y);

@@ -19,7 +19,8 @@ export const CONFIG = {
         CARD_FRONT: "card_front",
         CARD_COLOR: "card_color",
         TITLE_COLOR: "title_color",
-        COST_BOX: "cost_box"
+        COST_BOX: "cost_box",
+        Character_Select_Background: "MSC"
     },
     AUDIO: {
     },
