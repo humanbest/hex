@@ -20,7 +20,7 @@ export const CONFIG = {
         CARD_COLOR: "card_color",
         TITLE_COLOR: "title_color",
         COST_BOX: "cost_box",
-        Character_Select_Background: "MSC"
+        BATTLE_SCENE_BACKGROUND: "battle_scene_background"
     },
     AUDIO: {
     },

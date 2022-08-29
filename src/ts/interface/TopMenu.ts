@@ -110,6 +110,7 @@ export default class TopMenu extends Phaser.GameObjects.Container {
  * 상단 메뉴의 왼쪽 컨테이너 영역 입니다.
  * 
  * @author Rubisco
+ * @see TopMenu
  * @since 2022-08-25 오후 7:41
  */
 class Left extends Phaser.GameObjects.Container {
@@ -176,6 +177,7 @@ class Left extends Phaser.GameObjects.Container {
  * 상단 메뉴의 오른쪽 컨테이너 영역 입니다.
  * 
  * @author Rubisco
+ * @see TopMenu
  * @since 2022-08-25 오후 7:41
  */
 class Right extends Phaser.GameObjects.Container {

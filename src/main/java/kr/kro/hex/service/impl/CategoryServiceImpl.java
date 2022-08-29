@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * 카테고리 서비스의 구현체
  * 
+ * @since 2022-08-20 오후 11:04
+ * @version 20220823.0
+ * @author Rubisco
  * @see Category 카테고리 Entity
  * @see CategoryRepository 카테고리 레포지토리
- * @author : Rubisco
- * @version : 1.0.0
- * @since : 2022-08-21 오후 11:06
  */
 
 @Service
@@ -31,6 +31,8 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * 카테고리를 추가합니다.
      *
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override
@@ -43,6 +45,8 @@ public class CategoryServiceImpl implements CategoryService {
      *
      * @param category 카테고리
      * @return 카테고리 목록
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override
@@ -54,6 +58,8 @@ public class CategoryServiceImpl implements CategoryService {
      * 카테고리를 조회합니다.
      *
      * @param category 카테고리
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override
@@ -65,6 +71,8 @@ public class CategoryServiceImpl implements CategoryService {
      * 카테고리를 수정합니다.
      *
      * @param category 카테고리
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override
@@ -76,6 +84,8 @@ public class CategoryServiceImpl implements CategoryService {
      * 카테고리를 삭제합니다.
      *
      * @param categoryId 카테고리 ID
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
      * @author Rubisco
      */
     @Override

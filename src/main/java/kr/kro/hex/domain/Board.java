@@ -15,9 +15,9 @@ import java.util.List;
 /**
  * 게시판 도메인
  *
- * @since : 2022-08-20 오후 6:18
- * @author : Rubisco
- * @version : 1.0.0
+ * @since 2022-08-20 오후 2:09
+ * @version 20220822.0
+ * @author Rubisco
  */
 
 @Getter

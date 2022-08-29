@@ -15,9 +15,9 @@ import lombok.*;
 /**
  * 회원 도메인
  *
- * @author : Rubisco
- * @version : 1.0.0
- * @since : 2022-08-21 오후 9:52
+ * @since 2022-08-20 오후 2:09
+ * @version 20220822.0
+ * @author Rubisco
  */
 
 @Getter

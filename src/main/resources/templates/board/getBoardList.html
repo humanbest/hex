@@ -26,14 +26,14 @@
             <tr th:each="board : ${boardList}">
                 <td class="category" th:text="${board.category.category}"></td>
                 <td class="title">
-                    <a th:unless="${isSuggestBoard}" th:href="|/board/${board.documentId}|">
+                    <a th:unless="${isSuggestBoard}" th:href="|/community/${board.documentId}|">
                         <span th:text="${board.title}"></span>
                         <div class="summary">
                             <div th:with="content=${board.content}"
                                  th:text="${content.length < 20 ? content : content.substring(0,20)} + ${content.length > 20 ? '...' : ''}"></div>
                         </div>
                     </a>
-                    <a th:if="${isSuggestBoard}" th:href="|/board/${board.documentId}|" th:text="${board.title}"></a>
+                    <a th:if="${isSuggestBoard}" th:href="|/community/${board.documentId}|" th:text="${board.title}"></a>
                 </td>
                 <td class="nickName" th:text="${board.member.nickName}"></td>
                 <td class="createDate" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
@@ -43,7 +43,7 @@
     </table>
     <div th:unless="${isSuggestBoard}" class="btn_area clear">
         <div class="fr">
-            <a class="btn write" th:href="@{/board(act='write')}">쓰기</a>
+            <a class="btn write" th:href="@{/community(act='write')}">쓰기</a>
         </div>
     </div>
 </th:block>
