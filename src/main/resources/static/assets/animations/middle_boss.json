@@ -1,0 +1,799 @@
+{
+    "anims": [
+        {
+            "key": "angel-awakening",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-03",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-04",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-05",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-06",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-07",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-08",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-09",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-10",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-11",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "angel-awakening-12",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "crimson-courreges",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-03",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-04",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-05",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-06",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-07",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-08",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-09",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-10",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-11",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-12",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-13",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-14",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-15",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-16",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-17",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-18",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-19",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-20",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-21",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-25",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-26",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-27",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-32",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-33",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-34",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-39",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-40",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-41",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-46",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-47",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-48",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-49",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-50",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-51",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-52",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-53",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-54",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-59",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-60",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-61",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-62",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-63",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-64",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-65",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-66",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "crimson-courreges-67",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "stab",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-03",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-04",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-05",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-06",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-07",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-08",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "stab-09",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "pandemonium",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-03",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-04",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-05",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-06",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-07",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-08",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-09",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-10",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-11",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-12",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-13",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-14",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-19",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-20",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-21",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-26",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-27",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-28",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-29",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-30",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-31",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "pandemonium-32",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "hit",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "middle_boss",
+                    "frame": "hit-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "hit-01",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 4,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "middle_boss",
+                    "frame": "idle-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "idle-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "idle-02",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 4,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "burning",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-03",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-04",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-05",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-06",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-07",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-08",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-09",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-10",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-11",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-12",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "middle_boss",
+                    "frame": "burning-13",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        }
+    ],
+    "globalTimeScale": 1
+}

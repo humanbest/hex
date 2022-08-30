@@ -19,6 +19,7 @@ export default class TopMenu extends Phaser.GameObjects.Container {
      * @param y y좌표
      */
     constructor(scene: Scene, x: number, y: number) {
+
         const game = scene.game as HexGame;
 
         super(scene, x, y);
@@ -28,7 +29,7 @@ export default class TopMenu extends Phaser.GameObjects.Container {
             0, 0, 
             game.canvas.width, 
             CONFIG.CONTAINER.TOP_MENU.HEIGHT, 
-            CONFIG.SPRITE.TOP,
+            CONFIG.ATLAS.TOP,
             CONFIG.IMAGE.METAL
         ).setOrigin(0).setName(CONFIG.CONTAINER.TOP_MENU.BACKGROUND);
 
@@ -146,7 +147,7 @@ class Left extends Phaser.GameObjects.Container {
             }).setShadow(2, 2, '#000000', 2, true, true).setName('champName'),
 
             // HP 아이콘
-            scene.add.image(0, 0, CONFIG.SPRITE.TOP, CONFIG.IMAGE.HEART).setScale(0.75).setName(CONFIG.CONTAINER.TOP_MENU.LEFT.HP_IMAGE),
+            scene.add.image(0, 0, CONFIG.ATLAS.TOP, CONFIG.IMAGE.HEART).setScale(0.75).setName(CONFIG.CONTAINER.TOP_MENU.LEFT.HP_IMAGE),
 
             // HP 값
             scene.add.text(0, 0, `${game.player!.champion.hp}/${game.player!.champion.maxHp}`, {
@@ -157,7 +158,7 @@ class Left extends Phaser.GameObjects.Container {
             }).setShadow(2, 2, "#000000", 2, true, true).setName(CONFIG.CONTAINER.TOP_MENU.LEFT.HP_VALUE),
 
             // 코인 주머니 아이콘
-            scene.add.image(0, 0, CONFIG.SPRITE.TOP, CONFIG.IMAGE.COIN_BAG).setScale(0.75).setName(CONFIG.CONTAINER.TOP_MENU.LEFT.COIN_BAG_IMAGE),
+            scene.add.image(0, 0, CONFIG.ATLAS.TOP, CONFIG.IMAGE.COIN_BAG).setScale(0.75).setName(CONFIG.CONTAINER.TOP_MENU.LEFT.COIN_BAG_IMAGE),
 
             // 코인 값
             scene.add.text(0, 0, game.player!.inventory.coin.toString(), {
@@ -197,7 +198,7 @@ class Right extends Phaser.GameObjects.Container {
         this.add([
 
             // 시계 아이콘
-            scene.add.image(0, 0, CONFIG.SPRITE.TOP, CONFIG.IMAGE.CLOCK).setScale(0.75).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.CLOCK_IMAGE),
+            scene.add.image(0, 0, CONFIG.ATLAS.TOP, CONFIG.IMAGE.CLOCK).setScale(0.75).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.CLOCK_IMAGE),
 
             // 시간 텍스트
             scene.add.text(0, 0, "00:00", {
@@ -208,13 +209,13 @@ class Right extends Phaser.GameObjects.Container {
             }).setShadow(2, 2, "#000000", 2, true, true).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.CLOCK_VALUE),
 
             // 지도 아이콘
-            scene.add.image(0, 0, CONFIG.SPRITE.TOP, CONFIG.IMAGE.MAP).setScale(0.9).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.MAP_IMAGE),
+            scene.add.image(0, 0, CONFIG.ATLAS.TOP, CONFIG.IMAGE.MAP).setScale(0.9).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.MAP_IMAGE),
 
             // 덱 아이콘
-            scene.add.image(0, 0, CONFIG.SPRITE.TOP, CONFIG.IMAGE.DEC).setScale(1.05).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.DEC_IMAGE),
+            scene.add.image(0, 0, CONFIG.ATLAS.TOP, CONFIG.IMAGE.DEC).setScale(1.05).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.DEC_IMAGE),
 
             // 설정 아이콘
-            scene.add.image(0, 0, CONFIG.SPRITE.TOP, CONFIG.IMAGE.GEAR).setScale(0.9).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.GEAR_IMAGE),
+            scene.add.image(0, 0, CONFIG.ATLAS.TOP, CONFIG.IMAGE.GEAR).setScale(0.9).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.GEAR_IMAGE),
 
         ]).setName(CONFIG.CONTAINER.TOP_MENU.RIGHT.NAME);
 

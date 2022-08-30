@@ -3,7 +3,6 @@ import { CONFIG } from "./config"
 import { HexGame } from "./interface/Interface";
 import { LoadScene } from "./scene/LoadScene";
 import { BattleScene } from "./scene/BattleScene";
-import CharacterScene from './scene/CharacterScene';
 
 (function() {
     const wf = document.createElement('script');
@@ -32,7 +31,7 @@ window.WebFontConfig = {
                 }
             },
             pixelArt: true,
-            scene: [LoadScene, BattleScene, CharacterScene],
+            scene: [LoadScene, BattleScene],
         }) as HexGame;
         game.player = {
             nickName: CONFIG.PLAYER.NICK_NAME,
