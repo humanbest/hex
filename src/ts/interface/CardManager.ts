@@ -12,16 +12,14 @@ import { HexGame } from "./Interface";
 export default class CardManager extends Phaser.GameObjects.Container 
 {
     /** 초기 카드 수 */
-    private static initCardCount: number = 5;
+    public static initCardCount: number = 5;
     
     /** 컨테이너 최대 배율*/
     private static maxScale: number = 0.6;
 
-    /** 나머지 카드 */
-    private remainCards: Array<string> = [];
-    
-    /** 선택된 카드 */
-    private selectedCards: Array<string> = [];
+    private _remainCards: Array<string> = new Array<string>();
+
+    private _selectedCards: Array<string> = new Array<string>();
     
     // private usedCards: Array<string> = [];
 
@@ -35,20 +33,52 @@ export default class CardManager extends Phaser.GameObjects.Container
     constructor(scene: Scene, x: number, y: number)
     {
         super(scene, x, y);
-        scene.add.existing(this);
-        this.init();
-    }
 
-    /** 
-     * 카드 관리자 초기화
-     */
-    private init(): void 
-    {
         this.setSize(this.scene.game.canvas.width * CardManager.maxScale, this.scene.game.canvas.height - CONFIG.CONTAINER.TOP_MENU.HEIGHT)
-        .setPosition(0, CONFIG.CONTAINER.TOP_MENU.HEIGHT);
+            .setPosition(0, CONFIG.CONTAINER.TOP_MENU.HEIGHT);
 
-        for(let i = 0; i < CardManager.initCardCount; i++) this.addCard();
+        scene.add.existing(this);
     }
+
+    /**
+     * 선택된 카드의 이름 목록을 반환합니다.
+     * 
+     * @return 선택된 카드 이름 목록
+     */
+    public get selectedCards(): Array<string>
+    {
+        return this._selectedCards;
+    }
+
+    /**
+     * 선택된 카드의 이름 목록을 설정합니다.
+     * 
+     * @param selectedCards 선택된 카드 이름 목록
+     */
+    private set selectedCards(selectedCards: Array<string>)
+    {
+        this._selectedCards = selectedCards;
+    }
+
+    /**
+     * 남아있는 카드의 이름 목록을 반환합니다.
+     * 
+     * @return 남아있는 카드 이름 목록
+     */
+     public get remainCards(): Array<string>
+     {
+         return this._remainCards;
+     }
+ 
+     /**
+      * 남아있는 카드의 이름 목록을 설정합니다.
+      * 
+      * @param remainCards 남아있는 카드 이름 목록
+      */
+     private set remainCards(remainCards: Array<string>)
+     {
+         this._remainCards = remainCards;
+     }
 
     /**
      * 카드를 한 장 추가합니다.
@@ -56,15 +86,16 @@ export default class CardManager extends Phaser.GameObjects.Container
      * @param doTween 애니메이션 효과 여부
      * @returns 카드 관리 컨테이너
      */
-    public addCard(doTween?: boolean): this 
+    public addCard(doTween?: boolean, isFront?: boolean): this 
     {
-        if(doTween == undefined) doTween = true;
+        if(doTween === undefined) doTween = true;
+        if(isFront === undefined) isFront = true;
 
         this.shuffle(this.remainCards);
 
         const cardName = this.remainCards.pop() as string;
-        
-        const card = new Card(this.scene, cardName, true)
+
+        const card = new Card(this.scene, cardName, isFront)
                 .setSize(Card.width, Card.height)
                 .setPosition(-Card.width, this.height / 2)
                 .setScale(Card.scale)
@@ -84,13 +115,13 @@ export default class CardManager extends Phaser.GameObjects.Container
     /**
      * 카드를 섞습니다.
      * 
-     * @param arr 카드 배열
+     * @param remainCards 남아있는 카드 이름 목록
      * @returns 카드 관리 컨테이너
      */
-    public shuffle(arr?: Array<string>): this 
+    public shuffle(remainCards?: Array<string>): this 
     {
-        if(!arr?.length) arr = (this.scene.game as HexGame).player.dec.slice();
-        this.remainCards = Phaser.Utils.Array.Shuffle(arr);
+        if(!remainCards?.length) remainCards = (this.scene.game as HexGame).player.dec.slice();
+        this.remainCards = Phaser.Utils.Array.Shuffle(remainCards);
         
         return this;
     }
@@ -101,7 +132,7 @@ export default class CardManager extends Phaser.GameObjects.Container
      * @param doTween 애니메이션 효과 여부
      * @returns 카드 관리 컨테이너
      */
-    private arangeCard(doTween?: boolean): this 
+    public arangeCard(doTween?: boolean): this 
     {
         if(doTween == undefined) doTween = true;
 
@@ -126,9 +157,7 @@ export default class CardManager extends Phaser.GameObjects.Container
         const endPos: number = this.scene.game.canvas.width - startPos;
         const radius: number = (endPos - startPos) / 8;
         
-        this.getAll().forEach( (_card, idx) => {
-
-            const card: Card = _card as Card;
+        this.getAll().forEach( (card, idx) => {
 
             const xPos: number = Phaser.Math.Linear(startPos, endPos, lerps[idx]);
             let yPos: number = this.height - 50;
@@ -143,11 +172,10 @@ export default class CardManager extends Phaser.GameObjects.Container
             card.setData({
                 originIndex: idx,
                 originPosition: new Phaser.Math.Vector2(xPos, yPos),
-                originScale: new Phaser.Math.Vector2(card.scaleX, card.scaleY),
                 originAngle: angle
             })
             
-            this.scene.add.tween({
+            const tween = this.scene.add.tween({
                 targets: card,
                 x: xPos,
                 y: yPos,
@@ -155,6 +183,10 @@ export default class CardManager extends Phaser.GameObjects.Container
                 duration: 300,
                 delay: doTween ? count * 300 : 0
             });
+
+            if (doTween && count === CardManager.initCardCount) {
+                tween.on("complete", () => this.scene.input.keyboard.on('keydown-SPACE', () => this.addCard(false)));
+            }
         });
 
         return this;
@@ -197,8 +229,8 @@ export default class CardManager extends Phaser.GameObjects.Container
             angle: card.data.values.originAngle,
             duration: 100,
             delay: 0,
-            scaleX: card.data.values.originScale.x,
-            scaleY: card.data.values.originScale.y,
+            scaleX: Card.scale,
+            scaleY: Card.scale,
             ease: 'Quad.easeInOut'
         });
     }

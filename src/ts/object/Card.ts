@@ -37,6 +37,7 @@ export default class Card extends Phaser.GameObjects.Container
     private static titleColor: number[] = [0xffbb9d, 0x9fdbe1, 0xc2d6b5, 0xc2d6b5, 0xc2d6b5];
     
     public isSelected: boolean = false;
+    public isFront: boolean = true;
 
     /**
      * 카드 오브젝트를 생성합니다.
@@ -46,14 +47,18 @@ export default class Card extends Phaser.GameObjects.Container
      * @param isFront 앞면 여부
      * @returns 카드
      */
-    constructor(scene: Scene, cardName: string, isFront?: boolean) 
+    constructor(scene: Scene, cardName?: string, isFront?: boolean) 
     {
         super(scene, 0, 0);
+
+        if(isFront === undefined) isFront = false;
+
+        this.isFront = isFront;
 
         /** 카드 데이터 */
         const cardData: CardData | undefined = this.getCardData(cardName);
 
-        if(isFront && cardData)
+        if(isFront && cardName && cardData)
         {
             /** 카드 타입 */
             let type: CardType;
@@ -83,16 +88,16 @@ export default class Card extends Phaser.GameObjects.Container
             const adjust = this.getCardAdjustData(cardName);
 
             /** 카드 앞면 이미지 */
-            const cardFrontImage = scene.add.image(0, 0, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.CARD_FRONT);
+            const cardFrontImage = scene.add.image(0, 0, CONFIG.ATLAS.CARD_BASE, CONFIG.IMAGE.CARD_FRONT);
             
             /** 카드 영역 색상 */
-            const cardColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.CARD_COLOR).setOrigin(0.5, 0).setTint(Card.imageColor[type]);
+            const cardColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.ATLAS.CARD_BASE, CONFIG.IMAGE.CARD_COLOR).setOrigin(0.5, 0).setTint(Card.imageColor[type]);
             
             /** 카드 이름 영역 색상 */
-            const titleColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.TITLE_COLOR).setOrigin(0.5, 0).setTint(Card.titleColor[type]);
+            const titleColorImage = scene.add.image(0, cardFrontImage.getTopCenter().y, CONFIG.ATLAS.CARD_BASE, CONFIG.IMAGE.TITLE_COLOR).setOrigin(0.5, 0).setTint(Card.titleColor[type]);
             
             /** 카드 비용 영역 배경 이미지 */
-            const costBoxImage = scene.add.image(cardFrontImage.getTopLeft().x + 7, cardFrontImage.getTopLeft().y + 10, CONFIG.SPRITE.CARD_BASE, CONFIG.IMAGE.COST_BOX).setScale(0.8);
+            const costBoxImage = scene.add.image(cardFrontImage.getTopLeft().x + 7, cardFrontImage.getTopLeft().y + 10, CONFIG.ATLAS.CARD_BASE, CONFIG.IMAGE.COST_BOX).setScale(0.8);
             
             /** 카드 비용 텍스트 */
             const costValueText = scene.add.text(costBoxImage.getCenter().x, costBoxImage.getCenter().y, cardData.cost == -1 ? "∞" : cardData.cost.toString(), costValueTextStyle).setOrigin(0.5);
@@ -101,9 +106,13 @@ export default class Card extends Phaser.GameObjects.Container
             const cardNameText = scene.add.text(-10, cardFrontImage.getTopCenter().y + 27, cardData.name, cardNameTextStyle).setOrigin(0.5);
             
             /** 카드 이미지 */
-            const cardImage = scene.add.image(adjust.position.x, adjust.position.y, CONFIG.SPRITE.CARD_IMAGE, cardName).setScale(adjust.scale.x, adjust.scale.y);
+            const cardImage = scene.add.image(adjust.position.x, adjust.position.y, CONFIG.ATLAS.CARD_IMAGE, cardName).setScale(adjust.scale.x, adjust.scale.y);
             
             this.add([cardFrontImage, cardColorImage, titleColorImage, costBoxImage, costValueText, cardNameText, cardImage]);
+        }
+        else
+        {
+            this.add(scene.add.image(0, 0, CONFIG.IMAGE.CARD_BACK));
         }
     }
 
@@ -126,11 +135,11 @@ export default class Card extends Phaser.GameObjects.Container
      * @param cardName 카드 이름
      * @returns 카드 데이터
      */
-    private getCardData(cardName: string): CardData | undefined 
+    private getCardData(cardName?: string): CardData | undefined 
     {
         const cardData: any = this.scene.game.cache.json.get(CONFIG.DATA.CARD_DATA);
 
-        if(cardData.hasOwnProperty(cardName)) {
+        if(cardName && cardData.hasOwnProperty(cardName)) {
             return {
                 name: cardData[cardName].name,
                 type: cardData[cardName].type,

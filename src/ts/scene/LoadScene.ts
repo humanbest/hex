@@ -22,11 +22,12 @@ export class LoadScene extends Phaser.Scene
 
     preload(): void 
     {
-        this.load.atlas(CONFIG.SPRITE.TOP, "images/top.png", "images/top.json");
-        this.load.atlas(CONFIG.SPRITE.CARD_BASE, "images/card_base.png", "images/card_base.json");
-        this.load.atlas(CONFIG.SPRITE.CARD_IMAGE, "images/card_image.png", "images/card_image.json");
-        this.load.json(CONFIG.DATA.CARD_DATA, "data/cardData.json");
-        this.load.json(CONFIG.DATA.CARD_ADJUST, "data/cardAdjust.json");
+        this.load.atlas(CONFIG.ATLAS.TOP, "assets/atlas/top.png", "assets/atlas/top.json");
+        this.load.atlas(CONFIG.ATLAS.CARD_BASE, "assets/atlas/card_base.png", "assets/atlas/card_base.json");
+        this.load.atlas(CONFIG.ATLAS.CARD_IMAGE, "assets/atlas/card_image.png", "assets/atlas/card_image.json");
+        this.load.image(CONFIG.IMAGE.CARD_BACK, "assets/images/card_back.png");
+        this.load.json(CONFIG.DATA.CARD_DATA, "assets/data/cardData.json");
+        this.load.json(CONFIG.DATA.CARD_ADJUST, "assets/data/cardAdjust.json");
 
         let loadingBar = this.add.graphics({
             fillStyle: {

@@ -17,14 +17,16 @@ export const CONFIG = {
         MAP: "map",
         METAL: "metal_texture",
         CARD_FRONT: "card_front",
+        CARD_BACK: "card_back",
         CARD_COLOR: "card_color",
         TITLE_COLOR: "title_color",
         COST_BOX: "cost_box",
-        BATTLE_SCENE_BACKGROUND: "battle_scene_background"
+        BATTLE_SCENE_BACKGROUND: "battle_scene_background",
+        REMAIN_CARDS: "remain_cards"
     },
     AUDIO: {
     },
-    SPRITE: {
+    ATLAS: {
         TOP: "top",
         CARD_BASE: "card_base",
         CARD_IMAGE: "card_image"
@@ -55,6 +57,9 @@ export const CONFIG = {
                 GEAR_IMAGE: "gearImage",
                 CARD_COUNT: "cardCount"
             }
+        },
+        CARD_MANAGER: {
+            NAME: "cardManager"
         }
     },
     PLAYER: {

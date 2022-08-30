@@ -17,9 +17,9 @@ export class BattleScene extends Phaser.Scene
 
     preload(): void
     {
-        this.load.image(CONFIG.IMAGE.BATTLE_SCENE_BACKGROUND, "images/battleScene/background.png")
-        this.load.atlas("enemy01", "sprite/enemy01.png", "sprite/enemy01.json");
-        this.load.atlas("middle_boss_idle", "sprite/middle_boss_idle.png", "sprite/middle_boss_idle.json");
+        this.load.image(CONFIG.IMAGE.BATTLE_SCENE_BACKGROUND, "assets/images/battleScene/background.png");
+        this.load.animation('middle_boss_data', 'assets/animations/middle_boss.json');
+        this.load.atlas("middle_boss", "assets/atlas/middle_boss.png", "assets/atlas/middle_boss.json");
 
         this.input.keyboard.on('keydown-F',  () => {
             if (this.scale.isFullscreen) {
@@ -37,34 +37,23 @@ export class BattleScene extends Phaser.Scene
         background.setScale(this.cameras.main.width / background.width, this.cameras.main.height / background.height).setScrollFactor(0);
 
         /** 상단 메뉴 */
-        new TopMenu(this, 0, 0);
+        new TopMenu(this, 0, 0).setDepth(10);
         
 
         /** 카드 관리 컨테이너 */
-        const cardManager = new CardManager(this, 0, 0);
-        this.input.keyboard.on('keydown-SPACE',  () => cardManager.addCard(false));
+        const cardManager = new CardManager(this, 0, 0).setDepth(9).setName(CONFIG.CONTAINER.CARD_MANAGER.NAME);
 
-        this.anims.create({
-            key: "enemy",
-            frames: this.anims.generateFrameNames("enemy01", {prefix: 'enemy-001-stay-', end: 3, zeroPad: 2 }),
-            frameRate: 4,
-            repeat: -1
-        });
+        for(let i = 0; i < CardManager.initCardCount; i++) cardManager.addCard();
 
-        this.anims.create({
-            key: "enemy2",
-            frames: this.anims.generateFrameNames("enemy01", {prefix: 'enemy-002-stay-', end: 3, zeroPad: 2 }),
-            frameRate: 4,
-            repeat: -1
-        });
+        const middleBoss = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, "middle_boss");
+        const skills = middleBoss.anims.animationManager["anims"].keys();
 
-        this.anims.create({
-            key: "middle_boss",
-            frames: this.anims.generateFrameNames("middle_boss_idle"),
-            frameRate: 4,
-            repeat: -1
-        });
-        this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, "middle_boss").play("middle_boss").setScale(3);
-        this.add.sprite(this.cameras.main.width - 200, this.cameras.main.height / 2, "enemy").play("enemy2").setScale(2);
+        let c = 0;
+        this.input.keyboard.on('keydown-A', () => {
+            if(++c === skills.length) c = 0;
+            middleBoss.play(skills[c]);
+        })
+
+        middleBoss.play("idle").setScale(3);
     }
 }
