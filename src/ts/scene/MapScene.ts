@@ -53,12 +53,6 @@ export class MapScene extends Phaser.Scene
         this.cameras.main.ignore(mainMap);
         UICam.ignore([topMenu, mapBackground]);
         UICam.setBounds(-115, 200, 1300, 1500);
-
-        // this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
-        // const UICam = this.cameras.add(0, 0, 1920, 1080);
-        // UICam.ignore(mainMap);
-        // this.cameras.main.ignore([topMenu, mapBackground]);
-        // this.cameras.main.setBounds(-115, 200, 1300, 1500);
     }
 
     update (_time: number, delta: number) 
