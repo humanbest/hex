@@ -22,6 +22,8 @@ export const CONFIG = {
         TITLE_COLOR: "title_color",
         COST_BOX: "cost_box",
         BATTLE_SCENE_BACKGROUND: "battle_scene_background",
+        MAIN_MAP: "main_map",
+        MAP_BACKGROUND: "map_background",
         REMAIN_CARDS: "remain_cards"
     },
     AUDIO: {
