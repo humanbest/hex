@@ -47,6 +47,6 @@ export class LoadScene extends Phaser.Scene
     create(): void 
     {
         (this.game as HexGame).player.dec.push(...Object.keys(this.game.cache.json.get(CONFIG.DATA.CARD_DATA)));
-        this.scene.start(CONFIG.SCENES.BATTLE);
+        this.scene.start(CONFIG.SCENES.MAP);
     }
 }
