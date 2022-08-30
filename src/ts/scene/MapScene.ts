@@ -34,8 +34,10 @@ export class MapScene extends Phaser.Scene
         /** 카메라 설정 */
         const cursors = this.input.keyboard.createCursorKeys();
 
+        const UICam = this.cameras.add(0, CONFIG.CONTAINER.TOP_MENU.HEIGHT, this.game.canvas.width, this.game.canvas.height - CONFIG.CONTAINER.TOP_MENU.HEIGHT);
+
         const controlConfig = {
-            camera: this.cameras.main,
+            camera: UICam,
             left: cursors.right,
             right: cursors.left,
             up: cursors.down,
@@ -48,10 +50,15 @@ export class MapScene extends Phaser.Scene
         };
 
         this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
-        const UICam = this.cameras.add(0, 0, 1920, 1080);
-        UICam.ignore(mainMap);
-        this.cameras.main.ignore([topMenu, mapBackground]);
-        this.cameras.main.setBounds(-115, 200, 1300, 1500);
+        this.cameras.main.ignore(mainMap);
+        UICam.ignore([topMenu, mapBackground]);
+        UICam.setBounds(-115, 200, 1300, 1500);
+
+        // this.controls = new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig);
+        // const UICam = this.cameras.add(0, 0, 1920, 1080);
+        // UICam.ignore(mainMap);
+        // this.cameras.main.ignore([topMenu, mapBackground]);
+        // this.cameras.main.setBounds(-115, 200, 1300, 1500);
     }
 
     update (_time: number, delta: number) 
