@@ -15,25 +15,24 @@ export default class CharacterScene extends Scene
                 this.scale.startFullscreen();
             }
         })
-        this.load.image('SBGI', '/assets/images/characterScene/SBGI.png');
-        this.load.image('Particle1', '/assets/images/characterScene/Particle1.png');
-        this.load.image('Particle2', '/assets/images/characterScene/Particle2.png');
-        this.load.image('Particle3', '/assets/images/characterScene/Particle3.png');
+        this.load.image('SBGI', 'assets/images/characterScene/SBGI.png');
+        this.load.image('Particle1', 'assets/images/characterScene/Particle1.png');
+        this.load.image('Particle2', 'assets/images/characterScene/Particle2.png');
+        this.load.image('Particle3', 'assets/images/characterScene/Particle3.png');
 
 
-        this.load.image('smugglerSel', '/assets/images/characterScene/smugglerSel.png');
-        this.load.image('phantomSel', '/assets/images/characterScene/phantomSel.png');
-        this.load.image('WarwickSel', '/assets/images/characterScene/WarwickSel.png');
-        this.load.image('question', '/assets/images/characterScene/question.png');
-        this.load.image('LeftSel', '/assets/images/characterScene/LeftSel.png');
-        this.load.image('RightSel', '/assets/images/characterScene/RightSel.png');
+        this.load.image('smugglerSel', 'assets/images/characterScene/smugglerSel.png');
+        this.load.image('phantomSel', 'assets/images/characterScene/phantomSel.png');
+        this.load.image('WarwickSel', 'assets/images/characterScene/WarwickSel.png');
+        this.load.image('question', 'assets/images/characterScene/question.png');
+        this.load.image('LeftSel', 'assets/images/characterScene/LeftSel.png');
+        this.load.image('RightSel', 'assets/images/characterScene/RightSel.png');
 
-        this.load.image('smugglerBig', '/assets/images/characterScene/smugglerBig2.png')
-        this.load.image('warwick', '/assets/images/characterScene/warwolfBig.png')
-        this.load.image('phantom', '/assets/images/characterScene/phantomBig.png')
+        this.load.image('smugglerBig', 'assets/images/characterScene/smugglerBig2.png')
+        this.load.image('warwick', 'assets/images/characterScene/warwolfBig.png')
+        this.load.image('phantom', 'assets/images/characterScene/phantomBig.png')
     }
     
-
     create(): void
     {
         this.add.image(300, 400, 'SBGI').setDepth(0);
