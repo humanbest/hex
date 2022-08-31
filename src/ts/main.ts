@@ -1,8 +1,6 @@
-import Phaser from 'phaser';
-import { CONFIG } from "./config"
-import { HexGame } from "./interface/Interface";
-import { LoadScene } from "./scene/LoadScene";
-import { BattleScene } from "./scene/BattleScene";
+import { Game, defaultPlayer } from "./interface/Hex";
+import LoadScene from "./scene/LoadScene";
+import BattleScene from "./scene/BattleScene";
 
 (function() {
     const wf = document.createElement('script');
@@ -19,9 +17,8 @@ window.WebFontConfig = {
         families: ['Noto Sans KR'],
     },
     active() {
-        const game = new Phaser.Game({
+        new Game({
             type: Phaser.AUTO,
-
             scale: {
                 mode: Phaser.Scale.FIT,
                 autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
@@ -32,21 +29,7 @@ window.WebFontConfig = {
             },
             pixelArt: true,
             scene: [LoadScene, BattleScene],
-        }) as HexGame;
-        game.player = {
-            nickName: CONFIG.PLAYER.NICK_NAME,
-            champion: {
-                name: CONFIG.PLAYER.CHAMP.NAME,
-                hp: CONFIG.PLAYER.CHAMP.HP,
-                maxHp: CONFIG.PLAYER.CHAMP.MAX_HP,
-                defense: CONFIG.PLAYER.CHAMP.DEFENSE,
-                cost: CONFIG.PLAYER.CHAMP.COST
-            },
-            dec: [],
-            inventory: {
-                coin: CONFIG.PLAYER.INVENTORY.COIN,
-                items: CONFIG.PLAYER.INVENTORY.ITEM
-            }
-        }
+            player: defaultPlayer
+        });
     }
 };

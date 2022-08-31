@@ -1,5 +1,39 @@
 import { Vector } from "matter";
-import { Game } from "phaser"
+import Phaser from "phaser";
+
+/**
+ * HEX 게임의 메인 컨트롤러 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-08-30 오후 7:41
+ */
+export class Game extends Phaser.Game {
+
+    readonly player?: Player;
+
+    constructor(GameConfig?: GameConfig) {
+        super(GameConfig);
+        this.player = GameConfig?.player;
+    }
+}
+
+/**
+ * HEX 게임의 씬 오브젝트 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-08-30 오후 7:41
+ */
+export abstract class Scene extends Phaser.Scene {
+    
+    game: Game;
+
+    constructor(config: string | Phaser.Types.Scenes.SettingsConfig) {
+        super(config);
+        this.game = super.game;
+    };
+}
+
+export type GameConfig = Phaser.Types.Core.GameConfig & {player?: Player}
 
 /**
  * 카드 속성
@@ -131,9 +165,18 @@ export interface Player {
     dec: Array<string>;
 }
 
-/**
- * HEX 게임 인터페이스
- */
-export interface HexGame extends Game {
-    player: Player;
+export const defaultPlayer: Player = {
+    nickName:  "루비스코",
+    champion: {
+        name: ChampionName.PHANTOM,
+        hp: 80,
+        maxHp: 80,
+        defense: 0,
+        cost: 3
+    },
+    dec: [],
+    inventory: {
+        coin: 100,
+        items: []
+    }
 }

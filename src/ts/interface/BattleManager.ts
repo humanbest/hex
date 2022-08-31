@@ -1,21 +1,26 @@
-import { Scene } from "phaser";
-import { CONFIG } from "../config";
 import Card from "../object/Card";
-import { HexGame } from "./Interface";
+import { Game, Scene } from "./Hex";
+import TopMenu from "./TopMenu";
 
 /**
- * 카드 관리 컨테이너
+ * 배틀 관리 컨테이너
  * 
  * @author Rubisco
  * @since 2022-08-26 오후 5:02
  */
-export default class CardManager extends Phaser.GameObjects.Container 
+export default class BattleManager extends Phaser.GameObjects.Container
 {
     /** 초기 카드 수 */
-    public static initCardCount: number = 5;
+    public static readonly initCardCount: number = 5;
+
+    /** 카드 배열 최대 각도 */
+    static readonly MAX_ANGLE: number = 30;
+
+    /** 카드 크기 */
+    static readonly SCALE: number = 0.5;
     
     /** 컨테이너 최대 배율*/
-    private static maxScale: number = 0.6;
+    private static readonly maxScale: number = 0.6;
 
     private _remainCards: Array<string> = new Array<string>();
 
@@ -24,7 +29,7 @@ export default class CardManager extends Phaser.GameObjects.Container
     // private usedCards: Array<string> = [];
 
     /**
-     * 카드 관리 컨테이너를 생성합니다.
+     * 배틀 관리 컨테이너를 생성합니다.
      * 
      * @param scene 씬
      * @param x x좌표
@@ -34,8 +39,8 @@ export default class CardManager extends Phaser.GameObjects.Container
     {
         super(scene, x, y);
 
-        this.setSize(this.scene.game.canvas.width * CardManager.maxScale, this.scene.game.canvas.height - CONFIG.CONTAINER.TOP_MENU.HEIGHT)
-            .setPosition(0, CONFIG.CONTAINER.TOP_MENU.HEIGHT);
+        this.setSize(this.scene.game.canvas.width * BattleManager.maxScale, this.scene.game.canvas.height - TopMenu.HEIGHT)
+            .setPosition(0, TopMenu.HEIGHT);
 
         scene.add.existing(this);
     }
@@ -96,9 +101,9 @@ export default class CardManager extends Phaser.GameObjects.Container
         const cardName = this.remainCards.pop() as string;
 
         const card = new Card(this.scene, cardName, isFront)
-                .setSize(Card.width, Card.height)
-                .setPosition(-Card.width, this.height / 2)
-                .setScale(Card.scale)
+                .setSize(Card.WIDTH, Card.HEIGHT)
+                .setPosition(-Card.WIDTH, this.height / 2)
+                .setScale(BattleManager.SCALE)
                 .setInteractive()
                 .on("pointerover", () => this.pointerOver(card))
                 .on("pointerout", () => this.pointerOut(card))
@@ -120,7 +125,7 @@ export default class CardManager extends Phaser.GameObjects.Container
      */
     public shuffle(remainCards?: Array<string>): this 
     {
-        if(!remainCards?.length) remainCards = (this.scene.game as HexGame).player.dec.slice();
+        if(!remainCards?.length) remainCards = (this.scene.game as Game).player!.dec.slice();
         this.remainCards = Phaser.Utils.Array.Shuffle(remainCards);
         
         return this;
@@ -151,8 +156,8 @@ export default class CardManager extends Phaser.GameObjects.Container
 
         let startPos: number;
 
-        if (this.width * CardManager.maxScale < (Card.width * Card.scale - 50) * count) startPos = (this.scene.game.canvas.width - this.width + Card.width * Card.scale) / 2;
-        else startPos = (this.scene.game.canvas.width - (Card.width * Card.scale - 20) * count + Card.width * Card.scale) / 2;
+        if (this.width * BattleManager.maxScale < (Card.WIDTH * BattleManager.SCALE - 50) * count) startPos = (this.scene.game.canvas.width - this.width + Card.WIDTH * BattleManager.SCALE) / 2;
+        else startPos = (this.scene.game.canvas.width - (Card.WIDTH * BattleManager.SCALE - 20) * count + Card.WIDTH * BattleManager.SCALE) / 2;
         
         const endPos: number = this.scene.game.canvas.width - startPos;
         const radius: number = (endPos - startPos) / 8;
@@ -184,7 +189,7 @@ export default class CardManager extends Phaser.GameObjects.Container
                 delay: doTween ? count * 300 : 0
             });
 
-            if (doTween && count === CardManager.initCardCount) {
+            if (doTween && count === BattleManager.initCardCount) {
                 tween.on("complete", () => this.scene.input.keyboard.on('keydown-SPACE', () => this.addCard(false)));
             }
         });
@@ -204,7 +209,7 @@ export default class CardManager extends Phaser.GameObjects.Container
             this.bringToTop(card);
             this.scene.add.tween({
                 targets: card,
-                y: this.height - Card.height / 2,
+                y: this.height - Card.HEIGHT / 2,
                 angle: 0,
                 duration: 100,
                 scale: 1,
@@ -229,8 +234,8 @@ export default class CardManager extends Phaser.GameObjects.Container
             angle: card.data.values.originAngle,
             duration: 100,
             delay: 0,
-            scaleX: Card.scale,
-            scaleY: Card.scale,
+            scaleX: BattleManager.SCALE,
+            scaleY: BattleManager.SCALE,
             ease: 'Quad.easeInOut'
         });
     }

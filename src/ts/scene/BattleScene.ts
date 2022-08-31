@@ -1,23 +1,30 @@
-import Phaser from "phaser";
-import { CONFIG } from "../config";
-import CardManager from "../interface/CardManager";
+import BattleManager from "../interface/BattleManager";
+import { Scene } from "../interface/Hex";
 import TopMenu from "../interface/TopMenu";
 
 /**
- * 배틀씬
+ * Hex 게임의 배틀씬 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-08-25 오후 7:41
  */
-export class BattleScene extends Phaser.Scene 
+export default class BattleScene extends Scene 
 {
+
+    static readonly KEY = {
+        IMAGE: {
+            BACKGROUND: "battleSceneBackground",
+        }
+    }
+
     constructor() 
     {
-        super({
-            key: CONFIG.SCENES.BATTLE 
-        })
+        super(BattleScene.name)
     }
 
     preload(): void
     {
-        this.load.image(CONFIG.IMAGE.BATTLE_SCENE_BACKGROUND, "assets/images/battleScene/background.png");
+        this.load.image(BattleScene.KEY.IMAGE.BACKGROUND, "assets/images/battleScene/background.png");
         this.load.animation('middle_boss_data', 'assets/animations/middle_boss.json');
         this.load.atlas("middle_boss", "assets/atlas/middle_boss.png", "assets/atlas/middle_boss.json");
 
@@ -33,7 +40,7 @@ export class BattleScene extends Phaser.Scene
     create(): void
     {
         /** 배틀씬 배경 */
-        const background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, CONFIG.IMAGE.BATTLE_SCENE_BACKGROUND);
+        const background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, BattleScene.KEY.IMAGE.BACKGROUND);
         background.setScale(this.cameras.main.width / background.width, this.cameras.main.height / background.height).setScrollFactor(0);
 
         /** 상단 메뉴 */
@@ -41,9 +48,9 @@ export class BattleScene extends Phaser.Scene
         
 
         /** 카드 관리 컨테이너 */
-        const cardManager = new CardManager(this, 0, 0).setDepth(9).setName(CONFIG.CONTAINER.CARD_MANAGER.NAME);
+        const battleManager = new BattleManager(this, 0, 0).setDepth(9).setName(BattleManager.name);
 
-        for(let i = 0; i < CardManager.initCardCount; i++) cardManager.addCard();
+        for(let i = 0; i < BattleManager.initCardCount; i++) battleManager.addCard();
 
         const middleBoss = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, "middle_boss");
         const skills = middleBoss.anims.animationManager["anims"].keys();
