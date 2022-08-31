@@ -12,6 +12,7 @@ export default class BattleScene extends Scene
 {
 
     static readonly KEY = {
+        NAME: "BattleScene",
         IMAGE: {
             BACKGROUND: "battleSceneBackground",
         }
@@ -19,7 +20,7 @@ export default class BattleScene extends Scene
 
     constructor() 
     {
-        super(BattleScene.name)
+        super(BattleScene.KEY.NAME)
     }
 
     preload(): void

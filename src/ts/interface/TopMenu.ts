@@ -13,6 +13,7 @@ export default class TopMenu extends Phaser.GameObjects.Container
      * 오브젝트 이름에 대한 key값
      * */
     static readonly KEY = {
+        NAME: "TopMenu",
         LEFT: "TopMenu.Left",
         Right: "TopMenu.Right",
         IMAGE: {
@@ -81,7 +82,7 @@ export default class TopMenu extends Phaser.GameObjects.Container
         }).setShadow(2, 2, "#000000", 2, true, true).setName(TopMenu.KEY.TEXT.CARD_COUNT);
 
         // 상단 메뉴를 씬에 추가
-        this.add([background, left, right, cardCount]).setName(TopMenu.name);
+        this.add([background, left, right, cardCount]).setName(TopMenu.KEY.NAME);
         
         // 정렬 이벤트 등록
         this.on('align', this.align);
