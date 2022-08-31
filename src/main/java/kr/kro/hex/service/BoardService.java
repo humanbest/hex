@@ -1,0 +1,68 @@
+package kr.kro.hex.service;
+
+import java.util.List;
+
+import kr.kro.hex.domain.Board;
+
+/**
+ * 게시판 서비스의 인터페이스
+ *
+ * @since 2022-08-20 오후 11:04
+ * @version 20220823.0
+ * @author Rubisco
+ * @see Board 게시판 Entity
+ */
+
+public interface BoardService {
+
+    /**
+     * 게시글을 등록합니다.
+     *
+     * @param board 게시글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
+     * @author Rubisco
+     */
+    void insertBoard(Board board);
+
+    /**
+     * 게시글 목록을 조회합니다.
+     *
+     * @return 게시글 목록
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
+     * @author Rubisco
+     */
+    List<Board> getBoardList();
+
+    /**
+     * documentId에 해당하는 게시글을 조회합니다.
+     *
+     * @param board 게시글
+     * @return 게시글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
+     * @author Rubisco
+     */
+    Board getBoard(Board board);
+
+    /**
+     * 게시글 수정하기
+     *
+     * @param board 게시글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
+     * @author Rubisco
+     */
+    void updateBoard(Board board);
+
+    /**
+     * 게시글 삭제하기
+     *
+     * @param board 게시글
+     * @since 2022-08-20 오후 11:04
+     * @version 20220823.0
+     * @author Rubisco
+     */
+    void deleteBoard(Board board);
+}

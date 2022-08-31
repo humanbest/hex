@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "card_base",
+			"format": "RGBA8888",
+			"size": {
+				"w": 404,
+				"h": 302
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "card_front",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 200,
+						"h": 300
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 200,
+						"h": 300
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 200,
+						"h": 300
+					}
+				},
+				{
+					"filename": "card_color",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 200,
+						"h": 178
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 200,
+						"h": 178
+					},
+					"frame": {
+						"x": 203,
+						"y": 1,
+						"w": 200,
+						"h": 178
+					}
+				},
+				{
+					"filename": "title_color",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 200,
+						"h": 43
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 200,
+						"h": 43
+					},
+					"frame": {
+						"x": 203,
+						"y": 181,
+						"w": 200,
+						"h": 43
+					}
+				},
+				{
+					"filename": "cost_box",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 60,
+						"h": 64
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 60,
+						"h": 64
+					},
+					"frame": {
+						"x": 203,
+						"y": 226,
+						"w": 60,
+						"h": 64
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:6fb88db982884402886358f654722297:9eaa40866123044434525b0f57e72706:5f68b600dd80ae54f918896b9d26bbb3$"
+	}
+}

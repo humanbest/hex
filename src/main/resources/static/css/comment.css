@@ -1,0 +1,103 @@
+section.comment {
+    width: 100%;
+}
+section.comment input[name=writer] {
+    padding: 7px 15px;
+}
+section.comment textarea {
+    resize: none;
+    padding: 15px;
+}
+.btn.confirm {
+    width: 100px;
+    justify-content: center;
+}
+#comment {
+    margin-bottom: 30px;
+}
+#comment_list {
+    width: 100%;
+    padding: 0;
+    margin: 0 0 30px;
+    box-sizing: border-box;
+    list-style: none;
+}
+#comment_list > li {
+    margin: -1px 0;
+    padding: 12px 12px 16px;
+    border-top: 1px solid #EEE;
+    border-bottom: 1px solid #EEE;
+    position: relative;
+    /*transition: background .5s;*/
+}
+#comment_list .comment_name {
+    font-size: 12px;
+}
+#comment_list .comment_date {
+    padding: 0 12px;
+    color: #888;
+}
+#comment_list .comment_meta {
+    margin-bottom: 8px;
+}
+#comment_list .comment_content {
+    font-size: 13px;
+}
+#comment_list .comment_menu {
+    position: absolute;
+    top: 12px;
+    right: 8px;
+}
+#comment_list .comment_btn {
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: -1px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 3px;
+    color: #666;
+    transition: transform .5s;
+}
+#comment_list .comment_btn:hover {
+    color: #000;
+}
+#comment_list .comment_btn::before {
+    content: '';
+    font-family: "fontello";
+    padding-right: 5px;
+}
+#comment_list .comment_btn.comment_delete::after {
+    content: '삭제';
+}
+#comment_list .comment_btn.comment_delete::before {
+    content: '\E802';
+}
+#comment_list .comment_btn.comment_update {
+    text-decoration: none;
+}
+#comment_list .comment_btn.comment_update::after {
+    content: '수정';
+}
+#comment_list .comment_btn.comment_update::before {
+    content: '\E800';
+}
+#comment_list .comment_menu { display: none }
+#comment_list > li:hover .comment_menu { display: flex }
+.comment_list_count {
+    position: relative;
+    z-index: 10;
+    margin: -1px;
+    padding: 10px 16px;
+    font-size: 11px;
+    border-top: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+    background: #FCFCFC;
+}
+.comment_list_count::before {
+    content: 'Comment ';
+}
+.comment_list_count > b { font-size: 12px }
+.comment_list_count > b::before, .comment_list_count > b::after {
+    content: "'";
+}

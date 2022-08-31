@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+      "target": "ES2017",
+      "module": "commonJS",
+      "allowJs": true,
+      "checkJs": true,
+      "jsx": "preserve",
+      "outDir": "./src/main/resources/static/js/",
+      "removeComments": true,
+      "strict": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "strictFunctionTypes": true,
+      "strictPropertyInitialization": true,
+      "noImplicitThis": true,
+      "alwaysStrict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      "esModuleInterop": true
+  },
+  "exclude": [
+      "node_modules",
+      "bin",
+      "build",
+      "src"
+  ]
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}"
+      th:with="isBoardExist=${board != null}">
+
+<title layout:fragment="title" th:text="${!isBoardExist} ? '새글등록' : '글수정'"></title>
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/write.css}">
+</th:block>
+
+<th:block layout:fragment="content">
+    <header>
+        <h3 th:text="${!isBoardExist} ? '새글 등록하기' : '글 수정하기'"></h3>
+        <a th:if="${isBoardExist}" class="btn back fl" th:href="|/community/${board.documentId}|"></a>
+        <a th:unless="${isBoardExist}" class="btn back fl" th:href="@{/community}"></a>
+    </header>
+    <form id="write" th:object="${board}" action="/community" th:method="${isBoardExist} ? 'patch' : 'post'">
+        <input th:if="${isBoardExist}" type="hidden" name="documentId" th:value="*{documentId}">
+        <input type="hidden" name="memberId" th:value="${isBoardExist} ? *{member.memberId} : 1">
+        <div class="row">
+            <select name="categoryId" class="col category">
+                <option th:with="categoryId=${isBoardExist ? board.category.categoryId : categoryList.get(0).categoryId}"
+                        th:each="category : ${categoryList}"
+                        th:object="${category}"
+                        th:value="*{categoryId}"
+                        th:selected="${category.categoryId} == ${categoryId}"
+                        th:text="*{category}"></option>
+            </select>
+            <input class="col title" name="title" type="text"
+                   th:placeholder="제목" th:value="${isBoardExist} ? *{title}">
+        </div>
+        <textarea class="content" name="content" th:rows="20" th:placeholder="내용"
+                  th:text="${isBoardExist} ? *{content}"></textarea>
+        <div class="row between">
+            <label class="row label is_notice">
+                <input th:if="${isBoardExist}" type="checkbox" th:field="*{isNotice}">
+                <input th:unless="${isBoardExist}" type="checkbox" name="isNotice">
+            </label>
+            <div class="row fr">
+                <button class="btn write fl" th:classappend="${isBoardExist} ? 'update'"
+                        type="submit" onclick="this.submit()"></button>
+            </div>
+        </div>
+    </form>
+</th:block>
+</html>
