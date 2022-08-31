@@ -19,9 +19,12 @@ export class ShopCard extends Card {
 
 export default class ShopScene extends Scene
 {
+    static readonly KEY = {
+        NAME: "ShopScene"
+    }
     constructor()
     {
-        super(ShopScene.name)
+        super(ShopScene.KEY.NAME)
     }
 
     preload(): void
