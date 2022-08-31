@@ -66,6 +66,6 @@ export default class LoadScene extends Scene
     create(): void 
     {
         if(this.game.player) this.game.player.dec.push(...Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD)));
-        this.scene.start(BattleScene.name);
+        this.scene.start(BattleScene.KEY.NAME);
     }
 }
