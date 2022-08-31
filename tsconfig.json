@@ -5,7 +5,7 @@
       "allowJs": true,
       "checkJs": true,
       "jsx": "preserve",
-      "outDir": "./src/main/resources/static/",
+      "outDir": "./src/main/resources/static/js/",
       "removeComments": true,
       "strict": true,
       "noImplicitAny": true,
