@@ -2,9 +2,13 @@ import { Scene } from "../interface/Hex";
 
 export default class CharacterScene extends Scene 
 {
+    static readonly KEY = {
+        NAME: "CharacterScene"
+    }
+
     constructor() 
     {
-        super(CharacterScene.name)
+        super(CharacterScene.KEY.NAME)
     }
     preload(): void
     {
