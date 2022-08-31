@@ -17,7 +17,7 @@ module.exports = {
   },
   output: {
     filename: "game.js",
-    path: path.resolve(__dirname, "src/main/resources/static/js"),
+    path: path.resolve(__dirname, "src/main/resources/static"),
   },
   optimization: {
     minimize: true,
