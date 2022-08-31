@@ -1,8 +1,10 @@
-import { Scene } from "phaser";
+
 // import { CONFIG } from "../config";
 // import Card from "../object/Card";
 // import { HexGame } from "./Interface";
 
+
+import {Scene} from "./Hex";
 
 export default class Shopproduct extends Phaser.GameObjects.Container{
 

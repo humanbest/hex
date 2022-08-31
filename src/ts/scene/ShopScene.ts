@@ -1,10 +1,9 @@
-import Phaser, {Scene} from "phaser";
-import { CONFIG } from "../config";
 import TopMenu from "../interface/TopMenu";
 import Shopproduct from "../interface/Shopproduct";
 import Card from "../object/Card";
+import {Scene} from "../interface/Hex";
 
-class ShopCard extends Card {
+export class ShopCard extends Card {
 
     private readonly _price: number = 0;
 
@@ -18,13 +17,11 @@ class ShopCard extends Card {
     }
 }
 
-export class ShopScene extends Phaser.Scene
+export default class ShopScene extends Scene
 {
     constructor()
     {
-        super({
-            key: CONFIG.SCENES.SHOP
-        })
+        super(ShopScene.name)
     }
 
     preload(): void
@@ -43,10 +40,9 @@ export class ShopScene extends Phaser.Scene
         new TopMenu(this, 0, 0);
 
 
-
         const shopproduct = new Shopproduct(this, 0,10);
 
-        this.add.image(this.cameras.main.width,CONFIG.CONTAINER.TOP_MENU.HEIGHT + 10,"ShopOwner").setOrigin(1, 0).setScale(0.5);
+        this.add.image(this.cameras.main.width,TopMenu.HEIGHT + 10,"ShopOwner").setOrigin(1, 0).setScale(0.5);
 
         this.add.image(5,40,"ShopPaper").setOrigin(0,0);
 
@@ -62,12 +58,12 @@ export class ShopScene extends Phaser.Scene
         this.add.existing(card3);
 
         Phaser.Actions.GridAlign([card1, card2, card3], {
-            width: (Card.width + 20) * 3,
-            height: Card.height,
-            cellWidth: Card.width + 20,
-            cellHeight: Card.height,
-            x: Card.width + 70,
-            y: CONFIG.CONTAINER.TOP_MENU.HEIGHT + Card.height * 2 + 100
+            width: (Card.WIDTH + 20) * 3,
+            height: Card.HEIGHT,
+            cellWidth: Card.WIDTH + 20,
+            cellHeight: Card.HEIGHT,
+            x: Card.WIDTH + 70,
+            y: TopMenu.HEIGHT + Card.HEIGHT * 2 + 100
         });
     }
 }
