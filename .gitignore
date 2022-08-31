@@ -170,3 +170,4 @@ dist
 
 # etc
 package-lock.json
+game.js*
