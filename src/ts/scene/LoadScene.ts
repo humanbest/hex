@@ -13,6 +13,7 @@ import ShopScene from "./ShopScene";
 export default class LoadScene extends Scene
 {
     static readonly KEY = {
+        NAME: "LoadScene",
         ATLAS: {
             TOP: "top",
             CARD_BASE: "cardBase",
@@ -29,7 +30,7 @@ export default class LoadScene extends Scene
 
     constructor()
     {
-        super(LoadScene.name)
+        super(LoadScene.KEY.NAME)
     }
 
     init(): void
