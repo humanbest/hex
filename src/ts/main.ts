@@ -1,6 +1,7 @@
 import { Game, defaultPlayer } from "./interface/Hex";
 import LoadScene from "./scene/LoadScene";
 import BattleScene from "./scene/BattleScene";
+import MapScene from "./scene/BattleScene";
 
 (function() {
     const wf = document.createElement('script');
@@ -28,7 +29,7 @@ window.WebFontConfig = {
                 }
             },
             pixelArt: true,
-            scene: [LoadScene, BattleScene],
+            scene: [LoadScene, BattleScene, MapScene],
             player: defaultPlayer
         });
     }
