@@ -1,5 +1,6 @@
 import { Scene } from "../interface/Hex";
-import BattleScene from "./BattleScene";
+// import BattleScene from "./BattleScene";
+import CharacterScene from "./CharacterScene";
 
 /**
  * Hex 게임의 로딩씬 입니다.
@@ -65,6 +66,6 @@ export default class LoadScene extends Scene
     create(): void 
     {
         if(this.game.player) this.game.player.dec.push(...Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD)));
-        this.scene.start(BattleScene.name);
+        this.scene.start(CharacterScene.name);
     }
 }
