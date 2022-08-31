@@ -1,8 +1,9 @@
 import { Game, defaultPlayer } from "./interface/Hex";
 import LoadScene from "./scene/LoadScene";
 import BattleScene from "./scene/BattleScene";
-// import MapScene from "./scene/BattleScene";
 import ShopScene from "./scene/ShopScene";
+import CharacterScene from "./scene/CharacterScene";
+import MapScene from "./scene/MapScene";
 
 (function() {
     const wf = document.createElement('script');
@@ -19,6 +20,7 @@ window.WebFontConfig = {
         families: ['Noto Sans KR'],
     },
     active() {
+        
         new Game({
             type: Phaser.AUTO,
             scale: {
@@ -30,7 +32,14 @@ window.WebFontConfig = {
                 }
             },
             pixelArt: true,
-            scene: [LoadScene, BattleScene, ShopScene],
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 100 },
+                    debug: true
+                }
+            },
+            scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene],
             player: defaultPlayer
         });
     }
