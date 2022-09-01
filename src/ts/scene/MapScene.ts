@@ -1,8 +1,17 @@
+import { Vector } from "matter";
 import { Scene } from "../interface/Hex";
+import MapManager from "../interface/MapManager";
 import TopMenu from "../interface/TopMenu";
 
+/**
+ * 맵 씬
+ * 
+ * @author yhy5847
+ * @since 2022-09-01 오전 10:21
+ */
 export default class MapScene extends Scene
 {
+    /**오브젝트 이름에 대한 키 값 */
     static readonly KEY = {
         NAME: "MapScene",
         IMAGE : {
@@ -17,22 +26,19 @@ export default class MapScene extends Scene
         }
     }
 
+    /** 노드 길이 */
+    static readonly depth: number = 5
+
+    /** 현재 좌표 */
+    static currentPoint: Vector;
+
     controls?: Phaser.Cameras.Controls.SmoothedKeyControl;
 
-    // randomNode(nodes: string[]): string[][] {
-    //     let nodeArr: Array<string>[][] = new Array;
-    //     for(let i = 0; i < 5; ++i) {
-    //         for(let j = 0; j < 4; ++j) {
-    //             if(i) {
-    //             }else if(i == 0 || j == 0){
-    //                 nodeArr[i][j].push(nodes[0])
-    //             } else if(i == 4 || j == 0) {
-    //             }
-    //         }
-    //     }
-    // }
+    constructor() {
+        super(MapScene.KEY.NAME)
+        MapScene.currentPoint = {x: 0, y: 0} 
+    }
 
-    constructor() {super(MapScene.KEY.NAME)}
 
     preload(): void 
     {
@@ -48,7 +54,6 @@ export default class MapScene extends Scene
 
     create(): void
     {
-        console.log("맵씬")
         /** 배경화면 */
         const mapBackground = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, "map_background").setScale(0.52).setDepth(0);
 
@@ -61,11 +66,10 @@ export default class MapScene extends Scene
         /** 설명 텍스트 */
         const exText = this.add.image(100, this.game.canvas.height - 100, "ex_text").setDepth(2);
 
-        /** 노드 */
-        // const startNode = this.add.image();
-        // const battleNode = this.add.image();
-        // const shopNode = this.add.image();
-        // const bossNode = this.add.image();
+        /**노드 배치 */
+        const mapNode: MapManager = new MapManager(this);
+        const nodes = mapNode.randomNode(mapNode.getNodes());
+
 
         /** 카메라 설정 */
         const cursors = this.input.keyboard.createCursorKeys();
@@ -103,4 +107,28 @@ export default class MapScene extends Scene
         this.controls!.update(delta);
     }
 
+    
+    randomNode(nodes: string[]): Array<string>[][] {
+
+        let nodeArr: Array<string>[][] = new Array;
+        
+        for(let i = 0; i < MapScene.depth; ++i) {
+            for(let j = 0; j < 4; ++j) {
+                if(1 < i && i < 3) {
+                    let nodeRandom = Math.floor(Math.random()*10)
+                    if(nodeRandom < 3) {
+                        nodeArr[i][j].push(nodes[1]);
+                    }else {
+                        nodeArr[i][j].push(nodes[2]);
+                    }
+                } else if(i == 0 || j == 0){
+                    nodeArr[i][j].push(nodes[0])
+                } else if(i == 4 || j == 0) {
+                    nodeArr[i][j].push(nodes[-1])
+                }
+            }
+        }
+
+        return nodeArr;
+    }
 }
