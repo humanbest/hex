@@ -11,7 +11,7 @@ export default class Shopproduct extends Phaser.GameObjects.Container{
     private BuyableCards : Array<string> = [];
     // private CardPrice : Array<string> = [];
 
-    getBuyableCards (){
+    get BuyableCard (){
         return this.BuyableCards;
     }
     getCardPrice (){

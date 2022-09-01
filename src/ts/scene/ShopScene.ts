@@ -20,7 +20,13 @@ export class ShopCard extends Card {
 export default class ShopScene extends Scene
 {
     static readonly KEY = {
-        NAME: "ShopScene"
+        NAME: "ShopScene",
+        IMAGE:{
+            ShopOwner:"ShopOwner",
+            ShopPaper:"ShopPaper",
+            ShopMyDec:"ShopMyDec",
+            ShopExit:"ShopExit"
+        }
     }
     constructor()
     {
@@ -36,6 +42,11 @@ export default class ShopScene extends Scene
                 this.scale.startFullscreen();
             }
         })
+
+        this.load.image(ShopScene.KEY.IMAGE.ShopOwner,"assets/images/shopScene/ShopOwner.png");
+        this.load.image(ShopScene.KEY.IMAGE.ShopPaper,"assets/images/shopScene/paper-plain.png");
+        this.load.image(ShopScene.KEY.IMAGE.ShopMyDec,"assets/images/shopScene/MYDEC.png");
+        this.load.image(ShopScene.KEY.IMAGE.ShopExit,"assets/images/shopScene/EXIT.png");
     }
 
     create(): void
@@ -45,16 +56,16 @@ export default class ShopScene extends Scene
 
         const shopproduct = new Shopproduct(this, 0,10);
 
-        this.add.image(this.cameras.main.width,TopMenu.HEIGHT + 10,"ShopOwner").setOrigin(1, 0).setScale(0.5);
+        this.add.image(this.cameras.main.width,TopMenu.HEIGHT + 10,ShopScene.KEY.IMAGE.ShopOwner).setOrigin(1, 0).setScale(0.5);
 
-        this.add.image(5,40,"ShopPaper").setOrigin(0,0);
+        this.add.image(5,40,ShopScene.KEY.IMAGE.ShopPaper).setOrigin(0,0);
 
-        this.add.image(this.cameras.main.width+70,600,"MYDEC").setOrigin(1,0.5).setScale(0.27);
-        this.add.image(this.cameras.main.width+70,700,"EXIT").setOrigin(1,0.5).setScale(0.27);
+        this.add.image(this.cameras.main.width+70,600,ShopScene.KEY.IMAGE.ShopMyDec).setOrigin(1,0.5).setScale(0.27);
+        this.add.image(this.cameras.main.width+70,700,ShopScene.KEY.IMAGE.ShopExit).setOrigin(1,0.5).setScale(0.27);
 
-        const card1 = new ShopCard(this, 0, shopproduct.getBuyableCards().pop(), true).setScale(0.9);
-        const card2 = new ShopCard(this, 0, shopproduct.getBuyableCards().pop(), true).setScale(0.9);
-        const card3 = new ShopCard(this, 0, shopproduct.getBuyableCards().pop(), true).setScale(0.9);
+        const card1 = new ShopCard(this, 0, shopproduct.BuyableCard.pop(), true).setScale(0.9);
+        const card2 = new ShopCard(this, 0, shopproduct.BuyableCard.pop(), true).setScale(0.9);
+        const card3 = new ShopCard(this, 0, shopproduct.BuyableCard.pop(), true).setScale(0.9);
 
         this.add.existing(card1);
         this.add.existing(card2);
