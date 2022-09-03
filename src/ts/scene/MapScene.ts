@@ -19,7 +19,6 @@ export default class MapScene extends Scene
             MAIN_MAP: "main_map",
             MAP_BACKGROUND: "map_background",
             EX_TEXT: "ex_text",
-            NODES_VIEW: "nodes_view"
         }
     }
 
