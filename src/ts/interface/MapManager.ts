@@ -40,7 +40,7 @@ export default class MapManager
         this.scene = scene;
     }
 
-    //노드 랜덤 배치
+    //노드 랜덤 배열
     randomNode(nodes: Array<string>): Array<Array<number>> {
 
         let nodeArr: Array<Array<number>> = [[]];
@@ -67,6 +67,18 @@ export default class MapManager
         }
 
         return nodeArr;
+    }
+
+    //노드 맵에 배치
+    nodeView(nodeArray: Array<Array<number>>): void {
+        for(let i = 0; i < nodeArray.length; i++){
+            for(let j = 0; j < 7; j++){
+                 let b: number = nodeArray[i][j]
+                console.log(nodeArray[b])
+                // console.log(a[i][j])
+            }
+            console.log("-------------")
+        }
     }
 
 }

@@ -21,9 +21,6 @@ export default class MapScene extends Scene
         }
     }
 
-    /** 노드 길이 */
-    static readonly depth: number = 5
-
     /** 현재 좌표 */
     static currentPoint: Vector;
 
@@ -37,6 +34,7 @@ export default class MapScene extends Scene
 
     preload(): void 
     {
+        console.log("0")
         this.load.image(MapScene.KEY.IMAGE.MAIN_MAP, "assets/images/mapScene/MainMap.png");
         this.load.image(MapScene.KEY.IMAGE.MAP_BACKGROUND, "assets/images/mapScene/MapBackground.png");
         this.load.image(MapScene.KEY.IMAGE.EX_TEXT, "assets/images/mapScene/ExText.png");
@@ -49,6 +47,7 @@ export default class MapScene extends Scene
 
     create(): void
     {
+        console.log("1")
         /** 배경화면 */
         const mapBackground = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, "map_background").setScale(0.52).setDepth(0);
 
@@ -62,8 +61,8 @@ export default class MapScene extends Scene
         const exText = this.add.image(100, this.game.canvas.height - 100, "ex_text").setDepth(2);
 
         /**노드 배치 */
-        const mapNode: MapManager = new MapManager(this);
-        const nodes: Array<Array<number>> = mapNode.randomNode(mapNode.getNodes());
+        // const mapNode: MapManager = new MapManager(this);
+        // const nodes: Array<Array<number>> = mapNode.randomNode(mapNode.getNodes());
 
 
         /** 카메라 설정 */
@@ -95,35 +94,11 @@ export default class MapScene extends Scene
         mapCam.ignore([topMenu, mapBackground, exText]).setBounds(-115, 200, 1300, 1500);
         
         textCam.ignore([topMenu, mapBackground, mainMap]);
+        console.log("2")
     }
 
     update (_time: number, delta: number) 
     {
         this.controls!.update(delta);
-    }
-
-    
-    randomNode(nodes: string[]): Array<string>[][] {
-
-        let nodeArr: Array<string>[][] = new Array;
-        
-        for(let i = 0; i < MapScene.depth; ++i) {
-            for(let j = 0; j < 4; ++j) {
-                if(1 < i && i < 3) {
-                    let nodeRandom = Math.floor(Math.random()*10)
-                    if(nodeRandom < 3) {
-                        nodeArr[i][j].push(nodes[1]);
-                    }else {
-                        nodeArr[i][j].push(nodes[2]);
-                    }
-                } else if(i == 0 || j == 0){
-                    nodeArr[i][j].push(nodes[0])
-                } else if(i == 4 || j == 0) {
-                    nodeArr[i][j].push(nodes[-1])
-                }
-            }
-        }
-
-        return nodeArr;
     }
 }

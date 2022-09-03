@@ -1,7 +1,7 @@
 import { Game, defaultPlayer } from "./interface/Hex";
 import LoadScene from "./scene/LoadScene";
 import BattleScene from "./scene/BattleScene";
-import MapScene from "./scene/BattleScene";
+import MapScene from "./scene/MapScene";
 
 (function() {
     const wf = document.createElement('script');
