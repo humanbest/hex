@@ -42,18 +42,19 @@ export default class CharacterScene extends Scene
     
         this.add.image(300, 400, 'SBGI').setDepth(1).setVisible(true)
 
-        const button1 = this.add.image(220, 600, 'smugglerSel').setInteractive().setDepth(3);
-        const button2 = this.add.image(420, 600, 'phantomSel').setInteractive().setDepth(3);
-        const button3 = this.add.image(620, 600, 'WarwickSel').setInteractive().setDepth(3);
+        const buttons = [
+            this.add.image(220, 600, 'smugglerSel'),
+            this.add.image(420, 600, 'phantomSel'),
+            this.add.image(620, 600, 'WarwickSel')
+        ].map(button => button.setInteractive().setDepth(3));
 
+    
         const imgs = [
             this.add.image(0,0,'smugglerBig').setDepth(2).setOrigin(0).setVisible(false).setInteractive(),
             this.add.image(0,0,'phantom').setDepth(2).setOrigin(0).setVisible(false).setInteractive(),
             this.add.image(0,0,'warwick').setDepth(2).setOrigin(0).setVisible(false).setInteractive()
             
         ];
-
-        const buttons = [button1, button2, button3];
         
         buttons.map((button, i) => {
             button.on("pointerover", () => {
