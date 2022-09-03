@@ -64,28 +64,21 @@ export default class CharacterScene extends Scene
         })
 
         imgs.map(img => img.on("pointerdown", function(this:Phaser.GameObjects.Image){this.setVisible(false)}))
-
         this.registry.set("imgs", imgs);
-
+       
 
         this.add.image(820, 600, 'question').setDepth(2);
         this.add.image(70, 600, 'LeftSel').setDepth(2);
         this.add.image(970, 600, 'RightSel').setDepth(2);
+
+        const Particle2 = this.physics.add.image(0,0, 'Particle2');
+        Particle2.setVelocity(150,150);
+        this.registry.set('Particle2',Particle2);
         
     }
 
     update(): void {
-        const group = this.physics.add.group();
-        group.createMultiple([
-            { key: 'Particle2', repeat: 1 },
-        ]);
-        group.children.iterate(this.createGem, this);
+        this.physics.world.wrap('Particle2',48);
 
     }
-
-    createGem (gem:any): void
-    {
-        gem.setVelocity(Phaser.Math.Between(-100, 100), Phaser.Math.Between(-100, 100));
-    }
-    
 }
