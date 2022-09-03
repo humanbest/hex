@@ -1,4 +1,5 @@
 import { Vector } from "matter";
+import { GameObjects } from "phaser";
 import { Scene } from "../interface/Hex";
 import MapManager from "../interface/MapManager";
 import TopMenu from "../interface/TopMenu";
@@ -17,7 +18,8 @@ export default class MapScene extends Scene
         IMAGE : {
             MAIN_MAP: "main_map",
             MAP_BACKGROUND: "map_background",
-            EX_TEXT: "ex_text"
+            EX_TEXT: "ex_text",
+            NODES_VIEW: "nodes_view"
         }
     }
 
@@ -26,9 +28,53 @@ export default class MapScene extends Scene
 
     controls?: Phaser.Cameras.Controls.SmoothedKeyControl;
 
-    constructor() {
+    constructor() 
+    {
         super(MapScene.KEY.NAME)
         MapScene.currentPoint = {x: 0, y: 0} 
+    }
+
+    //노드 실 배치
+    nodeView(nodes: Array<Array<number>>): void 
+    {
+        let nodeHeight: number = 1300;
+
+        let nodewidth: number = 50;
+
+        
+        for(let i = 0; i < nodes.length; i++){
+            if(nodes[i].length == 3){
+                nodewidth = 200;
+            }else if(nodes[i].length == 4){
+                nodewidth = 150;
+            }else if(nodes[i].length == 5){
+                nodewidth = 100;
+            }
+
+            for(let j = 0; j < 7; j++){
+                if(nodes[i][j] == 1) 
+                {
+                    this.add.image(this.game.canvas.width/4 + nodewidth, nodeHeight, "battle_node").setDepth(3)
+                }
+                else if(nodes[i][j] == 2)
+                {
+                    this.add.image(this.game.canvas.width/4 + nodewidth, nodeHeight, "shop_node").setDepth(3)
+                }
+                else if(nodes[i][j] == 0)
+                {
+                    this.add.image(this.game.canvas.width/4 + 300, nodeHeight, "start_node").setDepth(3)
+                    break;
+                }
+                else if(nodes[i][j] == 3)
+                {
+                    this.add.image(this.game.canvas.width/4 + 300, nodeHeight, "boss_node").setDepth(3)
+                    break;
+                }
+                nodewidth += 100;
+            }
+            nodewidth = 80;
+            nodeHeight -= 100;
+        }
     }
 
 
@@ -47,7 +93,6 @@ export default class MapScene extends Scene
 
     create(): void
     {
-        console.log("1")
         /** 배경화면 */
         const mapBackground = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, "map_background").setScale(0.52).setDepth(0);
 
@@ -61,9 +106,11 @@ export default class MapScene extends Scene
         const exText = this.add.image(100, this.game.canvas.height - 100, "ex_text").setDepth(2);
 
         /**노드 배치 */
-        // const mapNode: MapManager = new MapManager(this);
-        // const nodes: Array<Array<number>> = mapNode.randomNode(mapNode.getNodes());
+        const mapNode: MapManager = new MapManager(this);
+        const nodes: Array<Array<number>> = mapNode.randomNode(mapNode.getNodes());
 
+        this.nodeView(nodes);
+        
 
         /** 카메라 설정 */
         const cursors = this.input.keyboard.createCursorKeys();
@@ -94,7 +141,6 @@ export default class MapScene extends Scene
         mapCam.ignore([topMenu, mapBackground, exText]).setBounds(-115, 200, 1300, 1500);
         
         textCam.ignore([topMenu, mapBackground, mainMap]);
-        console.log("2")
     }
 
     update (_time: number, delta: number) 

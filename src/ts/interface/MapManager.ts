@@ -29,7 +29,7 @@ export default class MapManager
 
     //노드 가로 길이 설정
     nodesWidth(): number {
-       return Math.floor(Math.random() * (7-3) + 3)
+       return Math.floor(Math.random() * (6-3) + 3)
     }
 
     getNodes(): string[] {
@@ -73,11 +73,9 @@ export default class MapManager
     nodeView(nodeArray: Array<Array<number>>): void {
         for(let i = 0; i < nodeArray.length; i++){
             for(let j = 0; j < 7; j++){
-                 let b: number = nodeArray[i][j]
-                console.log(nodeArray[b])
-                // console.log(a[i][j])
+                nodeArray[i][j]
             }
-            console.log("-------------")
+
         }
     }
 
