@@ -17,12 +17,7 @@ export default class MapScene extends Scene
         IMAGE : {
             MAIN_MAP: "main_map",
             MAP_BACKGROUND: "map_background",
-            EX_TEXT: "ex_text",
-            START_NODE: "start_node",
-            BATTLE_NODE: "battle_node",
-            SHOP_NODE: "shop_node",
-            BOSS_NODE: "boss_node",
-            MAP_PLAYER: "map_player"
+            EX_TEXT: "ex_text"
         }
     }
 
@@ -45,11 +40,11 @@ export default class MapScene extends Scene
         this.load.image(MapScene.KEY.IMAGE.MAIN_MAP, "assets/images/mapScene/MainMap.png");
         this.load.image(MapScene.KEY.IMAGE.MAP_BACKGROUND, "assets/images/mapScene/MapBackground.png");
         this.load.image(MapScene.KEY.IMAGE.EX_TEXT, "assets/images/mapScene/ExText.png");
-        this.load.image(MapScene.KEY.IMAGE.START_NODE, "assets/images/mapScene/StartNode.png");
-        this.load.image(MapScene.KEY.IMAGE.BATTLE_NODE, "assets/images/mapScene/BattleNode.png");
-        this.load.image(MapScene.KEY.IMAGE.SHOP_NODE, "assets/images/mapScene/ShopNode.png");
-        this.load.image(MapScene.KEY.IMAGE.BOSS_NODE, "assets/images/mapScene/BossNode.png");
-        this.load.image(MapScene.KEY.IMAGE.MAP_PLAYER, "assets/images/mapScene/MapPlayer.png");
+        this.load.image(MapManager.KEY.IMAGE.START_NODE, "assets/images/mapScene/StartNode.png");
+        this.load.image(MapManager.KEY.IMAGE.BATTLE_NODE, "assets/images/mapScene/BattleNode.png");
+        this.load.image(MapManager.KEY.IMAGE.SHOP_NODE, "assets/images/mapScene/ShopNode.png");
+        this.load.image(MapManager.KEY.IMAGE.BOSS_NODE, "assets/images/mapScene/BossNode.png");
+        this.load.image(MapManager.KEY.IMAGE.MAP_PLAYER, "assets/images/mapScene/MapPlayer.png");
     }
 
     create(): void
@@ -68,7 +63,7 @@ export default class MapScene extends Scene
 
         /**노드 배치 */
         const mapNode: MapManager = new MapManager(this);
-        const nodes = mapNode.randomNode(mapNode.getNodes());
+        const nodes: Array<Array<number>> = mapNode.randomNode(mapNode.getNodes());
 
 
         /** 카메라 설정 */

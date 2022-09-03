@@ -14,14 +14,15 @@ export default class MapManager
             START_NODE: "start_node",
             BATTLE_NODE: "battle_node",
             SHOP_NODE: "shop_node",
-            BOSS_NODE: "boss_node"
+            BOSS_NODE: "boss_node",
+            MAP_PLAYER: "map_player"
         }
     }
 
     scene: Scene;
 
     // 노드 종류
-    readonly nodes: string[] = ["StartNode", "BattleNode", "ShopNode", "BossN`ode"];
+    readonly nodes: string[] = ["StartNode", "BattleNode", "ShopNode", "BossNode"];
 
     //노드 세로 길이
     readonly nodesHeight: number = 7;
