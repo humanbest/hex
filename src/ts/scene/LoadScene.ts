@@ -1,5 +1,6 @@
 import { Scene } from "../interface/Hex";
 import BattleScene from "./BattleScene";
+import CharacterScene from "./CharacterScene";
 
 /**
  * Hex 게임의 로딩씬 입니다.
