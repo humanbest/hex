@@ -35,7 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
-application-aws.properties
 
 # Logs
 logs
@@ -168,6 +167,10 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# vim
+.vimspector.json
+
 # etc
 package-lock.json
+application-aws.properties
 game.js*
