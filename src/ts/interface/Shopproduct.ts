@@ -5,6 +5,8 @@
 
 
 import {Scene} from "./Hex";
+// import Card from "../object/Card";
+// import LoadScene from "../scene/LoadScene";
 
 export default class Shopproduct extends Phaser.GameObjects.Container{
 
@@ -29,16 +31,43 @@ export default class Shopproduct extends Phaser.GameObjects.Container{
         // const game = scene.game as HexGame;
 
         this.BuyableCards.push("fireball");
-        this.BuyableCards.push("adrenaline");
+        this.BuyableCards.push("adrenaline");1
         this.BuyableCards.push("bamboo_spear");
-
-
 
 
         // const shopitems = new ShopItems(scene, 0, 0);
         // const shopcards = new ShopCards(scene, 0, 0);
 
     }
+
+    // private pointerOver(card: Card): void
+    // {
+    //     if(!card.isSelected)
+    //     {
+    //         this.scene.add.tween({
+    //             targets: card,
+    //             y: this.height - Card.HEIGHT / 2,
+    //             angle: 0,
+    //             duration: 100,
+    //             scale: 1,
+    //             ease: 'Quad.easeInOut'
+    //         });
+    //     }
+    // }
+
+    // private shuffledDec (){
+    //
+    //     const dec : Array<string> = [];
+    //
+    //     dec.push(...Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD)));
+    //
+    //     dec = shuffle(dec);
+    //
+    //     return dec;
+    // }
+
+
+
 
 }
 
