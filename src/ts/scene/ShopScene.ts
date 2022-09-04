@@ -3,21 +3,28 @@ import Card from "../object/Card";
 import {Scene} from "../interface/Hex";
 import LoadScene from "./LoadScene";
 import Shuffle = Phaser.Utils.Array.Shuffle;
-import Shopproduct from "../interface/Shopproduct";
 // import Shopproduct from "../interface/Shopproduct";
 
 export class ShopCard extends Card {
 
     private readonly _price: number = 0;
 
+
     constructor(scene: Scene, price: number, cardName?: string, isFront?: boolean) {
         super(scene, cardName, isFront);
         this._price = price;
+        this.setInteractive();
+        this.on("pointerDown",()=>this.setSize(50,50));
     }
 
     get price(): number {
         return this._price;
     }
+
+    // private pointerDown (card:Shopcard):void{
+    //     this.destroy()
+    // }
+
 }
 
 export default class ShopScene extends Scene
@@ -53,7 +60,8 @@ export default class ShopScene extends Scene
         this.load.image(ShopScene.KEY.IMAGE.ShopMyDec,"assets/images/shopScene/MYDEC.png");
         this.load.image(ShopScene.KEY.IMAGE.ShopExit,"assets/images/shopScene/EXIT.png");
 
-        this.load.image(ShopScene.KEY.IMAGE.ShopPotion,"assets/iamges/shopScene/potion.png"
+        /** 더미 카드 이미지 */
+        this.load.image(ShopScene.KEY.IMAGE.ShopPotion,"assets/iamges/shopScene/potion.png");
     }
 
     create(): void
@@ -72,8 +80,6 @@ export default class ShopScene extends Scene
         const card1 = new ShopCard(this, 0, dec.pop(), true).setScale(0.9);
         const card2 = new ShopCard(this, 0, dec.pop(), true).setScale(0.9);
         const card3 = new ShopCard(this, 0, dec.pop(), true).setScale(0.9);
-
-
 
         this.add.existing(card1);
         this.add.existing(card2);
@@ -98,5 +104,11 @@ export default class ShopScene extends Scene
         return Shuffle(dec);
     }
 
+
+
+    // private temporarypotion (){
+    //
+    //
+    // }
 
 }
