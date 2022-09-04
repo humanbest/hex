@@ -1,5 +1,4 @@
 import { Vector } from "matter";
-import { GameObjects } from "phaser";
 import { Scene } from "../interface/Hex";
 import MapManager from "../interface/MapManager";
 import TopMenu from "../interface/TopMenu";
