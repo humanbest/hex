@@ -2,19 +2,24 @@ import TopMenu from "../interface/TopMenu";
 import Card from "../object/Card";
 import {Scene} from "../interface/Hex";
 import LoadScene from "./LoadScene";
-import Shuffle = Phaser.Utils.Array.Shuffle;
 // import Shopproduct from "../interface/Shopproduct";
 
 export class ShopCard extends Card {
 
     private readonly _price: number = 0;
-
+    private static readonly ORIGIN_SCALE: number = 0.9;
+    private static readonly HOVER_SCALE: number = 1;
 
     constructor(scene: Scene, price: number, cardName?: string, isFront?: boolean) {
         super(scene, cardName, isFront);
         this._price = price;
-        this.setInteractive();
-        this.on("pointerDown",()=>this.setSize(50,50));
+        this.setSize(Card.WIDTH, Card.HEIGHT)
+            .setScale(ShopCard.ORIGIN_SCALE)
+            .setInteractive()
+            .on("pointerover", () => this.setScale(ShopCard.HOVER_SCALE))
+            .on("pointerout", () => this.setScale(ShopCard.ORIGIN_SCALE))
+            .on("pointerdown",() => this.destroy());
+        scene.add.existing(this);
     }
 
     get price(): number {
@@ -29,6 +34,7 @@ export class ShopCard extends Card {
 
 export default class ShopScene extends Scene
 {
+
     static readonly KEY = {
         NAME: "ShopScene",
         IMAGE:{
@@ -66,9 +72,10 @@ export default class ShopScene extends Scene
 
     create(): void
     {
-        new TopMenu(this, 0, 0);
 
-        const dec : Array<string> = this.shuffledDec();
+        const Shuffle: (array: string[]) => string[] = Phaser.Utils.Array.Shuffle;
+
+        new TopMenu(this, 0, 0);
 
         this.add.image(this.cameras.main.width,TopMenu.HEIGHT + 10,ShopScene.KEY.IMAGE.ShopOwner).setOrigin(1, 0).setScale(0.5);
 
@@ -77,32 +84,19 @@ export default class ShopScene extends Scene
         this.add.image(this.cameras.main.width+70,600,ShopScene.KEY.IMAGE.ShopMyDec).setOrigin(1,0.5).setScale(0.27);
         this.add.image(this.cameras.main.width+70,700,ShopScene.KEY.IMAGE.ShopExit).setOrigin(1,0.5).setScale(0.27);
 
-        const card1 = new ShopCard(this, 0, dec.pop(), true).setScale(0.9);
-        const card2 = new ShopCard(this, 0, dec.pop(), true).setScale(0.9);
-        const card3 = new ShopCard(this, 0, dec.pop(), true).setScale(0.9);
+        const cardNameArr: Array<string> = Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD));
+        const cardArr: Array<ShopCard> = Shuffle(cardNameArr).slice(0, 3).map(cardName => new ShopCard(this, 0, cardName, true));
 
-        this.add.existing(card1);
-        this.add.existing(card2);
-        this.add.existing(card3);
-
-        Phaser.Actions.GridAlign([card1, card2, card3], {
+        Phaser.Actions.GridAlign([cardArr[0], cardArr[1], cardArr[2]], {
             width: (Card.WIDTH + 20) * 3,
             height: Card.HEIGHT,
             cellWidth: Card.WIDTH + 20,
             cellHeight: Card.HEIGHT,
-            x: Card.WIDTH + 70,
-            y: TopMenu.HEIGHT + Card.HEIGHT * 2 + 100
+            x: this.cameras.main.width/6,
+            y: this.cameras.main.height-(Card.HEIGHT/1.5)
         });
     }
 
-    private shuffledDec (){
-
-        const dec : Array<string> = [];
-
-        dec.push(...Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD)));
-
-        return Shuffle(dec);
-    }
 
 
 
