@@ -1,4 +1,3 @@
-// import { Vector } from "matter";
 import { Scene } from "../interface/Hex";
 import MapObject, { NodeType } from "../object/MapObject";
 import TopMenu from "../interface/TopMenu";
