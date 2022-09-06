@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/css/top.css}"> -->
+<link th:href="@{/css/content.css" rel="stylesheet" />
+
+<th:block layout:fragment="content">
+    <div>
+        <div>
+            <!-- menu -->
+            <div class="section">
+               <ul class="sec_ul">
+                    <li class="sec_li"><a th:href="#">프로필</a></li>
+                    <li class="sec_li"><a th:href="@{/game_news/notice.html">게임소식</a></li>
+                    <li class="sec_li"><a th:href="#">커뮤니티</a></li>
+                    <li class="sec_li"><a th:href="#">고객지원</a></li>
+                </ul>
+            </div>
+            <!-- menu -->
+            
+            <!-- main top -->
+            <div class="container">
+              <!-- main top left -->
+               <div class="main_left">
+                    <div class="main_top_left">
+                        <header>
+                        <h2>공지사항</h2>
+                        </header>
+                    </div>
+                    <div class="main_top_middle"><img src="webpageimg/ex_img.jpg" alt="예시 이미지" class="main_event_img"></div>
+                    <div class="main_top_right"><h2>패치</h2></div>
+                </div>
+                <div class="main_right">
+                    <h4>랭킹</h4>
+                </div>
+            </div>
+            <!-- main top -->
+            <!-- main middle -->
+            <div class="main_middle">
+                <div class="middle_img img1"><img src="webpageimg/ex_img.jpg" class="main_img"></div>
+                <div class="middle_img img2"><img src="webpageimg/ex_img.jpg" class="main_img"></div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</html>

@@ -1,0 +1,46 @@
+.footer{
+    margin-top: 50px;
+    width: 100%;
+    background-color: black;
+    color: lightgray;
+}
+.foot_bg{
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 40px 0 40px 0;
+    padding-right: 240px;
+}
+.foot_team{
+    margin-bottom: 32px;
+    width: auto;
+    height: auto;
+}
+footer .foot_bg nav{
+    margin: 16px 0;
+}
+footer .foot_bg nav ul{
+    overflow: hidden;
+}
+footer .foot_bg nav ul li{
+    display: inline-block;
+    padding: 0 8px;
+}
+footer .foot_bg nav ul li::after{
+    display: inline-block;
+    margin: 1px 0 0;
+    width: 1px;
+    height: 10px;
+    background-color: #666;
+    
+}
+footer .foot_bg address{
+    margin-bottom: 24px;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 24px;
+}
+.foot_p{
+    font-size: 12px;
+    line-height: 12px;
+    margin-bottom: 24px;
+}

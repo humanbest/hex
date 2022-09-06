@@ -1,0 +1,15 @@
+body{
+    margin: 0;
+    width: 100%;
+    max-width: 150%;
+}
+#wrapper{
+    width: 100%;
+}
+a{
+    text-decoration-line : none;
+    color: inherit;
+}
+ul{
+    list-style: none;
+}
