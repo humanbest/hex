@@ -1,0 +1,50 @@
+.content{
+    width: 1080px;
+    margin: 0 auto;
+}
+.category{
+    width: 150px;
+    text-align: left;
+    float: left;
+    border-right: 1px soid #ccc;
+    padding-top: 30px;
+}
+nav h3{
+    font-size: 18px;
+    margin-left: 20px;
+}
+ul li:nth-child(1){
+    font-weight: 900;
+}
+.board_title{
+    width: 860px;
+}
+.board_title_box{
+    float: left;
+    width: 130px;
+}
+ .board{
+     width: 860px;
+     border-collapse: collapse;
+}
+.board th{
+    padding: 9px 12px;
+    height: 30px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid #bbb;
+    color: #555;
+}
+.board td{
+    padding: 8px 12px;
+    font-size: 11px;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.board th:nth-child(1){
+    width: 88px;
+}
+.board th:nth-child(2){
+    width: 488px;
+}
+
