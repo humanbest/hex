@@ -16,9 +16,14 @@ export class ShopCard extends Card {
         this.setSize(Card.WIDTH, Card.HEIGHT)
             .setScale(ShopCard.ORIGIN_SCALE)
             .setInteractive()
-            .on("pointerover", () => this.setScale(ShopCard.HOVER_SCALE))
+            .on("pointerover", () => this.scene.add.tween({
+                targets:this,
+                duration:70,
+                scale:0.95
+            }))
             .on("pointerout", () => this.setScale(ShopCard.ORIGIN_SCALE))
-            .on("pointerdown",() => this.destroy());
+            .on("pointerdown",() => this.setScale(ShopCard.HOVER_SCALE))
+            .on("pointerup",()=>this.destroy());
         scene.add.existing(this);
     }
 
@@ -81,8 +86,14 @@ export default class ShopScene extends Scene
 
         this.add.image(5,40,ShopScene.KEY.IMAGE.ShopPaper).setOrigin(0,0);
 
-        this.add.image(this.cameras.main.width+70,600,ShopScene.KEY.IMAGE.ShopMyDec).setOrigin(1,0.5).setScale(0.27);
+        this.add.image(this.cameras.main.width+70,600,ShopScene.KEY.IMAGE.ShopMyDec,"button").setOrigin(1,0.5).setScale(0.27);
+
+
         this.add.image(this.cameras.main.width+70,700,ShopScene.KEY.IMAGE.ShopExit).setOrigin(1,0.5).setScale(0.27);
+
+
+
+
 
         const cardNameArr: Array<string> = Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD));
         const cardArr: Array<ShopCard> = Shuffle(cardNameArr).slice(0, 3).map(cardName => new ShopCard(this, 0, cardName, true));
