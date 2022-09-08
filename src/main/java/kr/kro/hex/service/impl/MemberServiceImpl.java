@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.kro.hex.domain.Member;
+import kr.kro.hex.persistance.GroupRepository;
 import kr.kro.hex.persistance.MemberRepository;
 import kr.kro.hex.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,9 @@ public class MemberServiceImpl implements MemberService {
     /** 회원 레포지토리 */
     private final MemberRepository memberRepo;
 
+    /** 그룹 레포지토리 */
+    private final GroupRepository groupRepo;
+
     /**
      * 회원 등록하기
      *
@@ -35,8 +39,9 @@ public class MemberServiceImpl implements MemberService {
      * @author Rubisco
      */
     @Override
+    @Transactional
     public void insertMember(Member member) {
-        memberRepo.save(member);
+        memberRepo.save(member.setGroup(groupRepo.findByGroupName("Admin")));
     };
 
     /**

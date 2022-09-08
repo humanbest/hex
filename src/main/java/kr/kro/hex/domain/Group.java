@@ -28,8 +28,8 @@ public class Group extends BaseTime {
     @Id @GeneratedValue
     private Long GroupId;
 
-    @Column(name="group_name", length = 80, nullable = false, unique = true)
-    private String group;
+    @Column(length = 80, nullable = false, unique = true)
+    private String groupName;
 
     @OneToMany(mappedBy = "group")
     private List<Board> boardList = new ArrayList<>();
@@ -38,13 +38,13 @@ public class Group extends BaseTime {
     private List<Member> memberList = new ArrayList<>();
 
     @Builder
-    public Group(Long GroupId, String group) {
+    public Group(Long GroupId, String groupName) {
         this.GroupId = GroupId;
-        this.group = group;
+        this.groupName = groupName;
     }
 
     public Group update(Group group) {
-        this.group = group.group;
+        this.groupName = group.groupName;
 
         return this;
     }
