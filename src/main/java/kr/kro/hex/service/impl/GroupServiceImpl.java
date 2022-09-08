@@ -37,8 +37,8 @@ public class GroupServiceImpl implements GroupService {
      * @author Rubisco
      */
     @Override
-    public void insertCategory(Group group) {
-        groupRepo.save(group);
+    public void insertGroup(Group group) {
+        groupRepo.save(group).getGroupId();
     };
 
     /**
@@ -64,7 +64,11 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public Group getGroup(Group group) {
-        return groupRepo.findById(group.getGroupId()).get();
+        
+        if(group.getGroupId() != null) return groupRepo.findById(group.getGroupId()).get();
+        else if(group.getGroupName() != null) return groupRepo.findByGroupName(group.getGroupName());
+
+        return null;
     };
 
     /**

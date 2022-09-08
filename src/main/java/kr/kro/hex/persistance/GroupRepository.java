@@ -8,10 +8,11 @@ import kr.kro.hex.domain.Group;
  * 그룹 레포지토리
  * 
  * @since 2022-08-21 오후 10:09
- * @version 20220821.0
+ * @version 20220908.0
  * @author Rubisco
  */
 
 public interface GroupRepository extends JpaRepository<Group, Long>  {
     
+    Group findByGroupName(String groupName);
 }

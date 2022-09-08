@@ -14,11 +14,11 @@ import kr.kro.hex.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 게시판 컨트롤러
+ * 커뮤니티 컨트롤러
  *
  * @since 2022-08-20 오후 6:24
  * @version 20220823.0
- * @@author Rubisco
+ * @author Rubisco
  * @see BoardService 게시판 서비스
  * @see CategoryService 카테고리 서비스
  */
@@ -26,8 +26,8 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(path = "/community")
-public class BoardController {
-    
+public class CommunityController {
+
     /** 게시판 서비스 */
     private final BoardService boardService;
 
@@ -35,7 +35,7 @@ public class BoardController {
     private final CategoryService categoryService;
 
     /**
-     * 게시글 목록의 뷰를 반환합니다.
+     * 커뮤니티 게시글 목록의 뷰를 반환합니다.
      *
      * @param model 모델
      * @return getBoardList.html
@@ -50,19 +50,20 @@ public class BoardController {
     }
 
     /**
-     * 게시글의 뷰를 반환합니다.
+     * 커뮤니티 게시글의 뷰를 반환합니다.
      *
      * @param board 게시글
      * @param model 모델
      * @return getBoard.html
      * @since 2022-08-20 오후 6:24
-     * @version 20220823.0
+     * @version 20220908.0
      * @author Rubisco
      * @see Board
      */
     @GetMapping("/{documentId}")
     public String getBoardView(Board board, Model model) {
         model.addAttribute("nl", System.getProperty("line.separator"));
+        model.addAttribute("layout", "default");
         model.addAttribute("board", boardService.getBoard(board));
         return "/board/getBoard";
     }
@@ -73,11 +74,12 @@ public class BoardController {
      * @param model 모델
      * @return insertBoard.html
      * @since 2022-08-20 오후 6:24
-     * @version 20220823.0
+     * @version 20220908.0
      * @author Rubisco
      */
     @GetMapping(params = "act=write")
     public String insertBoardView(Model model) {
+        model.addAttribute("layout", "default");
         model.addAttribute("categoryList", categoryService.getCategoryList());
         return "/board/insertBoard";
     }
@@ -95,6 +97,7 @@ public class BoardController {
      */
     @GetMapping(params = {"documentId","act=update"})
     public String updateBoardView(Board board, Model model) {
+        model.addAttribute("layout", "default");
         model.addAttribute("board", boardService.getBoard(board));
         model.addAttribute("categoryList", categoryService.getCategoryList());
         return "/board/insertBoard";
