@@ -1,6 +1,8 @@
 import { Scene } from "../interface/Hex";
 import MapObject, { NodeType } from "../object/MapObject";
 import TopMenu from "../interface/TopMenu";
+// import MapManager from "../interface/MapManager";
+
 
 /**
  * 맵 씬
@@ -35,6 +37,8 @@ export default class MapScene extends Scene
         this.load.image(NodeType.START, "assets/images/mapScene/StartNode.png");
         this.load.image(NodeType.BATTLE, "assets/images/mapScene/BattleNode.png");
         this.load.image(NodeType.SHOP, "assets/images/mapScene/ShopNode.png");
+        this.load.image(NodeType.REST, "assets/images/mapScene/RestNode.png");
+        this.load.image(NodeType.HIDDEN, "assets/images/mapScene/HiddenNode.png");
         this.load.image(NodeType.BOSS, "assets/images/mapScene/BossNode.png");
         this.load.image(MapScene.KEY.IMAGE.MAP_PLAYER, "assets/images/mapScene/MapPlayer.png");
     }
@@ -82,11 +86,13 @@ export default class MapScene extends Scene
         mapCam.ignore([topMenu, mapBackground, exText]).setBounds(-115, 200, 1300, 1500);
         
         textCam.ignore([topMenu, mapBackground, mapObject]);
+
     }
 
     update (_time: number, delta: number) 
     {
         const controls: Phaser.Cameras.Controls.SmoothedKeyControl = this.registry.get("controls");
         controls.update(delta);
+
     }
 }
