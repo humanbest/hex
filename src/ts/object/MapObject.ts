@@ -2,8 +2,8 @@ import MapScene from "../scene/MapScene";
 
 export default class MapObject extends Phaser.GameObjects.Container {
 
-    /** 플레이어 위치 */
-    private static PLAYER_POINT: PlayerPoint;
+    // /** 플레이어 위치 */
+    // private static PLAYER_POINT: PlayerPoint;
 
     /** 노드 배열 */
     private static NODE_ARR: Array<Node>;
@@ -198,22 +198,16 @@ export default class MapObject extends Phaser.GameObjects.Container {
         this.add(scene.add.image(-100, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0).setDepth(1));
 
         //엣지 이미지 추가
-        // let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0xaa00aa}})
+        let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0xaa00aa}})
         
-        // this.add(graphics)
+        this.add(graphics)
 
-        // for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
-        // {
-        //     let line = new Phaser.Geom.Line(MapObject.EDGE_ARR[i].startX, MapObject.EDGE_ARR[i].startY, MapObject.EDGE_ARR[i].endX, MapObject.EDGE_ARR[i].endY);
+        for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
+        {
+            let line = new Phaser.Geom.Line(MapObject.EDGE_ARR[i].startX, MapObject.EDGE_ARR[i].startY, MapObject.EDGE_ARR[i].endX, MapObject.EDGE_ARR[i].endY);
             
-        //     this.add(graphics.strokeLineShape(line));
-        // }
-
-        // var line = new Phaser.Geom.Line(100, 500, 700, 100);
-
-        // var graphics = this.add.graphics({ lineStyle: { width: 4, color: 0xaa00aa } });
-
-        // graphics.strokeLineShape(line);
+            this.add(graphics.strokeLineShape(line));
+        }
 
         // 노드 이미지 추가
         MapObject.NODE_ARR.forEach(node => this.add(scene.add.image(node.x, node.y, node.type)).setDepth(3));
@@ -251,11 +245,11 @@ type Edge = {
     endY: number
 }
 
-/** 플레이어 위치 인터페이스 */
-type PlayerPoint = {
-    x: number,
-    y: number
-}
+// /** 플레이어 위치 인터페이스 */
+// type PlayerPoint = {
+//     x: number,
+//     y: number
+// }
 
 /** 노드 좌표 정보(이차원 배열 전용) 인터페이스 */
 type NodePoint = {
