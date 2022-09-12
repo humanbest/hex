@@ -1,6 +1,7 @@
 package kr.kro.hex.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,14 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public Member getMember(Member member) {
-        return memberRepo.findById(member.getMemberId()).get();
+        
+        if (member.getMemberId() != null) {
+            Optional<Member> findMember = memberRepo.findById(member.getMemberId());
+            return findMember.isPresent() ? findMember.get() : null;
+        }
+        else if (member.getId() != null) return memberRepo.findById(member.getId());
+
+        return null;
     };
 
     /**
