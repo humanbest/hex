@@ -3,21 +3,21 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<th:block th:fragment="headFragment">
+<head th:fragment="headFragment">
 
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <title layout:fragment="title"></title>
+    <title layout:fragment="title"></title>
 
-        <!-- 공통 CSS -->
-        <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    
+    <!--tailwindcss -->
+    <script th:src="@{/js/tailwindcss.js}"></script>
 
-        <!-- 개별 CSS -->
-        <th:block layout:fragment="css"></th:block>
+    <!-- 개별 CSS -->
+    <th:block layout:fragment="css"></th:block>
 
-        <!--tailwindcss -->
-        <script th:src="@{/js/tailwindcss.js}"></script>
-
-</th:block>
+</head>
 </html>

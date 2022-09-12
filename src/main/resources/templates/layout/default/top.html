@@ -1,31 +1,28 @@
 <!DOCTYPE html>
-<html lang="ko">
-<th:block th:fragment="topFragment">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="topFragment" class="h-44 bg-teal-300">
     <div>
-        <div class="h-44 bg-teal-300">
-            <div>
-                <div class="float-left text-5xl m-14">
-                    <a href="MainPage.html" id="team_name">hex</a>
+        <div class="float-left text-5xl m-14">
+            <a href="MainPage.html" id="team_name">hex</a>
+        </div>
+        <div class="float-right mt-6 mr-4 w-5">
+            <div class="text-right flex justify-end">
+                <div class="mt-2.5">
+                    <a href="../Sign/Sign-in">sign in</a>
                 </div>
-                <div class="float-right mt-6 mr-4 w-5">
-                    <div class="text-right flex justify-end">
-                        <div class="mt-2.5">
-                            <a href="../Sign/Sign-in">sign in</a>
-                        </div>
-                        <div class="mt-2.5">
-                            <a href="#">sign up</a>
-                        </div>
-                        <div class="ml-2.5 text-4xl">
-                            <a href="#"><b>Game</b></a>
-                        </div>
-                    </div>
-                    <div class="mt-7 h-10">
-                        <input id="search-text" type="text" placeholder="검색어를 입력하세요">
-                        <button id="search-btn" type="submit"></button>
-                    </div>
+                <div class="mt-2.5">
+                    <a href="#">sign up</a>
                 </div>
+                <div class="ml-2.5 text-4xl">
+                    <a href="#"><b>Game</b></a>
+                </div>
+            </div>
+            <div class="mt-7 h-10">
+                <input id="search-text" type="text" placeholder="검색어를 입력하세요">
+                <button id="search-btn" type="submit"></button>
             </div>
         </div>
     </div>
-</th:block>
+</header>
 </html>
