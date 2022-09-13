@@ -8,7 +8,7 @@ import TopMenu from "../interface/TopMenu";
  * 맵 씬
  * 
  * @author yhy5847
- * @since 2022-09-01 오전 10:21
+ * @since 2022-08-30 오전 11:33
  */
 export default class MapScene extends Scene
 {
@@ -48,7 +48,7 @@ export default class MapScene extends Scene
         /** 배경화면 */
         const mapBackground = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, "map_background").setScale(0.52).setDepth(0);
 
-        /** 지도 */
+        /** 맵 오브젝트(지도, 노드, 엣지, 플레이어) */
         const mapObject: MapObject = new MapObject(this)
 
         /** 상단 매뉴 */

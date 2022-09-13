@@ -1,6 +1,12 @@
-import { Vector } from "matter";
 import MapScene from "../scene/MapScene";
 
+
+/**
+ * 맵 오브젝트
+ * 
+ * @author yhy5847
+ * @since 2022-09-06 오전 11:09
+ */
 export default class MapObject extends Phaser.GameObjects.Container {
 
     // /** 플레이어 위치 */
@@ -9,10 +15,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
     /** 노드 배열 */
     private static NODE_ARR: Array<Node>;
 
-    /**노드 좌표 정보(이차원 배열) */
-    private static NODE_POINT_ARR: Array<Array<NodePoint>>;
-
-    /** 노드 층 설정 */
+    /** 노드 층 설정(Start, Boss node 제외한 깊이.length) */
     private static readonly DEPTH = 7;
     
     /** 층 별 노드 개수 Min, Max 값 설정 */
@@ -44,6 +47,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
 
         MapObject.NODE_ARR = [];
 
+        //start 노드 푸쉬
         MapObject.NODE_ARR.push({
             type: NodeType.START, 
             depth: 0, 
@@ -52,6 +56,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
             y: start
         });
 
+        //노드 랜덤 생성 알고리즘 (start, boss 노드 제외한 노드 푸쉬)
         for(let i = 1; i <= MapObject.DEPTH; i++) {
             
             let randomNodeSpace = ((Math.random() * (MapObject.MAX_SPACE - 1)) + MapObject.MIN_SPACE)|0;
@@ -90,125 +95,73 @@ export default class MapObject extends Phaser.GameObjects.Container {
                     type: randomNode,
                     depth: i,
                     space: j,
-                    x: (centerPoint + 50) + (j - (randomNodeSpace/2 + 1)) * 100,
+                    x: (centerPoint + 50) + (j - (randomNodeSpace/2)) * 100,
                     y: start - (i * step)
                 });
             }
         }
 
+        //boss 노드 푸쉬
         MapObject.NODE_ARR.push({
             type: NodeType.BOSS, 
             depth: (MapObject.DEPTH + 1), 
-            space: 1,
+            space: 0,
             x: centerPoint, 
             y: start - ((MapObject.DEPTH + 1) * step)
         });
-
-
-        const nodeByDepth: Array<Array<Node>> = Array.from({length: MapObject.DEPTH + 2}, ()=>[]);
-        MapObject.NODE_ARR.forEach( node => {
-            nodeByDepth[node.depth].push(node)
-        })
-
-        console.log(nodeByDepth[3][0].x)
     }
-
-
-    /**노드 좌표 이차원 배열 정보 설정*/
-    // private static setNodePoint(): void
-    // {   
-    //     MapObject.NODE_POINT_ARR = [];
-
-    //     MapObject.NODE_POINT_ARR.push([{
-    //         x: MapObject.NODE_ARR[0].x,
-    //         y: MapObject.NODE_ARR[0].y
-    //     }])
-
-    //     console.log(MapObject.NODE_POINT_ARR[0][0]);
-
-    //     let arr: Array<NodePoint>;
-
-    //     for(let i = 2; i <= MapObject.DEPTH+1; ++i)
-    //     {
-    //         arr = [];
-
-    //         for(let j = 1; j < MapObject.NODE_ARR.length-1; ++j)
-    //         {
-
-    //             if(MapObject.NODE_ARR[j].depth === i)
-    //             {
-    //                 arr.push({
-    //                     x: MapObject.NODE_ARR[j].x,
-    //                     y: MapObject.NODE_ARR[j].y
-    //                 })
-
-                    
-    //             }
-    //         }
-    //         console.log(arr[0], arr[1]);
-
-    //         MapObject.NODE_POINT_ARR.push(arr);
-
-    //         console.log(MapObject.NODE_POINT_ARR[1][0].x)
-    //     }
-
-    //     MapObject.NODE_POINT_ARR.push([{
-    //         x: MapObject.NODE_ARR[MapObject.NODE_ARR.length-1].x,
-    //         y: MapObject.NODE_ARR[MapObject.NODE_ARR.length-1].y
-    //     }])
-
-    // }
 
 
     /** 엣지 데이터 설정 */
     private static setEdgeData() :void
     {
-        const nodeByDepth: Array<Array<Node>> = [];
-
+        // 노드 뎁스끼리 분류한 이차원 배열
+        const nodeByDepth: Array<Array<Node>> = Array.from({length: MapObject.DEPTH + 2}, ()=>[]);
+        
+        //노드 데이터 가공(뎁스 기준)
         MapObject.NODE_ARR.forEach( node => {
             nodeByDepth[node.depth].push(node)
         })
 
-        console.log(nodeByDepth[3][0].x)
 
+        //엣지 알고리즘
         MapObject.EDGE_ARR = [];
         let gap: number;
 
-        for(let i = 0; i < MapObject.NODE_POINT_ARR.length-1; ++i)
+        for(let i = 0; i < nodeByDepth.length-1; ++i)
         {
-            gap = MapObject.NODE_POINT_ARR[i].length - MapObject.NODE_POINT_ARR[i+1].length;
+            gap = nodeByDepth[i].length - nodeByDepth[i+1].length;
 
-            for(let j = 0; j < MapObject.NODE_POINT_ARR[i].length; ++j)
+            for(let j = 0; j < nodeByDepth[i].length; ++j)
             {
-                console.log("edgedata"+ j)
-                if(j === MapObject.NODE_POINT_ARR[i].length-1 && gap < 0)
+                if( gap < 0 && j === nodeByDepth[i].length-1 )
                 {
-                    for(let k = MapObject.NODE_POINT_ARR[i].length-1; k < MapObject.NODE_POINT_ARR[i+1].length; ++k)
+                    for(let k = nodeByDepth[i].length-1; k < nodeByDepth[i+1].length; ++k)
                     {
                         MapObject.EDGE_ARR.push({
-                            startX: MapObject.NODE_POINT_ARR[i][j].x,
-                            startY: MapObject.NODE_POINT_ARR[i][j].y,
-                            endX: MapObject.NODE_POINT_ARR[i+1][k].x,
-                            endY: MapObject.NODE_POINT_ARR[i+1][k].y
+                            startX: nodeByDepth[i][j].x,
+                            startY: nodeByDepth[i][j].y,
+                            endX: nodeByDepth[i+1][k].x,
+                            endY: nodeByDepth[i+1][k].y
                         })
                     }
                 }
-                else if(j >= gap-1 && gap > 0)
+                else if( gap > 0 && j > nodeByDepth[i+1].length-1)
                 {
                     MapObject.EDGE_ARR.push({
-                        startX: MapObject.NODE_POINT_ARR[i][j].x,
-                        startY: MapObject.NODE_POINT_ARR[i][j].y,
-                        endX: MapObject.NODE_POINT_ARR[i+1][MapObject.NODE_POINT_ARR[i+1].length-1].x,
-                        endY: MapObject.NODE_POINT_ARR[i+1][MapObject.NODE_POINT_ARR[i+1].length-1].y
+                        startX: nodeByDepth[i][j].x,
+                        startY: nodeByDepth[i][j].y,
+                        endX: nodeByDepth[i+1][nodeByDepth[i+1].length-1].x,
+                        endY: nodeByDepth[i+1][nodeByDepth[i+1].length-1].y
                     })
                 }
                 else
                 {
                     MapObject.EDGE_ARR.push({
-                        startX: MapObject.NODE_POINT_ARR[i][j].x,
-                        startY: MapObject.NODE_POINT_ARR[i][j].y,
-                        endX: MapObject.NODE_POINT_ARR[i+1][j].x,
-                        endY: MapObject.NODE_POINT_ARR[i+1][j].y
+                        startX: nodeByDepth[i][j].x,
+                        startY: nodeByDepth[i][j].y,
+                        endX: nodeByDepth[i+1][j].x,
+                        endY: nodeByDepth[i+1][j].y
                     })
                 }
             }
@@ -223,38 +176,24 @@ export default class MapObject extends Phaser.GameObjects.Container {
         // 노드 정보가 없으면 노드 배열 생성
         if(MapObject.NODE_ARR === undefined)
         {
-            console.log("constructor")
             MapObject.setNodeData(scene);
-            // MapObject.setNodePoint();
-            // MapObject.setEdgeData();
-
-            // for(let i = 0; i < MapObject.NODE_POINT_ARR.length; ++i)
-            // {
-            //     for(let j = 0; j < MapObject.NODE_POINT_ARR.length; ++j)
-            //     {
-            //         console.log(
-            //             MapObject.NODE_POINT_ARR[i][j].x,
-            //             MapObject.NODE_POINT_ARR[i][j].y
-            //         )
-            //     }
-            //     console.log(" ")
-            // }
+            MapObject.setEdgeData();
         }
 
         // 지도 이미지 추가
         this.add(scene.add.image(-100, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0).setDepth(1));
 
         //엣지 이미지 추가
-        // let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0xaa00aa}})
+        let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0x000000}})
         
-        // this.add(graphics)
+        this.add(graphics)
 
-        // for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
-        // {
-        //     let line = new Phaser.Geom.Line(MapObject.EDGE_ARR[i].startX, MapObject.EDGE_ARR[i].startY, MapObject.EDGE_ARR[i].endX, MapObject.EDGE_ARR[i].endY);
+        for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
+        {
+            let line = new Phaser.Geom.Line(MapObject.EDGE_ARR[i].startX, MapObject.EDGE_ARR[i].startY, MapObject.EDGE_ARR[i].endX, MapObject.EDGE_ARR[i].endY);
             
-        //     this.add(graphics.strokeLineShape(line));
-        // }
+            this.add(graphics.strokeLineShape(line));
+        }
 
         // 노드 이미지 추가
         MapObject.NODE_ARR.forEach(node => this.add(scene.add.image(node.x, node.y, node.type)).setDepth(3));
@@ -297,6 +236,3 @@ type Edge = {
 //     x: number,
 //     y: number
 // }
-
-/** 노드 좌표 정보(이차원 배열 전용) 인터페이스 */
-type NodePoint = Vector;
