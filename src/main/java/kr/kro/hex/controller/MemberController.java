@@ -32,6 +32,7 @@ public class MemberController {
 
         if(findMember != null && findMember.getPassword().equals(member.getPassword())) {
             model.addAttribute("member", findMember);
+            return "redirect:/community";
         }
         return "redirect:/member?act=login";
     }

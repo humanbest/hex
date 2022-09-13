@@ -8,6 +8,7 @@
 <style layout:fragment="css" th:replace="board/fragment/css :: board"></style>
 
 <section layout:fragment="content" class="container mx-auto">
+    <p><font th:text="${session['member'].nickName}"></font>님, 환영합니다.</p>
     <table id="board">
         <thead>
             <tr>

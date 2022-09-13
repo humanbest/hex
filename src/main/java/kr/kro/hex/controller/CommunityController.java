@@ -4,11 +4,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import kr.kro.hex.domain.Board;
+import kr.kro.hex.domain.Member;
 import kr.kro.hex.service.BoardService;
 import kr.kro.hex.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ import lombok.RequiredArgsConstructor;
  * @see CategoryService 카테고리 서비스
  */
 
+@SessionAttributes("member")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(path = "/community")
@@ -34,6 +38,11 @@ public class CommunityController {
     /** 카테고리 서비스 */
     private final CategoryService categoryService;
 
+    @ModelAttribute("member")
+    public Member setMember() {
+        return Member.builder().build();
+    }
+
     /**
      * 커뮤니티 게시글 목록의 뷰를 반환합니다.
      *
@@ -44,7 +53,10 @@ public class CommunityController {
      * @author Rubisco
      */
     @GetMapping()
-    public String getBoardListView(Model model) {
+    public String getBoardListView(@ModelAttribute("member") Member member, Model model) {
+
+        if(member.getId() == null) return "redirect:/member?act=login";
+        
         model.addAttribute("boardList", boardService.getBoardList());
         return "/board/getBoardList";
     }
