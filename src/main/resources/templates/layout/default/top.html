@@ -1,28 +1,31 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org">
-<header th:fragment="topFragment" class="h-44 bg-teal-300">
+<html lang="ko">
+<th:block th:fragment="topFragment">
     <div>
-        <div class="float-left text-5xl m-14">
-            <a href="MainPage.html" id="team_name">hex</a>
-        </div>
-        <div class="float-right mt-6 mr-4 w-5">
-            <div class="text-right flex justify-end">
-                <div class="mt-2.5">
-                    <a href="../Sign/Sign-in">sign in</a>
+        <div class="h-48 bg-teal-300">
+            <div>
+                <div class="float-left text-5xl m-14">
+                    <a th:href="@{/board/layout.html}" id="team_name">hex</a>
                 </div>
-                <div class="mt-2.5">
-                    <a href="#">sign up</a>
+                <div class="float-right mt-6 mr-4 w-96">
+                    <div class="text-right flex justify-end">
+                        <div class="mt-2.5">
+                            <a th:href="#">sign in</a>
+                        </div>
+                        <div class="mt-2.5">
+                            <a href="#">sign up</a>
+                        </div>
+                        <div class="ml-2.5 text-4xl">
+                            <a href="#"><b>Game</b></a>
+                        </div>
+                    </div>
+                    <div class="mt-9 h-12 border border-solid border-blue-800 bg-white">
+                        <input class="text-base w-80 p-2.5 border-0 outline-none float-left" type="text" placeholder="검색어를 입력하세요">
+                        <button class="w-12 h-full border-0 border-blue-800 outline-none bg-sky-400 float-right" type="submit"></button>
+                    </div>
                 </div>
-                <div class="ml-2.5 text-4xl">
-                    <a href="#"><b>Game</b></a>
-                </div>
-            </div>
-            <div class="mt-7 h-10">
-                <input id="search-text" type="text" placeholder="검색어를 입력하세요">
-                <button id="search-btn" type="submit"></button>
             </div>
         </div>
     </div>
-</header>
+</th:block>
 </html>

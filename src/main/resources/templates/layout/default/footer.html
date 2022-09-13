@@ -1,6 +1,26 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org">
-<footer th:fragment="footerFragment">
-</footer>
+<html lang="ko">
+<th:block th:fragment="footerFragment">
+    <div>
+        <div class="mt-12 w-full bg-black text-gray-300">
+            <div class="max-w-full ">
+               <h2 class="foot_team">hex</h2>
+                <nav>
+                    <ul>
+                        <li><a th:href="#">팀소개</a></li>
+                        <li><a th:href="#">이용약관</a></li>
+                        <li><a th:href="#">게임이용등급안내</a></li>
+                        <li><a th:href="#">개인정보처리방침</a></li>
+                        <li><a th:href="#">운영정책</a></li>
+                    </ul>
+                </nav>
+                <address>
+                    <span>충청남도 천안시</span><br/>
+                    <span>E-mail : @gmial.com</span>
+                </address>
+                <p class="foot_p">ⓒ hex All Rights Reserved.</p>
+            </div>
+        </div>
+    </div>
+</th:block>
 </html>
