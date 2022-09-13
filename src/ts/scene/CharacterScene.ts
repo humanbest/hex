@@ -29,16 +29,12 @@ export default class CharacterScene extends Scene
                 this.scale.startFullscreen();
             }
         })
-        this.load.image('SBGI', 'assets/images/characterScene/SBGI.png');
-        this.load.image('Particle1', 'assets/images/characterScene/Particle1.png');
-        this.load.image('Particle2', 'assets/images/characterScene/Particle2.png');
-        this.load.image('Particle3', 'assets/images/characterScene/Particle3.png');
+        this.load.image('SBGI', 'assets/images/characterScene/Background1.png');
 
-
-        this.load.image('smugglerSel', 'assets/images/characterScene/smugglerSel.png');
-        this.load.image('phantomSel', 'assets/images/characterScene/phantomSel.png');
-        this.load.image('WarwickSel', 'assets/images/characterScene/WarwickSel.png');
-        this.load.image('question', 'assets/images/characterScene/question.png');
+        this.load.image('smugglerSel', 'assets/images/characterScene/PosterSm.png');
+        this.load.image('phantomSel', 'assets/images/characterScene/PosterPh.png');
+        this.load.image('WarwickSel', 'assets/images/characterScene/PosterWa.png');
+        this.load.image('question', 'assets/images/characterScene/PosterWh.png');
         this.load.image('LeftSel', 'assets/images/characterScene/LeftSel.png');
         this.load.image('RightSel', 'assets/images/characterScene/RightSel.png');
 
