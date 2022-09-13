@@ -1,3 +1,4 @@
+import { Vector } from "matter";
 import MapScene from "../scene/MapScene";
 
 export default class MapObject extends Phaser.GameObjects.Container {
@@ -42,13 +43,11 @@ export default class MapObject extends Phaser.GameObjects.Container {
         const centerPoint = scene.game.canvas.width/2 + 50;
 
         MapObject.NODE_ARR = [];
-        MapObject.NODE_POINT_ARR = new Array(MapObject.DEPTH+1)
-        MapObject.NODE_POINT_ARR[0] = [];
 
         MapObject.NODE_ARR.push({
             type: NodeType.START, 
-            depth: 1, 
-            space: 1,
+            depth: 0, 
+            space: 0,
             x: centerPoint, 
             y: start
         });
@@ -57,9 +56,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
             
             let randomNodeSpace = ((Math.random() * (MapObject.MAX_SPACE - 1)) + MapObject.MIN_SPACE)|0;
 
-            MapObject.NODE_POINT_ARR[i] = [];
-
-            for(let j = 1; j <= randomNodeSpace; j++) {
+            for(let j = 0; j < randomNodeSpace; j++) {
 
                 let k: number = Math.random();
                 let randomNode: NodeType;
@@ -89,8 +86,6 @@ export default class MapObject extends Phaser.GameObjects.Container {
                     randomNode = NodeType.BATTLE;
                 }
 
-                MapObject.NODE_POINT_ARR[MapObject.DEPTH+1] = [];
-
                 MapObject.NODE_ARR.push({
                     type: randomNode,
                     depth: i,
@@ -101,52 +96,91 @@ export default class MapObject extends Phaser.GameObjects.Container {
             }
         }
 
-        MapObject.NODE_POINT_ARR[MapObject.DEPTH+1] = [];
-
         MapObject.NODE_ARR.push({
             type: NodeType.BOSS, 
-            depth: (MapObject.DEPTH + 2), 
+            depth: (MapObject.DEPTH + 1), 
             space: 1,
             x: centerPoint, 
             y: start - ((MapObject.DEPTH + 1) * step)
         });
+
+
+        const nodeByDepth: Array<Array<Node>> = Array.from({length: MapObject.DEPTH + 2}, ()=>[]);
+        MapObject.NODE_ARR.forEach( node => {
+            nodeByDepth[node.depth].push(node)
+        })
+
+        console.log(nodeByDepth[3][0].x)
     }
 
 
-    /**노드 좌표 이차원 배열 정보 */
-    private static setNodePoint(): void
-    {   
-        MapObject.NODE_POINT_ARR[0].push({
-            x: MapObject.NODE_ARR[0].x,
-            y: MapObject.NODE_ARR[0].y
-        })
+    /**노드 좌표 이차원 배열 정보 설정*/
+    // private static setNodePoint(): void
+    // {   
+    //     MapObject.NODE_POINT_ARR = [];
 
-        for(let i = 1; i < MapObject.NODE_ARR.length-1; ++i)
-        {
-            MapObject.NODE_POINT_ARR[MapObject.NODE_ARR[i].depth].push({
-                x: MapObject.NODE_ARR[i].x,
-                y: MapObject.NODE_ARR[i].y
-            })
-        }
+    //     MapObject.NODE_POINT_ARR.push([{
+    //         x: MapObject.NODE_ARR[0].x,
+    //         y: MapObject.NODE_ARR[0].y
+    //     }])
 
-        MapObject.NODE_POINT_ARR[MapObject.DEPTH-1].push({
-            x: MapObject.NODE_ARR[MapObject.DEPTH-1].x,
-            y: MapObject.NODE_ARR[MapObject.DEPTH-1].y
-        })
-    }
+    //     console.log(MapObject.NODE_POINT_ARR[0][0]);
+
+    //     let arr: Array<NodePoint>;
+
+    //     for(let i = 2; i <= MapObject.DEPTH+1; ++i)
+    //     {
+    //         arr = [];
+
+    //         for(let j = 1; j < MapObject.NODE_ARR.length-1; ++j)
+    //         {
+
+    //             if(MapObject.NODE_ARR[j].depth === i)
+    //             {
+    //                 arr.push({
+    //                     x: MapObject.NODE_ARR[j].x,
+    //                     y: MapObject.NODE_ARR[j].y
+    //                 })
+
+                    
+    //             }
+    //         }
+    //         console.log(arr[0], arr[1]);
+
+    //         MapObject.NODE_POINT_ARR.push(arr);
+
+    //         console.log(MapObject.NODE_POINT_ARR[1][0].x)
+    //     }
+
+    //     MapObject.NODE_POINT_ARR.push([{
+    //         x: MapObject.NODE_ARR[MapObject.NODE_ARR.length-1].x,
+    //         y: MapObject.NODE_ARR[MapObject.NODE_ARR.length-1].y
+    //     }])
+
+    // }
 
 
     /** 엣지 데이터 설정 */
     private static setEdgeData() :void
     {
+        const nodeByDepth: Array<Array<Node>> = [];
+
+        MapObject.NODE_ARR.forEach( node => {
+            nodeByDepth[node.depth].push(node)
+        })
+
+        console.log(nodeByDepth[3][0].x)
+
         MapObject.EDGE_ARR = [];
+        let gap: number;
 
         for(let i = 0; i < MapObject.NODE_POINT_ARR.length-1; ++i)
         {
-            let gap = MapObject.NODE_POINT_ARR[i].length - MapObject.NODE_POINT_ARR[i+1].length;
+            gap = MapObject.NODE_POINT_ARR[i].length - MapObject.NODE_POINT_ARR[i+1].length;
 
             for(let j = 0; j < MapObject.NODE_POINT_ARR[i].length; ++j)
             {
+                console.log("edgedata"+ j)
                 if(j === MapObject.NODE_POINT_ARR[i].length-1 && gap < 0)
                 {
                     for(let k = MapObject.NODE_POINT_ARR[i].length-1; k < MapObject.NODE_POINT_ARR[i+1].length; ++k)
@@ -189,25 +223,38 @@ export default class MapObject extends Phaser.GameObjects.Container {
         // 노드 정보가 없으면 노드 배열 생성
         if(MapObject.NODE_ARR === undefined)
         {
+            console.log("constructor")
             MapObject.setNodeData(scene);
-            MapObject.setNodePoint();
-            MapObject.setEdgeData();
+            // MapObject.setNodePoint();
+            // MapObject.setEdgeData();
+
+            // for(let i = 0; i < MapObject.NODE_POINT_ARR.length; ++i)
+            // {
+            //     for(let j = 0; j < MapObject.NODE_POINT_ARR.length; ++j)
+            //     {
+            //         console.log(
+            //             MapObject.NODE_POINT_ARR[i][j].x,
+            //             MapObject.NODE_POINT_ARR[i][j].y
+            //         )
+            //     }
+            //     console.log(" ")
+            // }
         }
 
         // 지도 이미지 추가
         this.add(scene.add.image(-100, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0).setDepth(1));
 
         //엣지 이미지 추가
-        let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0xaa00aa}})
+        // let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0xaa00aa}})
         
-        this.add(graphics)
+        // this.add(graphics)
 
-        for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
-        {
-            let line = new Phaser.Geom.Line(MapObject.EDGE_ARR[i].startX, MapObject.EDGE_ARR[i].startY, MapObject.EDGE_ARR[i].endX, MapObject.EDGE_ARR[i].endY);
+        // for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
+        // {
+        //     let line = new Phaser.Geom.Line(MapObject.EDGE_ARR[i].startX, MapObject.EDGE_ARR[i].startY, MapObject.EDGE_ARR[i].endX, MapObject.EDGE_ARR[i].endY);
             
-            this.add(graphics.strokeLineShape(line));
-        }
+        //     this.add(graphics.strokeLineShape(line));
+        // }
 
         // 노드 이미지 추가
         MapObject.NODE_ARR.forEach(node => this.add(scene.add.image(node.x, node.y, node.type)).setDepth(3));
@@ -252,7 +299,4 @@ type Edge = {
 // }
 
 /** 노드 좌표 정보(이차원 배열 전용) 인터페이스 */
-type NodePoint = {
-    x: number,
-    y: number
-}
+type NodePoint = Vector;

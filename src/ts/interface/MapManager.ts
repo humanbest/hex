@@ -20,12 +20,28 @@ export default class MapManager extends Phaser.GameObjects.Container {
     }
 
     /**플레이어 노드 이동 규칙 */
-    private static playerMoveRule(movePoint: MapScene) : boolean
+    private static playerMoveRule(x: number, y: number, nodePoint: MapObject) : boolean
     {
-        if(movePoint)
+        let minPointerX = x - 15;
+        let maxPointerX = x + 15;
+        let minPointerY = y - 15;
+        let maxPointerY = y + 15;
+
+        for(let i = 0; i < nodePoint.length; ++i)
         {
-            
+            for(let j = 0; j < nodePoint[i].length; ++j)
+            {
+                if(minPointerX <= nodePoint[i][j].x && nodePoint[i][j].x <= maxPointerX && minPointerY <= nodePoint[i][j].y && nodePoint[i][j].y <= maxPointerY)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
+
         return false;
     }
 }
