@@ -4,6 +4,7 @@ import BattleScene from "./scene/BattleScene";
 import ShopScene from "./scene/ShopScene";
 import CharacterScene from "./scene/CharacterScene";
 import MapScene from "./scene/MapScene";
+import DodgeScene from "./scene/dodgeScene";
 
 (function() {
     const wf = document.createElement('script');
@@ -32,8 +33,14 @@ window.WebFontConfig = {
                 }
             },
             pixelArt: true,
-            scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene],
-            player: defaultPlayer
+            scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene, DodgeScene],
+            player: defaultPlayer,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    debug: false
+                }
+            }
         });
     }
 };
