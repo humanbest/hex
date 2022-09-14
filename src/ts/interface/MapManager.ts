@@ -1,4 +1,4 @@
-import MapObject from "../object/MapObject";
+import MapObject, { NodeType } from "../object/MapObject";
 import MapScene from "../scene/MapScene";
 import { Game, Scene } from "./Hex";
 
@@ -11,6 +11,38 @@ import { Game, Scene } from "./Hex";
  */
 export default class MapManager extends Phaser.GameObjects.Container {
 
+    private static _PLAYER_POINT: PlayerPoint;
+    static get PLAYER_POINT() {return MapManager._PLAYER_POINT;};
+    static set PLAYER_POINT(PLAYER_POINT) {MapManager._PLAYER_POINT = PLAYER_POINT;};
+
+    /** 플레이어 이동 */
+    private static playerMove(scene: MapScene, playerImage: MapScene, clickPointX: number, clickPointY: number): void
+    {
+
+        for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
+        {
+            let useEgde = MapObject.EDGE_ARR[i]
+
+            if( clickPointX-10 < useEgde.endX && useEgde.endX < clickPointX+10
+                &&
+                clickPointY-10 < useEgde.endY && useEgde.endY < clickPointY+10 )
+            {
+                scene.tweens.add({
+                    targets: playerImage,
+                    x: useEgde.endX,
+                    y: useEgde.endY,
+                    duration: 1000,
+                    delay: 500
+                });
+
+                MapManager.PLAYER_POINT = {
+                    x: useEgde.endX,
+                    y: useEgde.endY,
+                    nodetype: useEgde.moveNode
+                }
+            }
+        }
+    }
 
     constructor(scene: Scene, x: number, y: number)
     {
@@ -18,30 +50,11 @@ export default class MapManager extends Phaser.GameObjects.Container {
 
         scene.add.existing(this);
     }
+}
 
-    /**플레이어 노드 이동 규칙 */
-    private static playerMoveRule(x: number, y: number, nodePoint: MapObject) : boolean
-    {
-        let minPointerX = x - 15;
-        let maxPointerX = x + 15;
-        let minPointerY = y - 15;
-        let maxPointerY = y + 15;
-
-        for(let i = 0; i < nodePoint.length; ++i)
-        {
-            for(let j = 0; j < nodePoint[i].length; ++j)
-            {
-                if(minPointerX <= nodePoint[i][j].x && nodePoint[i][j].x <= maxPointerX && minPointerY <= nodePoint[i][j].y && nodePoint[i][j].y <= maxPointerY)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        return false;
-    }
+/** 플레이어 위치정보 인터페이스 */
+type PlayerPoint = {
+    x: number,
+    y: number,
+    nodetype: NodeType
 }

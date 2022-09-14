@@ -1,7 +1,7 @@
 import { Scene } from "../interface/Hex";
 import MapObject, { NodeType } from "../object/MapObject";
 import TopMenu from "../interface/TopMenu";
-// import MapManager from "../interface/MapManager";
+import MapManager from "../interface/MapManager";
 
 
 /**
@@ -48,7 +48,7 @@ export default class MapScene extends Scene
         /** 배경화면 */
         const mapBackground = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, "map_background").setScale(0.52).setDepth(0);
 
-        /** 맵 오브젝트(지도, 노드, 엣지, 플레이어) */
+        /** 맵 오브젝트(지도, 노드, 엣지) */
         const mapObject: MapObject = new MapObject(this)
 
         /** 상단 매뉴 */
