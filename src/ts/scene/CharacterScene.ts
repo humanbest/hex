@@ -158,10 +158,10 @@ export default class CharacterScene extends Scene
             })
         
         
-        //맵씬으로 넘어가기(아직 구현이 안됨 ㅠㅠ)
-        GameStartB.on('pointerdown', function (this:Phaser.Game) {
-            this.scene.add('MapScene',MapScene, true)
-        }),this
+        //맵씬으로 넘어가기
+        GameStartB.on('pointerdown', ()=> {
+            this.scene.start(MapScene.KEY.NAME)
+        })
 
 
         //초기화면에서 캐릭터 선택 버튼 클릭시 효과
