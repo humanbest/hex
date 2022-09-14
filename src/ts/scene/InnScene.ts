@@ -1,4 +1,4 @@
-import {Scene} from "../interface/Hex";
+import { Scene } from "../interface/Hex";
 import TopMenu from "../interface/TopMenu";
 
 export default class InnScene extends Scene{
@@ -6,7 +6,7 @@ export default class InnScene extends Scene{
     static readonly KEY = {
         NAME: "InnScene",
         IMAGE: {
-            Innbackground:"Innbackground"
+            Inn:"Inn"
         }
     }
 
@@ -17,7 +17,15 @@ export default class InnScene extends Scene{
 
     preload(): void {
 
-        this.load.image(InnScene.KEY.IMAGE.Innbackground, "assets/images/innScene/Innbackground.png");
+        this.input.keyboard.on('keydown-F', () => {
+            if (this.scale.isFullscreen) {
+                this.scale.stopFullscreen();
+            } else {
+                this.scale.startFullscreen();
+            }
+        })
+
+        this.load.image(InnScene.KEY.IMAGE.Inn, "assets/images/innScene/Inn.png");
 
     }
 
@@ -25,7 +33,9 @@ export default class InnScene extends Scene{
 
         new TopMenu(this, 0, 0);
 
-        this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, InnScene.KEY.IMAGE.Innbackground);
+        console.log("dd");
+
+        this.add.image(300,300, InnScene.KEY.IMAGE.Inn);
 
     }
 
