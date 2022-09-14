@@ -32,13 +32,6 @@ window.WebFontConfig = {
                 }
             },
             pixelArt: true,
-            physics: {
-                default: 'arcade',
-                arcade: {
-                    gravity: { y: 100 },
-                    debug: true
-                }
-            },
             scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene],
             player: defaultPlayer
         });
