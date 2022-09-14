@@ -63,8 +63,9 @@ export default class CharacterScene extends Scene
             this.add.image(0, 0, 'smugglerSel'),
             this.add.image(0, 0, 'phantomSel'),
             this.add.image(0, 0, 'WarwickSel'),
-            this.add.image(0, 0, 'question')
+            this.add.image(0, 0, 'question').setName('question')
         ].map(button => button.setInteractive().setVisible(false));
+        
        
         //캐릭터 버튼 컨테이너
         const characterContainer = this.add.container(160, this.cameras.main.height/2).add(buttons).setDepth(3);
@@ -101,9 +102,13 @@ export default class CharacterScene extends Scene
 
         //캐릭터 선택화면에서 캐릭터 버튼 효과
         buttons.map((button, i) => {
+            
             button.on("pointerover", function (this: Phaser.GameObjects.Image) {this.setBlendMode(Phaser.BlendModes.ADD).setAngle(-15).setScale(1.05)
             }).on("pointerout", function (this: Phaser.GameObjects.Image) {this.setBlendMode(0).setAngle(0).setScale(0.9)
-            }).on("pointerdown",function(){imgs.map((img, j) => i === j ? img.setVisible(true) : img.setVisible(false))
+            });
+            
+            if(button.name !== 'question')
+            button.on("pointerdown",function(){imgs.map((img, j) => i === j ? img.setVisible(true) : img.setVisible(false))
                 buttons.forEach(i=>i.setVisible(false))
                 GameStartB.setVisible(true)
             })
