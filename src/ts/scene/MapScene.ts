@@ -1,7 +1,7 @@
 import { Scene } from "../interface/Hex";
 import MapObject, { NodeType } from "../object/MapObject";
 import TopMenu from "../interface/TopMenu";
-import MapManager from "../interface/MapManager";
+// import MapManager from "../interface/MapManager";
 
 
 /**
@@ -86,13 +86,13 @@ export default class MapScene extends Scene
         mapCam.ignore([topMenu, mapBackground, exText]).setBounds(-115, 200, 1300, 1500);
         
         textCam.ignore([topMenu, mapBackground, mapObject]);
-
+        
     }
+
 
     update (_time: number, delta: number) 
     {
         const controls: Phaser.Cameras.Controls.SmoothedKeyControl = this.registry.get("controls");
         controls.update(delta);
-
     }
 }

@@ -1,6 +1,5 @@
-import MapObject, { NodeType } from "../object/MapObject";
-import MapScene from "../scene/MapScene";
-import { Game, Scene } from "./Hex";
+// import MapObject from "../object/MapObject";
+// import { Scene } from "./Hex";
 
 
 /**
@@ -11,50 +10,45 @@ import { Game, Scene } from "./Hex";
  */
 export default class MapManager extends Phaser.GameObjects.Container {
 
-    private static _PLAYER_POINT: PlayerPoint;
-    static get PLAYER_POINT() {return MapManager._PLAYER_POINT;};
-    static set PLAYER_POINT(PLAYER_POINT) {MapManager._PLAYER_POINT = PLAYER_POINT;};
+//     /** 플레이어 이동 */
+//     static playerMove(scene: Scene, playerImage: Phaser.GameObjects.Image, clickPointX: number, clickPointY: number): void
+//     {
 
-    /** 플레이어 이동 */
-    private static playerMove(scene: MapScene, playerImage: MapScene, clickPointX: number, clickPointY: number): void
-    {
+//         for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
+//         {
+//             let useEgde = MapObject.EDGE_ARR[i]
 
-        for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
-        {
-            let useEgde = MapObject.EDGE_ARR[i]
+//             if( clickPointX-10 < useEgde.endX && useEgde.endX < clickPointX+10
+//                 &&
+//                 clickPointY-10 < useEgde.endY && useEgde.endY < clickPointY+10 )
+//             {
+//                 scene.tweens.add({
+//                     targets: playerImage,
+//                     x: useEgde.endX,
+//                     y: useEgde.endY,
+//                     duration: 1000,
+//                     delay: 500
+//                 });
 
-            if( clickPointX-10 < useEgde.endX && useEgde.endX < clickPointX+10
-                &&
-                clickPointY-10 < useEgde.endY && useEgde.endY < clickPointY+10 )
-            {
-                scene.tweens.add({
-                    targets: playerImage,
-                    x: useEgde.endX,
-                    y: useEgde.endY,
-                    duration: 1000,
-                    delay: 500
-                });
+//                 MapObject.PLAYER_POINT = {
+//                     x: useEgde.endX,
+//                     y: useEgde.endY,
+//                     nodetype: useEgde.moveNode
+//                 }
+//             }
+//         }
+//     }
 
-                MapManager.PLAYER_POINT = {
-                    x: useEgde.endX,
-                    y: useEgde.endY,
-                    nodetype: useEgde.moveNode
-                }
-            }
-        }
-    }
+//     constructor(scene: Scene, x: number = 0, y: number = 0, mapObject: Phaser.GameObjects.Image)
+//     {
+//         super(scene, x, y);
 
-    constructor(scene: Scene, x: number, y: number)
-    {
-        super(scene, x, y);
+//         if(scene.input.mousePointer.leftButtonReleased())
+//             {
+//                 MapManager.playerMove(scene, mapObject, x, y);
+//             }
+        
 
-        scene.add.existing(this);
-    }
-}
-
-/** 플레이어 위치정보 인터페이스 */
-type PlayerPoint = {
-    x: number,
-    y: number,
-    nodetype: NodeType
+//         scene.add.existing(this);
+//     }
 }
