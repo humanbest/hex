@@ -1,6 +1,8 @@
 package kr.kro.hex.persistance;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import kr.kro.hex.domain.Member;
 
@@ -14,5 +16,6 @@ import kr.kro.hex.domain.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long>  {
     
-    Member findById(String id);
+    @Query("select distinct m from Member m join fetch m.group where m.id = :id")
+    Member findById(@Param("id") String id);
 }
