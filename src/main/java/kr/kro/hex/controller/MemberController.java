@@ -5,6 +5,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import kr.kro.hex.domain.Member;
@@ -17,26 +19,10 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("member")
 public class MemberController {
 
+
     /** 멤버 서비스 */
     private final MemberService memberService;
     
-    @GetMapping(params={"act=login"})
-    public String getLoginView() {
-        
-        return "member/login";
-    }
-
-    @PostMapping("/login")
-    public String login(Member member, Model model) {
-        Member findMember = memberService.getMember(member);
-
-        if(findMember != null && findMember.getPassword().equals(member.getPassword())) {
-            model.addAttribute("member", findMember);
-            return "redirect:/community";
-        }
-        return "redirect:/member?act=login";
-    }
-
     @GetMapping(params={"act=signUp"})
     public String getSignUpView() {
         return "member/signUpForm";

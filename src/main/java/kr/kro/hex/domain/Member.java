@@ -41,6 +41,7 @@ public class Member extends BaseTime {
     @Column(length = 80, nullable = false, updatable = false, unique = true)
     private String id;
 
+    @Setter
     @Column(length = 60, nullable = false)
     private String password;
 

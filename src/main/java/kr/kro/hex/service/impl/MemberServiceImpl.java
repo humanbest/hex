@@ -3,6 +3,7 @@ package kr.kro.hex.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,8 @@ public class MemberServiceImpl implements MemberService {
     /** 그룹 레포지토리 */
     private final GroupRepository groupRepo;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * 회원 등록하기
      *
@@ -42,6 +45,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void insertMember(Member member) {
+        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         memberRepo.save(member.setGroup(groupRepo.findByGroupName("Admin")));
     };
 
