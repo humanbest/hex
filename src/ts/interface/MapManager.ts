@@ -1,5 +1,6 @@
-// import MapObject from "../object/MapObject";
-// import { Scene } from "./Hex";
+import MapObject, { Node } from "../object/MapObject";
+// import MapScene from "../scene/MapScene";
+import { Scene } from "./Hex";
 
 
 /**
@@ -8,47 +9,37 @@
  * @author yhy5847
  * @since 2022-09-12 오후 6:22
  */
-export default class MapManager extends Phaser.GameObjects.Container {
+export default class MapManager {
 
-//     /** 플레이어 이동 */
-//     static playerMove(scene: Scene, playerImage: Phaser.GameObjects.Image, clickPointX: number, clickPointY: number): void
-//     {
+    readonly scene: Scene
 
-//         for(let i = 0; i < MapObject.EDGE_ARR.length; ++i)
-//         {
-//             let useEgde = MapObject.EDGE_ARR[i]
+    constructor(scene: Scene) {
+        this.scene = scene;
+    }
 
-//             if( clickPointX-10 < useEgde.endX && useEgde.endX < clickPointX+10
-//                 &&
-//                 clickPointY-10 < useEgde.endY && useEgde.endY < clickPointY+10 )
-//             {
-//                 scene.tweens.add({
-//                     targets: playerImage,
-//                     x: useEgde.endX,
-//                     y: useEgde.endY,
-//                     duration: 1000,
-//                     delay: 500
-//                 });
+    /** 플레이어 이동 */
+    playerMove(nextNode: Node): void
+    {
+        this.scene.tweens.add({
+            targets: MapObject.PLAYER,
+            x: nextNode.x,
+            y: nextNode.y,
+            duration: 1000,
+            delay: 500,
+            onComplete: () => {MapObject.PLAYER.setData("current", nextNode)}
+        });
+    }
 
-//                 MapObject.PLAYER_POINT = {
-//                     x: useEgde.endX,
-//                     y: useEgde.endY,
-//                     nodetype: useEgde.moveNode
-//                 }
-//             }
-//         }
-//     }
-
-//     constructor(scene: Scene, x: number = 0, y: number = 0, mapObject: Phaser.GameObjects.Image)
-//     {
-//         super(scene, x, y);
-
-//         if(scene.input.mousePointer.leftButtonReleased())
-//             {
-//                 MapManager.playerMove(scene, mapObject, x, y);
-//             }
-        
-
-//         scene.add.existing(this);
-//     }
+    setNodeInteraction() {
+        // 노드 인터렉션
+        MapObject.NODE_ARR.forEach(node =>
+            node.setInteractive()
+                .on("pointerdown", () => {
+                    
+                    const currentNode: Node = MapObject.PLAYER.getData("current");
+                    if(currentNode.nextNode.includes(node))
+                    this.playerMove(node)
+                })
+        );
+    }
 }
