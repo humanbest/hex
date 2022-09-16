@@ -2,7 +2,9 @@ import { Scene } from "../interface/Hex";
 import BattleScene from "./BattleScene";
 import CharacterScene from "./CharacterScene";
 import MapScene from "./MapScene";
-import ShopScene from "./ShopScene";
+// import ShopScene from "./ShopScene";
+// import InnScene from "./InnScene";
+import DodgeScene from "./dodgeScene";
 
 /**
  * Hex 게임의 로딩씬 입니다.
@@ -73,7 +75,8 @@ export default class LoadScene extends Scene
         this.input.keyboard
             .on('keydown-ONE',  () => this.scene.start(CharacterScene.KEY.NAME))
             .on('keydown-TWO',  () => this.scene.start(MapScene.KEY.NAME))
-            .on('keydown-THREE',  () => this.scene.start(ShopScene.KEY.NAME))
+            .on('keydown-THREE',  () => this.scene.start(DodgeScene.KEY.NAME))
             .on('keydown-FOUR',  () => this.scene.start(BattleScene.KEY.NAME))
     }
+
 }
