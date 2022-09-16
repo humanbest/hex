@@ -1,5 +1,6 @@
 import { Vector } from "matter";
 import Phaser from "phaser";
+import { Node } from "../object/MapObject";
 
 /**
  * HEX 게임의 메인 컨트롤러 입니다.
@@ -163,6 +164,7 @@ export interface Player {
     champion: Champion;
     inventory: Inventory;
     dec: Array<string>;
+    currentNode?: Node
 }
 
 export const defaultPlayer: Player = {
