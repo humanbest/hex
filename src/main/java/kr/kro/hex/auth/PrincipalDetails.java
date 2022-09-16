@@ -37,7 +37,6 @@ public class PrincipalDetails implements UserDetails {
     //Id를 리턴
     @Override
     public String getUsername() {
-        System.out.println("--------------------------------------아이디");
         return member.getId();
     }
 

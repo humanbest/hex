@@ -19,45 +19,10 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("member")
 public class MemberController {
 
-    /**임시 접근**/
-    @GetMapping("/user")
-    public @ResponseBody String user() {
-        return "user";
-    }
-
-    @GetMapping("/admin")
-    public @ResponseBody String admin() {
-        return "admin";
-    }
-
-    @GetMapping("/manager")
-    public @ResponseBody String manager() {
-        return "manager";
-    }
 
     /** 멤버 서비스 */
     private final MemberService memberService;
     
-    @GetMapping(params={"act=login"})
-    public String getLoginView(@RequestParam(value = "error", required = false)String error,
-        @RequestParam(value = "exception", required = false)String exception,Model model) {
-        
-        model.addAttribute("error", error);
-        model.addAttribute("exception", exception);
-        return "member/login";
-    }
-
-    // @GetMapping(params={"act=login"})
-    // public String login(Member member, Model model) {
-    //     Member findMember = memberService.getMember(member);
-
-    //     if(findMember != null && findMember.getPassword().equals(member.getPassword())) {
-    //         model.addAttribute("member", findMember);
-    //         return "redirect:/community";
-    //     }
-    //     return "redirect:/member?act=login";
-    // }
-
     @GetMapping(params={"act=signUp"})
     public String getSignUpView() {
         return "member/signUpForm";
