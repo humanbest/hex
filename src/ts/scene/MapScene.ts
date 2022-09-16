@@ -1,6 +1,7 @@
 import { Scene } from "../interface/Hex";
 import MapObject, { NodeType } from "../object/MapObject";
 import TopMenu from "../interface/TopMenu";
+import MapManager from "../interface/MapManager";
 // import MapManager from "../interface/MapManager";
 
 
@@ -48,8 +49,11 @@ export default class MapScene extends Scene
         /** 배경화면 */
         const mapBackground = this.add.image(this.game.canvas.width/2, this.game.canvas.height/2, "map_background").setScale(0.52).setDepth(0);
 
-        /** 맵 오브젝트(지도, 노드, 엣지, 플레이어) */
+        /** 맵 오브젝트(지도, 노드, 엣지) */
         const mapObject: MapObject = new MapObject(this)
+
+        const mapManager = new MapManager(this);
+        mapManager.setNodeInteraction();
 
         /** 상단 매뉴 */
         const topMenu = new TopMenu(this, 0, 0).setDepth(2);
@@ -66,8 +70,8 @@ export default class MapScene extends Scene
         
         const controlConfig = {
             camera: mapCam,
-            left: cursors.right,
-            right: cursors.left,
+            // left: cursors.right,
+            // right: cursors.left,
             up: cursors.down,
             down: cursors.up,
             zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
@@ -86,13 +90,13 @@ export default class MapScene extends Scene
         mapCam.ignore([topMenu, mapBackground, exText]).setBounds(-115, 200, 1300, 1500);
         
         textCam.ignore([topMenu, mapBackground, mapObject]);
-
+        
     }
+
 
     update (_time: number, delta: number) 
     {
         const controls: Phaser.Cameras.Controls.SmoothedKeyControl = this.registry.get("controls");
         controls.update(delta);
-
     }
 }

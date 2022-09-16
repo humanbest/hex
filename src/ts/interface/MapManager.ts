@@ -1,6 +1,6 @@
-import MapObject from "../object/MapObject";
-import MapScene from "../scene/MapScene";
-import { Game, Scene } from "./Hex";
+import MapObject, { Node } from "../object/MapObject";
+// import MapScene from "../scene/MapScene";
+import { Scene } from "./Hex";
 
 
 /**
@@ -9,39 +9,37 @@ import { Game, Scene } from "./Hex";
  * @author yhy5847
  * @since 2022-09-12 오후 6:22
  */
-export default class MapManager extends Phaser.GameObjects.Container {
+export default class MapManager {
 
+    readonly scene: Scene
 
-    constructor(scene: Scene, x: number, y: number)
-    {
-        super(scene, x, y);
-
-        scene.add.existing(this);
+    constructor(scene: Scene) {
+        this.scene = scene;
     }
 
-    /**플레이어 노드 이동 규칙 */
-    private static playerMoveRule(x: number, y: number, nodePoint: MapObject) : boolean
+    /** 플레이어 이동 */
+    playerMove(nextNode: Node): void
     {
-        let minPointerX = x - 15;
-        let maxPointerX = x + 15;
-        let minPointerY = y - 15;
-        let maxPointerY = y + 15;
+        this.scene.tweens.add({
+            targets: MapObject.PLAYER,
+            x: nextNode.x,
+            y: nextNode.y,
+            duration: 1000,
+            delay: 500,
+            onComplete: () => {MapObject.PLAYER.setData("current", nextNode)}
+        });
+    }
 
-        for(let i = 0; i < nodePoint.length; ++i)
-        {
-            for(let j = 0; j < nodePoint[i].length; ++j)
-            {
-                if(minPointerX <= nodePoint[i][j].x && nodePoint[i][j].x <= maxPointerX && minPointerY <= nodePoint[i][j].y && nodePoint[i][j].y <= maxPointerY)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        return false;
+    setNodeInteraction() {
+        // 노드 인터렉션
+        MapObject.NODE_ARR.forEach(node =>
+            node.setInteractive()
+                .on("pointerdown", () => {
+                    
+                    const currentNode: Node = MapObject.PLAYER.getData("current");
+                    if(currentNode.nextNode.includes(node))
+                    this.playerMove(node)
+                })
+        );
     }
 }
