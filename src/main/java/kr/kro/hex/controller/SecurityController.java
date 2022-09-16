@@ -38,4 +38,9 @@ public class SecurityController {
         model.addAttribute("exception", exception);
         return "member/login";
     }
+    @GetMapping("/logout")
+    public String BackToLogin(){
+        return "/";
+    }
+
 }
