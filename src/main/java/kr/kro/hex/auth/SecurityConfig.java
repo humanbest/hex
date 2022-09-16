@@ -1,7 +1,6 @@
 package kr.kro.hex.auth;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -23,13 +22,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**","/js/**","/img/**");
+        web.ignoring().antMatchers("/css/**","/js/**","/imges/**","/fonts/**","/webpageimg/**");
     }
 
     @Override
     protected void configure(HttpSecurity http)throws Exception{
         http.csrf().disable();
         http.authorizeRequests()
+                .antMatchers("/hex/**").authenticated()
                 .antMatchers("/community/**").authenticated()
                 .antMatchers("/auth/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
                 .antMatchers("/auth/admin/**").access("hasRole('ROLE_ADMIN')")
@@ -41,8 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(customFailureHandler)
                 .defaultSuccessUrl("/")
                 .and()
-                .logout()
-                .invalidateHttpSession(true).deleteCookies("JSESSIONID");
+                .logout() // 로그아웃 처리
+                .logoutUrl("/logout") // 로그아웃 처리 URL
+                .logoutSuccessUrl("/auth?act=login") // 로그아웃 성공 후 이동 URL
+                .invalidateHttpSession(true).deleteCookies("JSESSIONID", "remember-me"); // 로그아웃 후 쿠키 삭제
     }
     
 }
