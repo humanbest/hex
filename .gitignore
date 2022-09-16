@@ -174,3 +174,4 @@ dist
 package-lock.json
 application-aws.properties
 game.js*
+src/test/
