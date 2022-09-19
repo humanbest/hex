@@ -1,4 +1,4 @@
-import MapObject, { Node, NodeImage } from "../object/MapObject";
+import { Node, NodeImage } from "../object/MapObject";
 // import MapScene from "../scene/MapScene";
 import { Scene } from "./Hex";
 

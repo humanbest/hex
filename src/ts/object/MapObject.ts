@@ -208,11 +208,11 @@ export default class MapObject extends Phaser.GameObjects.Container {
         }
 
         // 노드 인터렉션
-        this.add(this.nodeImageArr = MapObject.NODE_ARR.map(node => new NodeImage(scene, node).setDepth(3)));
+        this.add(this._nodeImageArr = MapObject.NODE_ARR.map(node => new NodeImage(scene, node).setDepth(3)));
 
         //플레이어 이미지 추가
         const currentNode = scene.game.player!.currentNode!;
-        this.add(this.playerImage = scene.add.image(currentNode.x, currentNode.y, MapScene.KEY.IMAGE.MAP_PLAYER).setScale(0.5).setDepth(4));
+        this.add(this._playerImage = scene.add.image(currentNode.x, currentNode.y, MapScene.KEY.IMAGE.MAP_PLAYER).setScale(0.5).setDepth(4).setOrigin(0.5, 0.9));
 
         // 씬에 맵 컨테이너 추가
         scene.add.existing(this);
