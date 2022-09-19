@@ -1,4 +1,4 @@
-import MapObject, { Node } from "../object/MapObject";
+import MapObject, { Node, NodeImage } from "../object/MapObject";
 // import MapScene from "../scene/MapScene";
 import { Scene } from "./Hex";
 
@@ -18,27 +18,26 @@ export default class MapManager {
     }
 
     /** 플레이어 이동 */
-    playerMove(nextNode: Node): void
+    playerMove(nextNode: NodeImage, playerImage: Phaser.GameObjects.Image): void
     {
         this.scene.tweens.add({
-            targets: MapObject.PLAYER,
+            targets: playerImage,
             x: nextNode.x,
             y: nextNode.y,
             duration: 1000,
             delay: 500,
-            onComplete: () => {MapObject.PLAYER.setData("current", nextNode)}
+            onComplete: () => {this.scene.game.player!.currentNode = nextNode.nodeData}
         });
     }
 
-    setNodeInteraction() {
+    setNodeInteraction(nodeImageArr: Array<NodeImage>, playerImage: Phaser.GameObjects.Image) {
         // 노드 인터렉션
-        MapObject.NODE_ARR.forEach(node =>
+        nodeImageArr.forEach(node =>
             node.setInteractive()
                 .on("pointerdown", () => {
-                    
-                    const currentNode: Node = MapObject.PLAYER.getData("current");
-                    if(currentNode.nextNode.includes(node))
-                    this.playerMove(node)
+                    const currentNode: Node = this.scene.game.player!.currentNode!;
+                    if(currentNode.nextNode.includes(node.nodeData))
+                    this.playerMove(node, playerImage)
                 })
         );
     }
