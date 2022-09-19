@@ -4,7 +4,8 @@ import BattleScene from "./scene/BattleScene";
 import ShopScene from "./scene/ShopScene";
 import CharacterScene from "./scene/CharacterScene";
 import MapScene from "./scene/MapScene";
-import DodgeScene from "./scene/dodgeScene";
+import DodgeScene from "./scene/DodgeScene";
+import DodgeStartScene from "./scene/DodgeStartScene";
 
 (function() {
     const wf = document.createElement('script');
@@ -13,18 +14,12 @@ import DodgeScene from "./scene/dodgeScene";
     wf.async = true;
     const s = document.getElementsByTagName('script')[0];
     s.parentNode?.insertBefore(wf, s);
-    const element = document.createElement('style');
-    document.head.appendChild(element);
-    element.sheet!.insertRule('@font-face { font-family: "neodgm"; src: url("fonts/neodgm.woff") format("woff"); }\n', 0);
 }());
 
 //@ts-ignore
 window.WebFontConfig = {
     google: {
         families: ['Noto Sans KR'],
-    },
-    custom: {
-        families: [ 'neodgm' ]
     },
     active() {
         
@@ -39,14 +34,14 @@ window.WebFontConfig = {
                 }
             },
             pixelArt: true,
+            scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene, DodgeScene, DodgeStartScene],
+            player: defaultPlayer,
             physics: {
                 default: 'arcade',
                 arcade: {
                     debug: false
                 }
-            },
-            scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene, DodgeScene],
-            player: defaultPlayer
+            }
         });
     }
 };
