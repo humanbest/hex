@@ -1,5 +1,5 @@
 import { Vector } from "matter";
-import { CardAdjust, CardData, CardType, Scene } from "../interface/Hex";
+import { CardAdjust, CardData, CardType, Game, Scene } from "../interface/Hex";
 import LoadScene from "../scene/LoadScene";
 
 /**
@@ -15,7 +15,6 @@ export default class Card extends Phaser.GameObjects.Container
         IMAGE: {
             CARD_FRONT: "card_front",
             CARD_COLOR: "card_color",
-            CARD_BACK: "card_back",
             TITLE_COLOR: "title_color",
             COST_BOX: "cost_box"
         }
@@ -33,15 +32,26 @@ export default class Card extends Phaser.GameObjects.Container
     /** 카드 이미지 크기 오차 조절 */
     static readonly IMAGE_SCALE: Vector = { x: 0.7, y: 0.7 };
 
-    /** 
-     * 카드 타입에 따른 이미지 영역 색상
-     * @see 
-     */
-    private static readonly imageColor: number[] = [0x923a37, 0x252a37, 0x71915c, 0x71915c, 0x71915c];
-    private static readonly titleColor: number[] = [0xffbb9d, 0x9fdbe1, 0xc2d6b5, 0xc2d6b5, 0xc2d6b5];
+    /** 카드 타입에 따른 이미지 영역 색상 */
+    private static readonly imageColor: number[] = [0x923a37, 0x252a37, 0x71915c];
+    private static readonly titleColor: number[] = [0xffbb9d, 0x9fdbe1, 0xc2d6b5];
     
+    /** 카드 데이터 리스트 */
+    static get cardDataList() {
+        return this._cardDataList;
+    }
+
+    static set cardDataList(cardDataList: {[key: string]: CardData}) {
+        this._cardDataList = cardDataList;
+    }
+
+    private static _cardDataList: {[key: string]: CardData};
+    
+    /** 카드의 선택 여부 */
     isSelected: boolean = false;
-    isFront: boolean = true;
+
+    /** 카드의 앞면 여부 */
+    readonly isFront: boolean;
 
     /**
      * 카드 오브젝트를 생성합니다.
@@ -59,16 +69,17 @@ export default class Card extends Phaser.GameObjects.Container
 
         this.isFront = isFront;
 
-        /** 카드 데이터 */
-        const cardData: CardData | undefined = this.getCardData(cardName);
-
-        if(isFront && cardName && cardData)
+        if(isFront && cardName && Card.cardDataList[cardName])
         {
+
+            /** 카드 데이터 주입 */
+            const cardData = Card.cardDataList[cardName];
+
+            /** 카드 데이터 저장 */
+            this.setData(cardData).setData("key", cardName);
+
             /** 카드 타입 */
-            let type: CardType;
-            
-            if(cardData.type instanceof Array) type = cardData.type[0];
-            else type = cardData.type;
+            const type: CardType = cardData.type;
             
             /** 카드 cost 텍스트 스타일 */
             const costValueTextStyle: Phaser.Types.GameObjects.Text.TextStyle = {
@@ -89,7 +100,7 @@ export default class Card extends Phaser.GameObjects.Container
             }
 
             /** 카드 오차 데이터 */
-            const adjust = this.getCardAdjustData(cardName);
+            const adjust = Card.getCardAdjustData(this.scene.game, cardName);
 
             /** 카드 앞면 이미지 */
             const cardFrontImage = scene.add.image(0, 0, LoadScene.KEY.ATLAS.CARD_BASE, Card.KEY.IMAGE.CARD_FRONT);
@@ -116,7 +127,7 @@ export default class Card extends Phaser.GameObjects.Container
         }
         else
         {
-            this.add(scene.add.image(0, 0, Card.KEY.IMAGE.CARD_BACK));
+            this.add(scene.add.image(0, 0, LoadScene.KEY.IMAGE.CARD_BACK));
         }
     }
 
@@ -126,32 +137,10 @@ export default class Card extends Phaser.GameObjects.Container
      * @param cardName 카드 이름
      * @returns 카드 오차 데이터
      */
-    private getCardAdjustData(cardName: string): CardAdjust
+    private static getCardAdjustData(game: Game, cardName: string): CardAdjust
     {
-        const cartAdjustData = this.scene.game.cache.json.get(LoadScene.KEY.DATA.ADJUST);
+        const cartAdjustData = game.cache.json.get(LoadScene.KEY.DATA.ADJUST);
 
         return cartAdjustData.hasOwnProperty(cardName) ? cartAdjustData[cardName] : { position: Card.IMAGE_POSITION, scale: Card.IMAGE_SCALE };
-    }
-
-    /**
-     * 카드 데이터를 반환합니다.
-     * 
-     * @param cardName 카드 이름
-     * @returns 카드 데이터
-     */
-    private getCardData(cardName?: string): CardData | undefined 
-    {
-        const cardData: any = this.scene.game.cache.json.get(LoadScene.KEY.DATA.CARD);
-
-        if(cardName && cardData.hasOwnProperty(cardName)) {
-            return {
-                name: cardData[cardName].name,
-                type: cardData[cardName].type,
-                ownership: cardData[cardName].ownership,
-                cost: cardData[cardName].cost
-            }
-        }
-
-        return undefined;
     }
 }

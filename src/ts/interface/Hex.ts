@@ -38,6 +38,8 @@ export type GameConfig = Phaser.Types.Core.GameConfig & {player?: Player}
 
 /**
  * 카드 속성
+ * 
+ * 카드의 주기능에 따라 타입을 구분합니다.
  */
 export enum CardType {
     /** 공격 */
@@ -46,44 +48,76 @@ export enum CardType {
     /** 방어 */
     DEFENSE,
     
-    /** 공격 버프 */
-    AT_BUFF,
-    
-    /** 방어 버프 */
-    DF_BUFF,
-    
-    /** 디버프 */
-    DEBUFF
+    /** 보조 */
+    ASSISTANCE,
+}
+
+/**
+ * 카드 효과 열거형
+ * 
+ * 카드 효과를 전달하기 위한 열거형 타입입니다.
+ */
+export enum CardEffectPK {
+    ADD_DAMAGE, // 0 데미지 추가 효과
+    ADD_DEFENSE, // 1 방어력 증가 효과
+    ADD_BUFF, // 2 버프 추가 효과
+    ADD_DAMAGE_BY_RATIO, // 3 비례 데미지 공격 효과
+    ADD_DEFENSE_BY_RATIO, // 4 비례 방어력 증가 효과
+    REPLECT_DAMAGE, // 5 공격 반사 효과
+    RANDOM_DAMAGE, // 6 랜덤 데미지 효과
+    DEFENSE_IGNORE, // 7 방어력 무시 공격 효과
+    HP_RECOVERY, // 8 HP 회복 효과
+    iNSTANCE_DEATH, // 9 즉사 효과
+    COST_MAX_ADD // 10 코스트 증가 효과
 }
 
 /**
  * 카드 효과 인터페이스
+ * 
+ * 카드 효과에 대한 정보를 정의한 인터페이스 입니다.
+ * 
+ * @param type 카드 효과의 기본키 입니다.
+ * @param value 카드 효과에 대한 값 입니다.
+ * @param turn 카드 효과가 지속되는 턴의 수를 나타냅니다.
  */
 export interface CardEffect {
-
-    /** 카드 타입 */
-    type: CardType;
-
-    /** 카드 효과 값 */
+    type: CardEffectPK;
     value: number;
+    turn?: number;
 }
+
+/** 
+ * 버프 효과 인터페이스
+ * 
+ * 카드 효과 인터페이스의 별칭입니다. 
+ */
+export type Buff = CardEffect;
 
 /**
  * 카드 데이터 인터페이스
  */
 export interface CardData {
 
+    /** 키값 */
+    key: number;
+
     /** 카드 이름 */
     name: string;
 
     /** 카드 타입 */
-    type: Array<CardType> | CardType;
+    type: CardType;
 
     /** 소지가능 챔피언 PK */
     ownership: ChampionPrimaryKey;
 
     /** 비용 */
     cost: number;
+
+    /** 카드 효과 리스트 */
+    effect: Array<CardEffect>;
+
+    /** 카드가 뽑힐 확률 */
+    probability: number;
 }
 
 /**
@@ -134,7 +168,7 @@ export enum ChampionName {
  * 챔피언 PK
  */
 enum ChampionPrimaryKey {
-    COMMON, SMUGGLER, PHANTOM
+    COMMON, SMUGGLER, PHANTOM, WARWOLF
 }
 
 /**
