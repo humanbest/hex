@@ -2,7 +2,6 @@ import { Scene } from "../interface/Hex";
 import MapObject, { NodeType } from "../object/MapObject";
 import TopMenu from "../interface/TopMenu";
 import MapManager from "../interface/MapManager";
-// import MapManager from "../interface/MapManager";
 
 
 /**
@@ -53,7 +52,7 @@ export default class MapScene extends Scene
         const mapObject: MapObject = new MapObject(this)
 
         const mapManager = new MapManager(this);
-        mapManager.setNodeInteraction();
+        mapManager.setNodeInteraction(mapObject.nodeImageArr, mapObject.playerImage);
 
         /** 상단 매뉴 */
         const topMenu = new TopMenu(this, 0, 0).setDepth(2);
