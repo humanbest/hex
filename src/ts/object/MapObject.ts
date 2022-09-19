@@ -36,14 +36,8 @@ export default class MapObject extends Phaser.GameObjects.Container {
     private static REST_NODES_LIMIT     = 2;
     private static HIDDEN_NODES_LIMIT   = 2;
 
-    /** 플레이어 정보 */
-
-    private static _PLAYER: Phaser.GameObjects.Image;
-    static get PLAYER() {return MapObject._PLAYER};
-    static set PLAYER(PLAYER: Phaser.GameObjects.Image) {MapObject._PLAYER = PLAYER};
-
     /** 노드 배열 설정 */
-    private static setNodeData(scene: Phaser.Scene): void 
+    private static setNodeData(scene: Scene): void 
     {
         const start: number = 1400;
         const step: number = 100;
@@ -60,7 +54,14 @@ export default class MapObject extends Phaser.GameObjects.Container {
         MapObject.NODE_ARR = [];
 
         //start 노드 푸쉬
-        MapObject.NODE_ARR.push(new Node(scene, centerPoint, start, NodeType.START, 0, 0, []));
+        MapObject.NODE_ARR.push(scene.game.player!.currentNode = {
+            x: centerPoint,
+            y: start,
+            type: NodeType.START,
+            depth: 0,
+            space: 0,
+            nextNode: []
+        });
 
         //노드 랜덤 생성 알고리즘 (start, boss 노드 제외한 노드 푸쉬)
         for(let i = 1; i <= MapObject.DEPTH; i++) {
@@ -105,24 +106,26 @@ export default class MapObject extends Phaser.GameObjects.Container {
                     randomNode = NodeType.BATTLE;
                 }
 
-                MapObject.NODE_ARR.push(new Node(
-                    scene, 
-                    (centerPoint + 50) + (j - (randomNodeSpace/2)) * 100, start - (i * step),
-                    randomNode,
-                    i, j, [])
-                )
+                MapObject.NODE_ARR.push({
+                    x: (centerPoint + 50) + (j - (randomNodeSpace/2)) * 100,
+                    y: start - (i * step),
+                    type: randomNode,
+                    depth: i,
+                    space: j,
+                    nextNode: []
+                })
             }
         }
 
         //boss 노드 푸쉬
-        MapObject.NODE_ARR.push(new Node(
-            scene, centerPoint, 
-            start - ((MapObject.DEPTH + 1) * step), 
-            NodeType.BOSS, 
-            (MapObject.DEPTH + 1),
-            0, [])
-        )
-            
+        MapObject.NODE_ARR.push({
+            x: centerPoint,
+            y: start - ((MapObject.DEPTH + 1) * step),
+            type: NodeType.BOSS,
+            depth: (MapObject.DEPTH + 1),
+            space: 0,
+            nextNode: []
+        });  
     }
 
     /** 엣지 데이터 설정 */
@@ -165,6 +168,16 @@ export default class MapObject extends Phaser.GameObjects.Container {
         }
     }
 
+    /** 노드 이미지 배열 */
+    private _nodeImageArr: Array<NodeImage>;
+    get nodeImageArr() {return this._nodeImageArr}
+    private set nodeImageArr(nodeImageArr: Array<NodeImage>) {this._nodeImageArr = nodeImageArr}
+
+    /** 플레이어 이미지 */
+    private _playerImage: Phaser.GameObjects.Image;
+    get playerImage() {return this._playerImage}
+    private set playerImage(playerImage: Phaser.GameObjects.Image) {this._playerImage = playerImage}
+
     constructor(scene: MapScene, x: number = 0, y: number = 0) {
 
         super(scene, x, y);
@@ -195,12 +208,11 @@ export default class MapObject extends Phaser.GameObjects.Container {
         }
 
         // 노드 인터렉션
-        this.add(MapObject.NODE_ARR.map(node=>node.setDepth(3)));
+        this.add(this.nodeImageArr = MapObject.NODE_ARR.map(node => new NodeImage(scene, node).setDepth(3)));
 
         //플레이어 이미지 추가
-        if(!MapObject.PLAYER) MapObject.PLAYER = scene.add.image(MapObject.NODE_ARR[0].x, MapObject.NODE_ARR[0].y, MapScene.KEY.IMAGE.MAP_PLAYER).setData("current", MapObject.NODE_ARR[0]).setScale(0.5).setDepth(4);
-        
-        this.add(MapObject.PLAYER);
+        const currentNode = scene.game.player!.currentNode!;
+        this.add(this.playerImage = scene.add.image(currentNode.x, currentNode.y, MapScene.KEY.IMAGE.MAP_PLAYER).setScale(0.5).setDepth(4));
 
         // 씬에 맵 컨테이너 추가
         scene.add.existing(this);
@@ -218,19 +230,23 @@ export enum NodeType {
 }
 
 /** 노드 인터페이스 */
-export class Node extends Phaser.GameObjects.Image {
-    
+export type Node = {
+    x: number;
+    y: number;
     type: NodeType;
     depth: number;
     space: number;
     nextNode: Array<Node>;
+}
 
-    constructor(scene: Scene, x:number, y:number, type:NodeType, depth: number, space: number, nextNode: Array<Node>) {
-        super(scene, x, y, type);
-        this.type = type;
-        this.depth = depth;
-        this.space = space;
-        this.nextNode = nextNode;
+/** 노드 이미지 */
+export class NodeImage extends Phaser.GameObjects.Image {
+
+    nodeData: Node
+
+    constructor(scene: Scene, nodeData: Node) {
+        super(scene, nodeData.x, nodeData.y, nodeData.type);
+        this.nodeData = nodeData;
     }
 }
 
