@@ -1,11 +1,10 @@
 import {Scene} from "../interface/Hex";
 import ShopScene from "./ShopScene";
 
-
 export default class DodgeScene extends Scene {
 
     static readonly KEY = {
-        NAME: "DodgeScene",
+        NAME: "Dodgegame",
         IMAGE: {
             mushroom: "mushroom",
             dodgeDot: "dodgeDot",
@@ -13,8 +12,8 @@ export default class DodgeScene extends Scene {
             dodgeretry: "dodgeretry",
             dodgeexit: "dodgeexit",
             dodgered: "dodgered",
-            dodgebarrier:"dodgebarrier",
-            dodgegreen:"dodgegreen"
+            dodgebarrier: "dodgebarrier",
+            dodgegreen: "dodgegreen"
         }
     }
 
@@ -27,18 +26,25 @@ export default class DodgeScene extends Scene {
     private timedEvent: any;
     private cursor: any;
     private player: any;
-    private second = 0;
-    private frontsecond = 0;
-    private dodgetime :any;
 
-    private dieable : boolean = true;
+    private dodgetime: any;
+
+    private dieable: boolean = true;
     private barriertime = 0;
 
-    private barrierable :any;
+    private barrierable: any;
 
-    private emitter : any;
+    private emitter: any;
 
-    private particles : any;
+    private particles: any;
+
+    private greendot: any;
+
+    private start: any;
+
+    private stoptimer = false;
+
+    private playingtime: any;
 
 
     preload(): void {
@@ -64,8 +70,11 @@ export default class DodgeScene extends Scene {
 
     create(): void {
 
-        this.frontsecond = 0;
-        this.second = 0;
+        this.count = 0;
+
+        this.stoptimer = false;
+
+        this.start = this.time.now;
 
         this.cursor = this.input.keyboard.createCursorKeys();
 
@@ -76,32 +85,61 @@ export default class DodgeScene extends Scene {
         this.timedEvent = this.time.addEvent({delay: 150, callback: this.dotcreater, callbackScope: this, loop: true});
 
         this.reddotcreater();
-        this.greendotcreater();
+        this.reddotcreater();
+        this.reddotcreater();
 
-        this.timedEvent = this.time.addEvent({callback: this.timer, callbackScope: this, loop: true});
+        this.greendotcreater();
 
         // @ts-ignore
         this.dodgetime = this.add.text(50, 50);
 
-
+        this.input.setDefaultCursor('none');
 
     }
 
     hitBomb(): void {
 
-        if(this.dieable){
+        if (this.dieable) {
             this.physics.pause();
             this.add.image(this.cameras.main.width / 2, 100, DodgeScene.KEY.IMAGE.dodgegameover).setScale(0.5);
-            this.add.image(this.cameras.main.width / 2 - 30, 180, DodgeScene.KEY.IMAGE.dodgeretry).setOrigin(1, 0).setScale(0.4)
+            let retry = this.add.image(this.cameras.main.width / 2 - 90, 250, DodgeScene.KEY.IMAGE.dodgeretry).setScale(0.4)
                 .setInteractive()
-                .on("pointerdown", () => this.scene.restart());
-            this.add.image(this.cameras.main.width / 2 + 30, 180, DodgeScene.KEY.IMAGE.dodgeexit).setOrigin(0, 0).setScale(0.4)
+                .on("pointerover", () => this.add.tween({
+                    targets: retry,
+                    duration: 70,
+                    scale: 0.5
+                }))
+                .on("pointerout", () => this.add.tween({
+                    targets: retry,
+                    duration: 70,
+                    scale: 0.4
+                }))
+                .on("pointerdown", () => retry.setScale(0.6))
+                .on("pointerup", () => this.scene.restart(this));
+
+            let exit = this.add.image(this.cameras.main.width / 2 + 90, 250, DodgeScene.KEY.IMAGE.dodgeexit).setScale(0.4)
                 .setInteractive()
-                .on("pointerdown", () => this.scene.start(ShopScene.KEY.NAME));
+                .on("pointerover", () => this.add.tween({
+                    targets: exit,
+                    duration: 70,
+                    scale: 0.5
+                }))
+                .on("pointerout", () => this.add.tween({
+                    targets: exit,
+                    duration: 70,
+                    scale: 0.4
+                }))
+                .on("pointerdown", () => exit.setScale(0.6))
+                .on("pointerup", () => this.scene.start(ShopScene.KEY.NAME));
 
             this.time.removeAllEvents();
+
             // @ts-ignore
-            this.add.text(this.cameras.main.width / 2 - 70, 400).setText('기록 : ' + this.frontsecond+'.'+this.second);
+            this.add.text(this.cameras.main.width / 2 - 70, 400).setText('기록 : ' + this.playingtime);
+
+            this.stoptimer = true;
+
+            this.input.setDefaultCursor('default');
         }
     }
 
@@ -109,7 +147,7 @@ export default class DodgeScene extends Scene {
 
         this.count += 1;
 
-        if (this.count === 120) {
+        if (this.count >= 100) {
             this.timedEvent.remove(false)
         }
 
@@ -118,7 +156,7 @@ export default class DodgeScene extends Scene {
 
         let block = this.physics.add.image(pos.x, 0, 'dodgeDot');
 
-        this.physics.add.collider(this.player, block, this.hitBomb, undefined, this);
+        this.physics.add.overlap(this.player, block, this.hitBomb, undefined, this);
 
         block.setBounce(1).setCollideWorldBounds(true);
 
@@ -132,7 +170,7 @@ export default class DodgeScene extends Scene {
 
         let block = this.physics.add.image(pos.x, 0, 'dodgered');
 
-        this.physics.add.collider(this.player, block, this.hitBomb, undefined, this);
+        this.physics.add.overlap(this.player, block, this.hitBomb, undefined, this);
 
         block.setBounce(1).setCollideWorldBounds(true);
 
@@ -144,23 +182,25 @@ export default class DodgeScene extends Scene {
         // @ts-ignore
         let pos = Phaser.Geom.Rectangle.Random(this.physics.world.bounds);
 
-        let greendot = this.physics.add.image(pos.x, 0, 'dodgegreen');
+        this.greendot = this.physics.add.image(pos.x, 0, 'dodgegreen');
 
-        greendot.setBounce(1).setCollideWorldBounds(true);
+        this.greendot.setBounce(1).setCollideWorldBounds(true);
 
+        this.physics.add.overlap(this.player, this.greendot, this.barrierstart, undefined, this);
 
-        this.physics.add.collider(this.player, greendot,this.bb, undefined, this);
-
-        Phaser.Math.RandomXY(greendot.body.velocity, 200);
+        Phaser.Math.RandomXY(this.greendot.body.velocity, 200);
     }
 
-    bb () :void {
+    barrierstart(): void {
 
-        if(this.dieable){
+        this.greendot.destroy();
+        this.time.delayedCall(4000, this.greendotcreater, [], this);
+
+        if (this.dieable) {
             this.particles = this.add.particles('dodgebarrier');
             this.emitter = this.particles.createEmitter({
                 speed: 100,
-                scale: { start: 0.01, end: 0 },
+                scale: {start: 0.01, end: 0},
                 blendMode: 'ADD'
             });
 
@@ -170,7 +210,7 @@ export default class DodgeScene extends Scene {
         }
     }
 
-    barrier():void {
+    barrier(): void {
 
         this.dieable = false;
 
@@ -178,7 +218,7 @@ export default class DodgeScene extends Scene {
 
         console.log(this.barriertime);
 
-        if(this.barriertime > 200){
+        if (this.barriertime > 200) {
             this.dieable = true;
             this.barriertime = 0;
             this.particles = undefined;
@@ -189,14 +229,15 @@ export default class DodgeScene extends Scene {
 
     }
 
-    update(): void {
+    update(time: number): void {
 
-        if(this.second>59){
-            this.frontsecond += 1;
-            this.second = 0;
+        this.playingtime = ((time - this.start) / 1000).toFixed(2);
+
+        if (this.stoptimer) {
+            this.dodgetime.setText("기록 종료");
+        } else {
+            this.dodgetime.setText('Time : ' + this.playingtime);
         }
-        // @ts-ignore
-        this.dodgetime.setText('Time : '+this.frontsecond+'.'+this.second);
 
         this.player.setVelocity(0);
 
@@ -212,10 +253,6 @@ export default class DodgeScene extends Scene {
             this.player.setVelocityY(300);
         }
 
-    }
-
-    timer(): void {
-        this.second += 1;
     }
 
 
