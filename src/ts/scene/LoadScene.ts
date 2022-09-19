@@ -1,10 +1,8 @@
 import { Scene } from "../interface/Hex";
+import Card from "../object/Card";
 import BattleScene from "./BattleScene";
 import CharacterScene from "./CharacterScene";
 import MapScene from "./MapScene";
-// import ShopScene from "./ShopScene";
-// import InnScene from "./InnScene";
-// import DodgeScene from "./DodgeScene";
 import DodgeStartScene from "./DodgeStartScene";
 
 /**
@@ -66,18 +64,18 @@ export default class LoadScene extends Scene
 
         this.load.on("complete", () => {
 
+            Card.cardDataList = this.game.cache.json.get(LoadScene.KEY.DATA.CARD);
+            if(this.game.player) this.game.player.dec.push(...Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD)));
+
         })
     }
 
     create(): void 
     {
-        if(this.game.player) this.game.player.dec.push(...Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD)));
-        // this.scene.start(MapScene.KEY.NAME);
         this.input.keyboard
             .on('keydown-ONE',  () => this.scene.start(CharacterScene.KEY.NAME))
             .on('keydown-TWO',  () => this.scene.start(MapScene.KEY.NAME))
             .on('keydown-THREE',  () => this.scene.start(DodgeStartScene.KEY.NAME))
             .on('keydown-FOUR',  () => this.scene.start(BattleScene.KEY.NAME))
     }
-
 }
