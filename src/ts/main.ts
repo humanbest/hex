@@ -13,12 +13,18 @@ import DodgeScene from "./scene/dodgeScene";
     wf.async = true;
     const s = document.getElementsByTagName('script')[0];
     s.parentNode?.insertBefore(wf, s);
+    const element = document.createElement('style');
+    document.head.appendChild(element);
+    element.sheet!.insertRule('@font-face { font-family: "neodgm"; src: url("fonts/neodgm.woff") format("woff"); }\n', 0);
 }());
 
 //@ts-ignore
 window.WebFontConfig = {
     google: {
         families: ['Noto Sans KR'],
+    },
+    custom: {
+        families: [ 'neodgm' ]
     },
     active() {
         
@@ -33,14 +39,14 @@ window.WebFontConfig = {
                 }
             },
             pixelArt: true,
-            scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene, DodgeScene],
-            player: defaultPlayer,
             physics: {
                 default: 'arcade',
                 arcade: {
                     debug: false
                 }
-            }
+            },
+            scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene, DodgeScene],
+            player: defaultPlayer
         });
     }
 };

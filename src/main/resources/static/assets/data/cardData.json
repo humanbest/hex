@@ -3,102 +3,267 @@
         "name": "아드레날린",
         "type": 2,
         "ownership": 1,
-        "cost": 2
+        "cost": 2,
+        "effect": [
+            {
+                "type": 2, 
+                "value": [
+                    {
+                        "type": 3,
+                        "vale": 2,
+                        "turn": 1
+                    }
+                ],
+                "turn": 1
+            }
+        ]
     },
     "bamboo_spear": {
         "name": "죽창",
         "type": 0,
         "ownership": 1,
-        "cost": 2
+        "cost": 2,
+        "effect": [
+            {
+                "type": 7,
+                "value": 15,
+                "turn": 1
+            }
+        ]
     },
     "chain_mail": {
         "name": "체인 메일",
         "type": 1,
         "ownership": 1,
-        "cost": 2
+        "cost": 2,
+        "effect": [
+            {
+                "type": 1,
+                "value": 8,
+                "turn": 1
+            },
+            {
+                "type": 2,
+                "value": [
+                    {
+                        "type": 5,
+                        "value": 5,
+                        "turn": 1
+                    }
+                ],
+                "turn": 1
+            }
+        ]
     },
     "dempsey_roll": {
         "name": "뎀프시롤",
         "type": 0,
         "ownership": 1,
-        "cost": -1
+        "cost": -1,
+        "effect": [
+            {
+                "type": 3,
+                "value": 5,
+                "turn": 1
+            }
+        ],
+        "turn": 1
     },
     "fireball": {
         "name": "파이어볼",
         "type": 0,
         "ownership": 2,
-        "cost": 2
+        "cost": 2,
+        "effect": [
+            {
+                "type": 0,
+                "value": 8,
+                "turn": 1
+            }
+        ]
     },
     "fist": {
         "name": "붕권",
         "type": 0,
         "ownership": 1,
-        "cost": 2
+        "cost": 2,
+        "effect": [
+            {
+                "type": 0,
+                "value": 15,
+                "turn": 1
+            }
+        ]
     },
     "leather_armor": {
         "name": "가죽 자켓",
         "type": 1,
         "ownership": 0,
-        "cost": 1
+        "cost": 1,
+        "effect": [
+            {
+                "type": 1,
+                "value": 10,
+                "turn": 1
+            }
+        ]
     },
     "revolver": {
         "name": "리볼버 한 발",
         "type": 0,
         "ownership": 1,
-        "cost": 2
+        "cost": 2,
+        "effect": [
+            {
+                "type": 0,
+                "value": 15,
+                "turn": 1
+            },
+            {
+                "type": 9,
+                "value": 0.1,
+                "turn": 1
+            }
+        ]
     },
     "shadow_partner": {
         "name": "쉐도우 파트너",
         "type": 0,
         "ownership": 1,
-        "cost": 2
+        "cost": 2,
+        "effect": [
+            {
+                "type": 3,
+                "value": 2,
+                "turn": 1
+            }
+        ]
     },
     "throwed_dice": {
         "name": "던져진 주사위",
         "type": 0,
         "ownership": 1,
-        "cost": 2
+        "cost": 2,
+        "effect": [
+            {
+                "type": 6,
+                "value": 3,
+                "turn": 1
+            }
+        ]
     },
     "blizzard": {
         "name": "블리자드",
         "type": 0,
         "ownership": 2,
-        "cost": 5
+        "cost": 5,
+        "effect": [
+            {
+                "type": 0,
+                "value": 50,
+                "turn": 1
+            }
+        ]
     },
     "mind_control": {
         "name": "정신공격",
         "type": 0,
         "ownership": 2,
-        "cost": 2
+        "cost": 2,
+        "effect": [
+            {
+                "type": 7,
+                "value": 10,
+                "turn": 1
+            }
+        ]
     },
     "fallen_coin": {
         "name": "떨어진 금화",
         "type": 2,
         "ownership": 0,
-        "cost": 0
+        "cost": 0,
+        "effect": [
+            {
+                "type": 10,
+                "value": 1,
+                "turn": 1
+            }
+        ]
     },
     "mana_release": {
         "name": "마력 방출",
         "type": 0,
         "ownership": 2,
-        "cost": 1
+        "cost": 1,
+        "effect": [
+            {
+                "type": 0,
+                "value": 5,
+                "turn": 1
+            }
+        ]
     },
     "magic_robe": {
         "name": "매직 로브",
         "type": 1,
         "ownership": 2,
-        "cost": 1
+        "cost": 1,
+        "effect": [
+            {
+                "type": 1,
+                "value": 5,
+                "turn": 1
+            },
+            {
+                "type": 2,
+                "value": [
+                    {
+                        "type": 5,
+                        "value": 5,
+                        "turn": 1
+                    }
+                ],
+                "turn": 1
+            }
+        ]
     },
     "normal_jewel": {
         "name": "평범한 보석",
         "type": 0,
         "ownership": 2,
-        "cost": 0
+        "cost": 0,
+        "effect": [
+            {
+                "type": 2,
+                "value": [
+                    {
+                        "type": 0,
+                        "vale": 5,
+                        "turn": 3
+                    }
+                ],
+                "turn": 1
+            }
+        ]
     },
     "unique_jewel": {
         "name": "희귀한 보석",
         "type": 0,
         "ownership": 2,
-        "cost": 0
+        "cost": 0,
+        "effect": [
+            {
+                "type": 2,
+                "value": [
+                    {
+                        "type": 0,
+                        "vale": 10,
+                        "turn": 3
+                    }
+                ],
+                "turn": 1
+            }
+        ]
     }
 }

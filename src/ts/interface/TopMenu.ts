@@ -75,6 +75,7 @@ export default class TopMenu extends Phaser.GameObjects.Container
 
         // 플레이어 덱에 존재하는 카드의 수를 표시
         const cardCount = scene.add.text(0, 0, game.player!.dec.length.toString(), {
+            fontFamily: 'neodgm',
             fontSize: "12px",
             color: "white",
             stroke: "black",
@@ -104,7 +105,7 @@ export default class TopMenu extends Phaser.GameObjects.Container
         const left = this.getByName(TopMenu.KEY.LEFT) as Phaser.GameObjects.Container;
         const right = this.getByName(TopMenu.KEY.Right) as Phaser.GameObjects.Container;
         const cardCount = this.getByName(TopMenu.KEY.TEXT.CARD_COUNT) as Phaser.GameObjects.Text;
-        console.log(background);
+
         // 배경의 넓이 설정
         background.width = this.scene.game.canvas.width;
         
@@ -170,15 +171,15 @@ class Left extends Phaser.GameObjects.Container {
             
             // 플레이어 닉네임
             scene.add.text(0, 0,  game.player!.nickName, {
-                fontFamily: 'Noto Sans KR',
+                fontFamily: 'neodgm',
                 fontSize: "20px",
                 color: "white"
             }).setShadow(2, 2, '#000000', 2, true, true).setName(Left.KEY.TEXT.NICKNAME),
 
             // 플레이어 챔피언 이름
             scene.add.text(0, 0, game.player!.champion.name, {
-                fontFamily: 'Noto Sans KR',
-                fontSize: "15px",
+                fontFamily: 'neodgm',
+                fontSize: "16px",
                 color: "gray"
             }).setShadow(2, 2, '#000000', 2, true, true).setName('champName'),
 
@@ -187,6 +188,7 @@ class Left extends Phaser.GameObjects.Container {
 
             // HP 값
             scene.add.text(0, 0, `${game.player!.champion.hp}/${game.player!.champion.maxHp}`, {
+                fontFamily: 'neodgm',
                 fontSize: "20px",
                 color: "#c95134",
                 stroke: "#c95134",
@@ -198,6 +200,7 @@ class Left extends Phaser.GameObjects.Container {
 
             // 코인 값
             scene.add.text(0, 0, game.player!.inventory.coin.toString(), {
+                fontFamily: 'neodgm',
                 fontSize: "20px",
                 color: "gold",
                 stroke: "gold",
@@ -238,6 +241,7 @@ class Right extends Phaser.GameObjects.Container {
 
             // 시간 텍스트
             scene.add.text(0, 0, "00:00", {
+                fontFamily: 'neodgm',
                 fontSize: "20px",
                 color: "gold",
                 stroke: "gold",
