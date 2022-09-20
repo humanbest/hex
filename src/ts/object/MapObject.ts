@@ -1,5 +1,6 @@
 // import MapManager from "../interface/MapManager";
 import { Scene } from "../interface/Hex";
+import TopMenu from "../interface/TopMenu";
 import MapScene from "../scene/MapScene";
 
 /**
@@ -9,7 +10,7 @@ import MapScene from "../scene/MapScene";
  * @since 2022-09-06 오전 11:09
  */
 export default class MapObject extends Phaser.GameObjects.Container {
-
+    
     /** 노드 배열 */
     private static _NODE_ARR: Array<Node>;
     static get NODE_ARR() {return MapObject._NODE_ARR;};
@@ -49,7 +50,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
         let hiddenProbability = MapObject.BATTLE_NODES_PROBABILITY + MapObject.SHOP_NODES_PROBABILITY + MapObject.REST_NODES_PROBABILITY + MapObject.HIDDEN_NODES_PROBABILITY;
 
         /** 노드 중앙 배치 기준좌표 */
-        const centerPoint = scene.game.canvas.width/2 + 50;
+        const centerPoint = scene.game.canvas.width/2;
 
         MapObject.NODE_ARR = [];
 
@@ -60,7 +61,8 @@ export default class MapObject extends Phaser.GameObjects.Container {
             type: NodeType.START,
             depth: 0,
             space: 0,
-            nextNode: []
+            nextNode: [],
+            isClear: false
         });
 
         //노드 랜덤 생성 알고리즘 (start, boss 노드 제외한 노드 푸쉬)
@@ -112,7 +114,8 @@ export default class MapObject extends Phaser.GameObjects.Container {
                     type: randomNode,
                     depth: i,
                     space: j,
-                    nextNode: []
+                    nextNode: [],
+                    isClear: false
                 })
             }
         }
@@ -124,7 +127,8 @@ export default class MapObject extends Phaser.GameObjects.Container {
             type: NodeType.BOSS,
             depth: (MapObject.DEPTH + 1),
             space: 0,
-            nextNode: []
+            nextNode: [],
+            isClear: false
         });  
     }
 
@@ -178,7 +182,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
     get playerImage() {return this._playerImage}
     private set playerImage(playerImage: Phaser.GameObjects.Image) {this._playerImage = playerImage}
 
-    constructor(scene: MapScene, x: number = 0, y: number = 0) {
+    constructor(scene: MapScene, x: number = TopMenu.HEIGHT, y: number = 0) {
 
         super(scene, x, y);
 
@@ -190,7 +194,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
         }
 
         // 지도 이미지 추가
-        this.add(scene.add.image(-100, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0).setDepth(1));
+        this.add(scene.add.image(-150, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0).setDepth(1));
 
         //엣지 이미지 추가
         let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0x000000}})
@@ -237,6 +241,7 @@ export type Node = {
     depth: number;
     space: number;
     nextNode: Array<Node>;
+    isClear: boolean;
 }
 
 /** 노드 이미지 */

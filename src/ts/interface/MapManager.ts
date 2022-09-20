@@ -36,9 +36,27 @@ export default class MapManager {
             node.setInteractive()
                 .on("pointerdown", () => {
                     const currentNode: Node = this.scene.game.player!.currentNode!;
+
                     if(currentNode.nextNode.includes(node.nodeData))
-                    this.playerMove(node, playerImage)
+                    {
+                        this.playerMove(node, playerImage);
+                        this.camMovePlayer(node.nodeData);
+                    }
                 })
         );
+    }
+
+    camMovePlayer(node: Node):void
+    {
+        const mapCam = this.scene.cameras.getCamera('mapCam');
+
+            mapCam.pan(
+                node.x,
+                node.y,
+                2000,
+                'Sine.easeInOut'
+                )
+            mapCam.zoomTo(2, 3000)
+        
     }
 }
