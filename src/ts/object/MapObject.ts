@@ -62,7 +62,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
             depth: 0,
             space: 0,
             nextNode: [],
-            isClear: false
+            isClear: true
         });
 
         //노드 랜덤 생성 알고리즘 (start, boss 노드 제외한 노드 푸쉬)
@@ -196,27 +196,20 @@ export default class MapObject extends Phaser.GameObjects.Container {
         // 지도 이미지 추가
         this.add(scene.add.image(-150, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0));
 
-        //엣지 이미지 추가
-        let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0x000000}})
+        const graphics = scene.add.graphics().setDepth(0);
+        this.add(graphics);
+        this._nodeImageArr = [];
 
-        this.add(graphics)
-
-        for(let i = 0; i < MapObject.NODE_ARR.length-1; ++i)
-        {
-            for(let j = 0; j < MapObject.NODE_ARR[i].nextNode.length; ++j)
-            {
-                let line = new Phaser.Geom.Line(MapObject.NODE_ARR[i].x , MapObject.NODE_ARR[i].y, MapObject.NODE_ARR[i].nextNode[j].x, MapObject.NODE_ARR[i].nextNode[j].y);
-            
-                this.add(graphics.strokeLineShape(line));
-            }
-        }
-
-        // 노드 인터렉션
-        this.add(this._nodeImageArr = MapObject.NODE_ARR.map(node => new NodeImage(scene, node)));
-
-        // 클리어 표시
         MapObject.NODE_ARR.forEach(node => {
-            node.isClear ? this.add(scene.add.image(node.x, node.y, MapScene.KEY.IMAGE.CLEAR_NODE)) : undefined
+            
+            // 엣지 이미지 추가
+            node.nextNode.forEach(nextNode => graphics.lineStyle((node.isClear && nextNode.isClear) ? 6 : 3, (node.isClear && nextNode.isClear) ? 0x000000 : 0x4D4D4D ).lineBetween(node.x, node.y, nextNode.x, nextNode.y).setDepth(0));
+            
+            // 노드 이미지 추가
+            this._nodeImageArr.push(this.add(new NodeImage(scene, node).setDepth(1)).last as NodeImage);
+            
+            // 클리어 이미지 추가
+            MapObject.NODE_ARR[0] !== node && node.isClear ? this.add(scene.add.image(node.x, node.y, MapScene.KEY.IMAGE.CLEAR_NODE).setDepth(2)) : undefined;
         })
 
         //플레이어 이미지 추가
@@ -258,9 +251,4 @@ export class NodeImage extends Phaser.GameObjects.Image {
         super(scene, nodeData.x, nodeData.y, nodeData.type);
         this.nodeData = nodeData;
     }
-}
-
-/** 플레이어 인터페이스 */
-export type PlayerPoint = {
-    stayNode: Node
 }
