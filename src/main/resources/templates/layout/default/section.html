@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" 
-      xmlns:th="http://www.thymeleaf.org/">
+      xmlns:th="http://www.thymeleaf.org/" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/default/layout}">
 
-<th:bloack th:fragment="sectionFragment">
+<title layout:fragment="title"></title>
+
+<th:bloack layout:fragment="sectionFragment">
     <div>
         <div class="w-full bg-indigo-300 h-20 text-center">
             <div class="flex text-center p-7">
