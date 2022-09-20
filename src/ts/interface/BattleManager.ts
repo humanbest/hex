@@ -1,5 +1,6 @@
 import Card from "../object/Card";
 import BattleScene from "../scene/BattleScene";
+import MapScene from "../scene/MapScene";
 import { Buff, Champion, ChampionName, Scene } from "./Hex";
 
 enum CardState { NORMAL, HOVER, CLICK , PLAYER_HOVER, ENEMY_HOVER}
@@ -58,7 +59,8 @@ export default class BattleManager
      */
     start(): void
     {
-        this.scene.input.keyboard.on('keydown-SPACE', async () => {     
+        // 테스트를 위한 치트키 설정
+        this.scene.input.keyboard.on('keydown-SPACE', async () => {
             
             if(!this.turnManager.isLoading) {
                 
@@ -76,8 +78,9 @@ export default class BattleManager
                 this.turnManager.isLoading = true
                 this.turnManager.nextTurn();
             }
-        });
+        }).on('keydown-ONE',  () => this.battleClear());
 
+        // 배틀이 시작함을 알립니다.
         this.battleNotification
             .startNotification(this.scene.tweens.createTimeline())
             .on("complete", () => this.turnManager.nextTurn())
@@ -106,10 +109,13 @@ export default class BattleManager
      */
     async opponentTurn(): Promise<void>
     {
+        // 카드를 원래 포지션으로 되돌립니다.
         this.cardManager.resetPosition();
 
+        // 플레이어의 모든 선택된 카드를 묘지덱으로 이동시킵니다.
         this.moveAllCardsToUsedCards();
 
+        // 상대턴임을 알리는 알림창을 띄웁니다.
         await new Promise(
             resolve =>
                 this.battleNotification
@@ -119,13 +125,12 @@ export default class BattleManager
         );
     }
 
+    /**
+     * 플레이어의 선택된 모든 카드를 묘지덱으로 이동시킵니다.
+     */
     moveAllCardsToUsedCards(): void 
     {
         this.cardManager.getAll().forEach(card => this.cardManager.moveToUsedCards(card as Card));
-
-        ((this.scene.children.getByName(BattleScene.KEY.CONTAINER.USED_CARDS) as Phaser.GameObjects.Container)
-        .getByName(BattleScene.KEY.TEXT.USED_CARDS_COUNT) as Phaser.GameObjects.Text)
-        .setText(this.cardManager.usedCards.length.toString());
     }
 
     /**
@@ -137,12 +142,16 @@ export default class BattleManager
             .shuffle()
             .addCard(this.cardManager.remainCards.pop())
             .arangeCard();
-
-        ((this.scene.children.getByName(BattleScene.KEY.CONTAINER.REMAIN_CARDS) as Phaser.GameObjects.Container)
-        .getByName(BattleScene.KEY.TEXT.REMAIN_CARDS_COUNT) as Phaser.GameObjects.Text)
-        .setText(this.cardManager.remainCards.length.toString());
         
         await this.waitForSeconds(CardManager.TWEEN_SPEED / 1000);
+    }
+
+    /**
+     * 배틀에서 승리한 경우 플레이어의 현재 노드의 clear 상태를 true로 전환합니다.
+     */
+    battleClear(): void { 
+        this.scene.game.player!.currentNode!.isClear = true; 
+        this.scene.scene.start(MapScene.KEY.NAME);
     }
 
     /**
@@ -164,7 +173,7 @@ export default class BattleManager
  * @author Rubisco
  * @since 2022-08-26 오후 5:02
  */
-class CardManager extends Phaser.GameObjects.Container
+export class CardManager extends Phaser.GameObjects.Container
 {
     /** 초기 카드 수 */
     static readonly INIT_CARD_COUNT: number = 5;
@@ -182,14 +191,19 @@ class CardManager extends Phaser.GameObjects.Container
     static readonly TWEEN_SPEED: number = 300;
 
     /** 남은 카드 목록 */
-    get remainCards() {return this._remainCards}
-    set remainCards(remainCards: Array<string>) {this._remainCards = remainCards}
+    get remainCards() { return this._remainCards }
+    set remainCards(remainCards) { this._remainCards = remainCards }
     private _remainCards: Array<string> = [];
 
     /** 사용된 카드 목록 */
-    get usedCards() {return this._usedCards}
-    set usedCards(usedCards: Array<string>) {this._usedCards = usedCards}
+    get usedCards() { return this._usedCards }
+    set usedCards(usedCards: Array<string>) { this._usedCards = usedCards }
     private _usedCards: Array<string> = [];
+
+    /** 선택된 카드 */
+    get selectedCard() { return this._selectedCard }
+    set selectedCard(card) { this._selectedCard = card }
+    private _selectedCard?: Card;
 
     /** 씬 객체 인터페이스 재정의 */
     scene: Scene;
@@ -261,10 +275,6 @@ class CardManager extends Phaser.GameObjects.Container
     {
         if(!this.remainCards.length) this.remainCards.push(...this.usedCards.splice(0));
         this.remainCards = Phaser.Utils.Array.Shuffle(this.remainCards);
-
-        ((this.scene.children.getByName(BattleScene.KEY.CONTAINER.USED_CARDS) as Phaser.GameObjects.Container)
-        .getByName(BattleScene.KEY.TEXT.USED_CARDS_COUNT) as Phaser.GameObjects.Text)
-        .setText(this.battleManager.cardManager.usedCards.length.toString());
         
         return this;
     }
@@ -374,7 +384,9 @@ class CardManager extends Phaser.GameObjects.Container
      */
     private pointerOver(card: Card): void
     {
-        if(!this.battleManager.turnManager.isLoading && !card.isSelected)
+        if(this.battleManager.turnManager.isLoading) return;
+
+        if(this.selectedCard !== card)
         {
             this.bringToTop(card);
             this.scene.add.tween({
@@ -395,8 +407,7 @@ class CardManager extends Phaser.GameObjects.Container
      */
     private pointerOut(card: Card): void 
     {   
-        if(!this.battleManager.turnManager.isLoading) {
-            card.isSelected = false;
+        if(this.selectedCard !== card) {
             this.moveTo(card, card.getData("originIndex"));
             this.scene.add.tween({
                 targets: card,
@@ -408,6 +419,19 @@ class CardManager extends Phaser.GameObjects.Container
                 ease: 'Quad.easeInOut'
             });
         }
+        // if(card !== this._selectedCard) {
+        //     card.isSelected = false;
+        //     this.moveTo(card, card.getData("originIndex"));
+        //     this.scene.add.tween({
+        //         targets: card,
+        //         x: card.getData("originPosition").x,
+        //         y: card.getData("originPosition").y,
+        //         angle: card.getData("originAngle"),
+        //         duration: 100,
+        //         scale: CardManager.CARD_SCALE,
+        //         ease: 'Quad.easeInOut'
+        //     });
+        // }
     }
 
     /**
@@ -417,10 +441,27 @@ class CardManager extends Phaser.GameObjects.Container
      */
     private pointerDown(card: Card): void 
     {
-        if(!this.battleManager.turnManager.isLoading) {
-            if(!card.isSelected) card.isSelected = true;
-            else this.pointerOut(card);
+        if(this.battleManager.turnManager.isLoading) return;
+
+        if(this._selectedCard === card) this._selectedCard = undefined;
+        else {
+            const preSelectedCard = this._selectedCard;
+            this._selectedCard = card;
+            if (preSelectedCard) this.pointerOut(preSelectedCard);
+            this.bringToTop(card);
+            this.scene.add.tween({
+                targets: card,
+                y: (CardManager.CARD_SCALE - 1) * Card.HEIGHT / 2 - 10,
+                angle: 0,
+                duration: 100,
+                scale: CardManager.CARD_SCALE * 1.2,
+                ease: 'Quad.easeInOut'
+            });
         }
+        // if(!this.battleManager.turnManager.isLoading) {
+        //     if(!card.isSelected) card.isSelected = true;
+        //     else this.pointerOut(card);
+        // }
     }
 
     /**
@@ -429,9 +470,9 @@ class CardManager extends Phaser.GameObjects.Container
      * @param card 카드
      * @param pointer 포인터 위치
      */
-    private pointerMove(card: Card, pointer: Phaser.Input.Pointer): void 
+    private pointerMove(_card: Card, _pointer: Phaser.Input.Pointer): void 
     {
-        if(!this.battleManager.turnManager.isLoading && card.isSelected) card.setPosition(pointer.x - this.x, pointer.y - this.y);
+        // if(!this.battleManager.turnManager.isLoading && card.isSelected) card.setPosition(pointer.x - this.x, pointer.y - this.y);
     }
 }
 
@@ -443,7 +484,7 @@ class CardManager extends Phaser.GameObjects.Container
  * @author Rubisco
  * @since 2022-09-17 오후 10:21
  */
-class TurnManager {
+export class TurnManager {
 
     /** 턴의 로딩 상태 여부 */
     get isLoading() {return this._isLoading}
@@ -511,7 +552,7 @@ class TurnManager {
  * @author Rubisco
  * @since 2022-09-17 오후 10:21
  */
-class BattleNotification extends Phaser.GameObjects.Container {
+export class BattleNotification extends Phaser.GameObjects.Container {
 
     /** 알림 토스트 컨테이너 높이 */
     static HEIGHT: number = 120;
@@ -723,12 +764,12 @@ class BattleNotification extends Phaser.GameObjects.Container {
 /**
  * 배틀 캐릭터 객체
  * 
- * 배틀을 위한 캐릭터의 HP와 COST 등을 관리합니다.
+ * 배틀을 위해 챔피언 캐릭터의 인터페이스를 구현한 클래스 입니다.
  * 
  * @author Rubisco
  * @since 2022-09-19 오전 9:06
  */
- class BattleCharacter implements Champion {
+export class BattleCharacter implements Champion {
 
     /** 캐릭터 이름 */
     get name() {return this._name}

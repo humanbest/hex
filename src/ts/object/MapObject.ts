@@ -215,8 +215,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
         this.add(this._nodeImageArr = MapObject.NODE_ARR.map(node => new NodeImage(scene, node)));
 
         // 클리어 표시
-        MapObject.NODE_ARR.forEach((node, i) => {
-            i < 4 ? node.isClear = true : undefined;
+        MapObject.NODE_ARR.forEach(node => {
             node.isClear ? this.add(scene.add.image(node.x, node.y, MapScene.KEY.IMAGE.CLEAR_NODE)) : undefined
         })
 
