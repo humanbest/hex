@@ -20,7 +20,8 @@ export default class MapScene extends Scene
             MAIN_MAP: "main_map",
             MAP_BACKGROUND: "map_background",
             EX_TEXT: "ex_text",
-            MAP_PLAYER: "map_player"
+            MAP_PLAYER: "map_player",
+            CLEAR_NODE: "clear_node"
         }
     }
 
@@ -53,6 +54,7 @@ export default class MapScene extends Scene
         this.load.image(NodeType.HIDDEN, "assets/images/mapScene/HiddenNode.png");
         this.load.image(NodeType.BOSS, "assets/images/mapScene/BossNode.png");
         this.load.image(MapScene.KEY.IMAGE.MAP_PLAYER, "assets/images/mapScene/MapPlayer.png");
+        this.load.image(MapScene.KEY.IMAGE.CLEAR_NODE, "assets/images/mapScene/ClearNode.png");
     }
 
     create(): void

@@ -194,11 +194,11 @@ export default class MapObject extends Phaser.GameObjects.Container {
         }
 
         // 지도 이미지 추가
-        this.add(scene.add.image(-150, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0).setDepth(1));
+        this.add(scene.add.image(-150, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0));
 
         //엣지 이미지 추가
         let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0x000000}})
-        
+
         this.add(graphics)
 
         for(let i = 0; i < MapObject.NODE_ARR.length-1; ++i)
@@ -212,7 +212,13 @@ export default class MapObject extends Phaser.GameObjects.Container {
         }
 
         // 노드 인터렉션
-        this.add(this._nodeImageArr = MapObject.NODE_ARR.map(node => new NodeImage(scene, node).setDepth(3)));
+        this.add(this._nodeImageArr = MapObject.NODE_ARR.map(node => new NodeImage(scene, node)));
+
+        // 클리어 표시
+        MapObject.NODE_ARR.forEach((node, i) => {
+            i < 4 ? node.isClear = true : undefined;
+            node.isClear ? this.add(scene.add.image(node.x, node.y, MapScene.KEY.IMAGE.CLEAR_NODE)) : undefined
+        })
 
         //플레이어 이미지 추가
         const currentNode = scene.game.player!.currentNode!;
