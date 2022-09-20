@@ -2,6 +2,7 @@ import { Scene } from "../interface/Hex";
 import MapObject, { NodeType } from "../object/MapObject";
 import TopMenu from "../interface/TopMenu";
 import MapManager from "../interface/MapManager";
+import BattleScene from "./BattleScene";
 
 
 /**
@@ -31,6 +32,17 @@ export default class MapScene extends Scene
     
     preload(): void 
     {
+        this.input.keyboard.on('keydown-F', () => {
+            if (this.scale.isFullscreen) {
+                this.scale.stopFullscreen();
+            } else {
+                this.scale.startFullscreen();
+            }
+        })
+
+        this.input.keyboard
+            .on('keydown-ONE',  () => this.scene.start(BattleScene.KEY.NAME))
+
         this.load.image(MapScene.KEY.IMAGE.MAIN_MAP, "assets/images/mapScene/MainMap.png");
         this.load.image(MapScene.KEY.IMAGE.MAP_BACKGROUND, "assets/images/mapScene/MapBackground.png");
         this.load.image(MapScene.KEY.IMAGE.EX_TEXT, "assets/images/mapScene/ExText.png");
@@ -58,25 +70,23 @@ export default class MapScene extends Scene
         const topMenu = new TopMenu(this, 0, 0).setDepth(2);
 
         /** 설명 텍스트 */
-        const exText = this.add.image(100, this.game.canvas.height - 100, "ex_text").setDepth(2);
+        const exText = this.add.image(200, this.game.canvas.height - 100, "ex_text").setDepth(2);
         
         /** 카메라 설정 */
-        const cursors = this.input.keyboard.createCursorKeys();
+        // const cursors = this.input.keyboard.createCursorKeys();
 
-        const mapCam = this.cameras.add(0, TopMenu.HEIGHT, this.game.canvas.width, this.game.canvas.height - TopMenu.HEIGHT);
+        const mapCam = this.cameras.add(0, TopMenu.HEIGHT, this.game.canvas.width, this.game.canvas.height - TopMenu.HEIGHT, undefined, 'mapCam');
         
         const textCam = this.cameras.add(0, 0, this.game.canvas.width, this.game.canvas.height);
         
         const controlConfig = {
             camera: mapCam,
-            // left: cursors.right,
-            // right: cursors.left,
-            up: cursors.down,
-            down: cursors.up,
-            zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-            zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+            up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+            down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+            zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+            zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
             acceleration: 0.06,
-            drag: 0.0005,
+            drag: 0.001,
             maxSpeed: 1.0,
             minZoom: 1,
             maxZoom: 2
@@ -87,9 +97,10 @@ export default class MapScene extends Scene
         this.cameras.main.ignore([mapObject, exText]);
         
         mapCam.ignore([topMenu, mapBackground, exText]).setBounds(-115, 200, 1300, 1500);
-        
         textCam.ignore([topMenu, mapBackground, mapObject]);
         
+        mapManager.camMovePlayer(this.game.player!.currentNode!);       
+
     }
 
 
