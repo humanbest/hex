@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" 
+      xmlns:th="http://www.thymeleaf.org/" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/default/layout}">
+
+<title layout:fragment="title"></title>
+
+<th:bloack layout:fragment="sectionFragment">
+    <div>
+        <div class="w-full bg-indigo-300 h-20 text-center">
+            <div class="flex text-center p-7">
+                <div class="w-1/4 relative inline-block">
+                    <div class="">
+                        <span class=""><a href="#">프로필</a></span>
+                    </div>
+                    <div class="hidden absolute z-0 font-normal">
+                        <a href="#" class="block no-underline py-3 px-5">공지사항</a>
+                        <a href="#" class="block no-underline py-3 px-5">패치</a>
+                        <a href="#" class="block no-underline py-3 px-5">이벤트</a>
+                    </div>
+                </div>
+                <div class="w-1/4">
+                    <h2 class="">게임소식</h2>
+                </div>
+                <div class="w-1/4">
+                    <h2 class="">커뮤니티</h2>
+                </div>
+                <div class="w-1/4">
+                    <h2 class="">고객센터</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:bloack>
+
+</html>

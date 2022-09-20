@@ -11,7 +11,8 @@
     <header th:replace="layout/default/top :: topFragment"></header>
 
     <!-- 본문 -->
-    <section layout:fragment="content"></section>
+    <section layout:replace="layout/default/section :: sectionFragment"></section>
+    <section layout:replace="layout/default/content :: contentFragment"></section>
 
     <!-- 푸터 -->
     <footer th:replace="layout/default/footer :: footerFragment"></footer>

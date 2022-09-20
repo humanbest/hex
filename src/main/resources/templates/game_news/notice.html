@@ -1,43 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <link rel="stylesheet" th:href="@{/css/defualt.css}">
-    <link rel="stylesheet" th:href="@{/css/allboard.css}">
-</head>
-<body>
-    <div class="content">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<th:bloack layout:fragment="noticeFragment">
+
+    <div class="w-full h-full">
         <!-- content -->
-        <div>
-           <!-- category list -->
-            <div class="category">
+        <div class="container my-0 mx-auto p-5">
+            <!-- category list -->
+            <div class="w-36 float-left pt-7 border-r-2 border-solid border-gray-400">
                 <nav>
-                   <h3>게임소식</h3>
-                    <ul>
-                        <li><a href="#">- 공지사항</a></li>
-                        <li><a href="#">- 패치</a></li>
-                        <li><a href="#">- 이벤트</a></li>
+                    <h3 class="ml-5 text-lg">게임소식</h3>
+                    <ul class="pt-2">
+                        <li><a href="#" class="font-black">> 공지사항</a></li>
+                        <li class="text-gray-400 hover:text-black"><a href="#">> 패치</a></li>
+                        <li class="text-gray-400 hover:text-black"><a href="#">> 이벤트</a></li>
                     </ul>
                 </nav>
             </div>
-               <!-- board title -->
-                <table class="board_title">
-                   <div class="board_title_box">
-                        <h2>공지사항</h2>    
-                    </div>
-                </table>
-                <table class="board">
+            <!-- board title -->
+            <div class="float-left w-10/12 px-6">
+                <div class="float-left w-full h-14">
+                    <h2 class="font-black text-2xl">공지사항</h2>
+                </div>
+                <table class="w-full border-collapse">
                     <!-- board list -->
-                    <tr>
-                        <th></th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>날짜</th>
-                        <th>조회수</th>
+                    <tr class="border-t-2 border-solid border-black">
+                        <th class="w-20 py-2 px-3 h-7 border-b-2 border-solid border-gray-300"></th>
+                        <th class="w-96 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">제목</th>
+                        <th class="w-44 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">작성자</th>
+                        <th class="w-20 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">날짜</th>
+                        <th class="w-14 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">조회수</th>
                     </tr>
-            </table>
+                    <tr>
+                        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle"></td>
+                        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle"></td>
+                        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle"></td>
+                        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle"></td>
+                        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
-</body>
+</th:bloack>
+
 </html>
