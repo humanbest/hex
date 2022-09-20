@@ -1,31 +1,28 @@
 <!DOCTYPE html>
-<html lang="ko">
-<th:block th:fragment="topFragment">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="topFragment">
     <div>
-        <div class="h-48 bg-teal-300">
+        <div class="h-48 bg-indigo-500">
             <div>
                 <div class="float-left text-5xl m-14">
                     <a th:href="@{/board/layout.html}" id="team_name">hex</a>
                 </div>
-                <div class="float-right mt-6 mr-4 w-96">
-                    <div class="text-right flex justify-end">
-                        <div class="mt-2.5">
-                            <a th:href="#">sign in</a>
+                <div class="float-right mt-3">
+                    <nav class="text-right mt-4 mr-4">
+                        <a class="mr-5">Sign in</a>
+                        <a class="mr-5">Sign up</a>
+                        <a class="mr-5 text-3xl">Game</a>
+                    </nav>
+                    <div class="flex md:flex-nowrap flex-wrap justify-center items-end md:justify-start mt-9">
+                        <div class="relative sm:w-80 w-40 sm:mr-4 mr-2 inline-flex">
+                            <input type="text" id="footer-field" name="footer-field" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 py-1 px-3">
+                            <button class=" text-white bg-indigo-500 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Button</button>
                         </div>
-                        <div class="mt-2.5">
-                            <a href="#">sign up</a>
-                        </div>
-                        <div class="ml-2.5 text-4xl">
-                            <a href="#"><b>Game</b></a>
-                        </div>
-                    </div>
-                    <div class="mt-9 h-12 border border-solid border-blue-800 bg-white">
-                        <input class="text-base w-80 p-2.5 border-0 outline-none float-left" type="text" placeholder="검색어를 입력하세요">
-                        <button class="w-12 h-full border-0 border-blue-800 outline-none bg-sky-400 float-right" type="submit"></button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</th:block>
+</header>
+
 </html>

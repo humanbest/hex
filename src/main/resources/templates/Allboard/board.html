@@ -1,63 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>글쓰기</title>
-    <link rel="stylesheet" th:href="@{/css/defualt.css}">
-    <link rel="stylesheet" th:href="@{/css/allboard.css}">
-</head>
-<body>
-    <div class="layout">
-        <section>
-            <div class="board_bg">
-                <!-- content top -->
-                <div class="btl">
-                    <h2 class="title">글쓰기</h2>
-                    <div class="btr">
-                        <a href="#" role="button" class="register resisterbtn button_color">
-                        <span class="register_btn">등록</span>
-                        </a>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org/" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/default/layout}">
+
+<title layout:fragment="title"></title>
+
+<th:bloack layout:fragment="getboardFragment">
+    <div>
+        <div class="w-full">
+            <section>
+                <div class="w-8/12 my-0 mx-auto">
+                    <div class="block">
+                        <!-- WritingContent top -->
+                        <div class="relative mt-5 border-b-2 border-solid border-gray-500">
+                            <h2 class="mb-4 text-2xl font-semibold">글쓰기</h2>
+                            <div class="absolute bottom-3 right-0">
+                                <a href="#" role="button"
+                                    class="bg-indigo-400  inline-block rounded-md font-bold text-center align-top">
+                                    <span class="text-indigo-200">등록</span>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- WritingContent -->
+                        <div class="w-full mt-4 flex">
+                            <div class="w-2/3 float-left ml-4">
+                                <!-- board choice -->
+                                <div class="border border-gray-400 text-xl text-gray-400 h-12 p-2">게시판을 선택하세요</div>
+                                <!-- title -->
+                                <div class="mt-2">
+                                    <input class="w-full h-12 p-2" placeholder="제목을 입력하세요">
+                                </div>
+                            </div>
+                            <!-- range -->
+                            <div class="pr-2">
+                                <div class="w-96 mt-1 ml-3 h-24 p-2 bg-indigo-200 block">
+                                    <h4 class="mt-2 ml-6 font-semibold">공개 범위 설정</h4>
+                                    <form class="mt-2 flex justify-around">
+                                        <label><input type="radio" name="grop">전체공개</label>
+                                        <label><input type="radio" name="grop">멤버공개</label>
+                                        <label><input type="radio" name="grop">비공개</label>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full block my-0 mx-auto px-3">
+                        <textarea class="my-3 resize-none container h-96"></textarea>
                     </div>
                 </div>
-                <!-- WritingContent -->
-                <div class="Writingcontent">
-                   <div class="WritingEditor">
-                       <div class="ArtivleWiritingtitle">
-                           <div class="row">
-                               <div class="colum_title">
-                                   <div class="formselectbox">
-                                       <div class="formselectbutton">
-                                           <button type="button" aria-haspopup="true" class="categorybtn">
-                                               " 게시판을 선택해 주세요. "
-                                           </button>
-                                       </div>
-                                   </div>
-                                   <div class="select_option">
-                                       <ul class="option_list">
-                                           <li class="item">
-                                               <button type="button" class="option">
-                                                   <span class="option_text">자유 게시판</span>
-                                               </button>
-                                           </li>
-                                           <li class="item">
-                                               <button type="button" class="option">
-                                                   <span class="option_text">공략 게시판</span>
-                                               </button>
-                                           </li>
-                                           <li class="item">
-                                               <button type="button" class="option">
-                                                   <span class="option_text">자유 게시판</span>
-                                               </button>
-                                           </li>
-                                       </ul>
-                                   </div>
-                               </div>
-                           </div>
-                       </div>
-                   </div> 
-                </div>
-            </div>
-        </section>
-    </div>
-</body>
+            </section>
+        </div>
+    </div>>
+</th:bloack>
 </html>
