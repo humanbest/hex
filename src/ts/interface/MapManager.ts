@@ -1,5 +1,4 @@
 import { Node, NodeImage } from "../object/MapObject";
-// import MapScene from "../scene/MapScene";
 import { Scene } from "./Hex";
 
 
@@ -30,8 +29,8 @@ export default class MapManager {
         });
     }
 
+    /** 노드 인터렉션 */
     setNodeInteraction(nodeImageArr: Array<NodeImage>, playerImage: Phaser.GameObjects.Image) {
-        // 노드 인터렉션
         nodeImageArr.forEach(node =>
             node.setInteractive()
                 .on("pointerdown", () => {
@@ -46,6 +45,7 @@ export default class MapManager {
         );
     }
 
+    /** 맵 카메라 플레이어 위치로 이동 */
     camMovePlayer(node: Node):void
     {
         const mapCam = this.scene.cameras.getCamera('mapCam');
