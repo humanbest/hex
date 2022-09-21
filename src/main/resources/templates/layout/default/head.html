@@ -15,6 +15,7 @@
     
     <!--tailwindcss -->
     <script th:src="@{/js/tailwindcss.js}"></script>
+    <style th:replace="layout/default/tailwindcss :: section"></style>
 
     <!-- 개별 CSS -->
     <th:block layout:fragment="css"></th:block>

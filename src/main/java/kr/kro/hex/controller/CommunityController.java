@@ -53,12 +53,10 @@ public class CommunityController {
      * @author Rubisco
      */
     @GetMapping()
-    public String getBoardListView(@ModelAttribute("member") Member member, Model model) {
+    public String getBoardListView(Model model) {
 
-        if(member.getId() == null) return "redirect:/member?act=login";
-        
         model.addAttribute("boardList", boardService.getBoardList());
-        return "/board/getBoardList";
+        return "/Allboard/getBoardList";
     }
 
     /**
