@@ -54,7 +54,6 @@ public class CommunityController {
      */
     @GetMapping()
     public String getBoardListView(Model model) {
-
         model.addAttribute("boardList", boardService.getBoardList());
         return "/Allboard/getBoardList";
     }
