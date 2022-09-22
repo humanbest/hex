@@ -1,4 +1,7 @@
-import { Node, NodeImage } from "../object/MapObject";
+import { Node, NodeImage, NodeType } from "../object/MapObject";
+import BattleScene from "../scene/BattleScene";
+// import CharacterScene from "../scene/CharacterScene";
+import ShopScene from "../scene/ShopScene";
 import { Scene } from "./Hex";
 
 
@@ -24,8 +27,12 @@ export default class MapManager {
             x: nextNode.x,
             y: nextNode.y,
             duration: 1000,
-            delay: 500,
-            onComplete: () => {this.scene.game.player!.currentNode = nextNode.nodeData}
+            delay: 0,
+            ease: 'Expo.easeIn',
+            onComplete: () => {
+                this.scene.game.player!.currentNode = nextNode.nodeData;
+                this.nextScene(nextNode.nodeData);
+            }
         });
     }
 
@@ -50,13 +57,21 @@ export default class MapManager {
     {
         const mapCam = this.scene.cameras.getCamera('mapCam');
 
-            mapCam.pan(
-                node.x,
-                node.y,
-                2000,
-                'Sine.easeInOut'
-                )
-            mapCam.zoomTo(2, 3000)
-        
+        mapCam.pan( node.x, node.y, 1000, 'Expo.easeIn' )
+        mapCam.zoomTo(2, 1000, 'Expo.easeIn')
+    }
+
+    nextScene(node: Node): void
+    {
+        switch(node.type)
+        {
+        case NodeType.BOSS:
+        case NodeType.BATTLE:
+        case NodeType.HIDDEN:
+            this.scene.scene.start(BattleScene.KEY.NAME); break;
+        case NodeType.SHOP:
+            this.scene.scene.start(ShopScene.KEY.NAME); break;
+        default: break;
+        }
     }
 }
