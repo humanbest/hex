@@ -32,6 +32,16 @@ export abstract class Scene extends Phaser.Scene {
         super(config);
         this.game = super.game;
     };
+
+    preload(): void {
+        this.input.keyboard.on('keydown-F',  () => {
+            if (this.scale.isFullscreen) {
+                this.scale.stopFullscreen();
+            } else {
+                this.scale.startFullscreen();
+            }
+        })
+    }
 }
 
 export type GameConfig = Phaser.Types.Core.GameConfig & {player?: Player}
