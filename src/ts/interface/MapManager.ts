@@ -1,6 +1,5 @@
 import { Node, NodeImage, NodeType } from "../object/MapObject";
 import BattleScene from "../scene/BattleScene";
-// import CharacterScene from "../scene/CharacterScene";
 import ShopScene from "../scene/ShopScene";
 import { Scene } from "./Hex";
 
@@ -52,6 +51,23 @@ export default class MapManager {
         );
     }
 
+    /** 노드 진입 시 씬 전환 */
+    nextScene(node: Node): void
+    {
+        switch(node.type)
+        {
+            case NodeType.BOSS:
+            case NodeType.BATTLE:
+            case NodeType.HIDDEN:
+                this.scene.scene.start(BattleScene.KEY.NAME); break;
+
+            case NodeType.SHOP:
+                this.scene.scene.start(ShopScene.KEY.NAME); break;
+                
+            default: break;
+        }
+    }
+
     /** 맵 카메라 플레이어 위치로 이동 */
     camMovePlayer(node: Node):void
     {
@@ -61,17 +77,22 @@ export default class MapManager {
         mapCam.zoomTo(2, 1000, 'Expo.easeIn')
     }
 
-    nextScene(node: Node): void
+    /** 맵 카메라 이동 */
+    mapCamMove(cam: Phaser.Cameras.Scene2D.Camera)
     {
-        switch(node.type)
-        {
-        case NodeType.BOSS:
-        case NodeType.BATTLE:
-        case NodeType.HIDDEN:
-            this.scene.scene.start(BattleScene.KEY.NAME); break;
-        case NodeType.SHOP:
-            this.scene.scene.start(ShopScene.KEY.NAME); break;
-        default: break;
-        }
+        const controlConfig = {
+            camera: cam,
+            up: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+            down: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+            zoomIn: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+            zoomOut: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+            acceleration: 0.06,
+            drag: 0.001,
+            maxSpeed: 1.0,
+            minZoom: 1,
+            maxZoom: 2
+        };
+
+        this.scene.registry.set("controls", new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig));
     }
 }

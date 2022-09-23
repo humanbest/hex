@@ -33,17 +33,14 @@ export default class MapScene extends Scene
     
     preload(): void 
     {
-        this.input.keyboard.on('keydown-F', () => {
-            if (this.scale.isFullscreen) {
-                this.scale.stopFullscreen();
-            } else {
-                this.scale.startFullscreen();
-            }
-        })
+        /** 전체화면 */
+        super.preload();
 
+        /** 치트키 */
         this.input.keyboard
-            .on('keydown-ONE',  () => this.scene.start(BattleScene.KEY.NAME))
+        .on('keydown-ONE',  () => this.scene.start(BattleScene.KEY.NAME))
 
+        /** 이미지 로드 */
         this.load.image(MapScene.KEY.IMAGE.MAIN_MAP, "assets/images/mapScene/MainMap.png");
         this.load.image(MapScene.KEY.IMAGE.MAP_BACKGROUND, "assets/images/mapScene/MapBackground.png");
         this.load.image(MapScene.KEY.IMAGE.EX_TEXT, "assets/images/mapScene/ExText.png");
@@ -64,7 +61,6 @@ export default class MapScene extends Scene
 
         /** 맵 오브젝트(지도, 노드, 엣지) */
         const mapObject: MapObject = new MapObject(this)
-
         const mapManager = new MapManager(this);
         mapManager.setNodeInteraction(mapObject.nodeImageArr, mapObject.playerImage);
 
@@ -75,29 +71,12 @@ export default class MapScene extends Scene
         const exText = this.add.image(200, this.game.canvas.height - 100, "ex_text").setDepth(2);
         
         /** 카메라 설정 */
-        // const cursors = this.input.keyboard.createCursorKeys();
-
         const mapCam = this.cameras.add(0, TopMenu.HEIGHT, this.game.canvas.width, this.game.canvas.height - TopMenu.HEIGHT, undefined, 'mapCam');
-        
         const textCam = this.cameras.add(0, 0, this.game.canvas.width, this.game.canvas.height);
-        
-        const controlConfig = {
-            camera: mapCam,
-            up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
-            down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
-            zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-            zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
-            acceleration: 0.06,
-            drag: 0.001,
-            maxSpeed: 1.0,
-            minZoom: 1,
-            maxZoom: 2
-        };
+           
+        mapManager.mapCamMove(mapCam);
 
-        this.registry.set("controls", new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig));
-        
         this.cameras.main.ignore([mapObject, exText]);
-        
         mapCam.ignore([topMenu, mapBackground, exText]).setBounds(-115, 200, 1300, 1500);
         textCam.ignore([topMenu, mapBackground, mapObject]);
         

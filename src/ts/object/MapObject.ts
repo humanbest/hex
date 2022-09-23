@@ -23,10 +23,10 @@ export default class MapObject extends Phaser.GameObjects.Container {
     private static readonly MIN_SPACE = 2;
     private static readonly MAX_SPACE = 4;
 
-    /**노드 등장 확률 설정 */
+    /**노드 등장 확률 설정(총 합이 1) */
     private static readonly BATTLE_NODES_PROBABILITY = 0.55;
-    private static readonly SHOP_NODES_PROBABILITY = 0.15;
-    private static readonly REST_NODES_PROBABILITY = 0.15;
+    private static readonly SHOP_NODES_PROBABILITY   = 0.15;
+    private static readonly REST_NODES_PROBABILITY   = 0.15;
     private static readonly HIDDEN_NODES_PROBABILITY = 0.15;
 
     /** 특수 노드(shop, rest, hidden) 출현 시작 뎁스 */
@@ -40,6 +40,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
     /** 노드 배열 설정 */
     private static setNodeData(scene: Scene): void 
     {
+        //y축 시작지점, 간격
         const start: number = 1400;
         const step: number = 100;
 
@@ -49,9 +50,10 @@ export default class MapObject extends Phaser.GameObjects.Container {
         let restProbability = MapObject.BATTLE_NODES_PROBABILITY + MapObject.SHOP_NODES_PROBABILITY + MapObject.REST_NODES_PROBABILITY;
         let hiddenProbability = MapObject.BATTLE_NODES_PROBABILITY + MapObject.SHOP_NODES_PROBABILITY + MapObject.REST_NODES_PROBABILITY + MapObject.HIDDEN_NODES_PROBABILITY;
 
-        /** 노드 중앙 배치 기준좌표 */
+        // 노드 중앙 배치 기준 좌표
         const centerPoint = scene.game.canvas.width/2;
 
+        //NODE_ARR 초기화
         MapObject.NODE_ARR = [];
 
         //start 노드 푸쉬
@@ -175,12 +177,12 @@ export default class MapObject extends Phaser.GameObjects.Container {
     /** 노드 이미지 배열 */
     private _nodeImageArr: Array<NodeImage>;
     get nodeImageArr() {return this._nodeImageArr}
-    private set nodeImageArr(nodeImageArr: Array<NodeImage>) {this._nodeImageArr = nodeImageArr}
+    // private set nodeImageArr(nodeImageArr: Array<NodeImage>) {this._nodeImageArr = nodeImageArr}
 
     /** 플레이어 이미지 */
     private _playerImage: Phaser.GameObjects.Image;
     get playerImage() {return this._playerImage}
-    private set playerImage(playerImage: Phaser.GameObjects.Image) {this._playerImage = playerImage}
+    // private set playerImage(playerImage: Phaser.GameObjects.Image) {this._playerImage = playerImage}
 
     constructor(scene: MapScene, x: number = TopMenu.HEIGHT, y: number = 0) {
 
@@ -203,7 +205,12 @@ export default class MapObject extends Phaser.GameObjects.Container {
         MapObject.NODE_ARR.forEach(node => {
             
             // 엣지 이미지 추가
-            node.nextNode.forEach(nextNode => graphics.lineStyle((node.isClear && nextNode.isClear) ? 6 : 3, (node.isClear && nextNode.isClear) ? 0x000000 : 0x4D4D4D ).lineBetween(node.x, node.y, nextNode.x, nextNode.y).setDepth(0));
+            node.nextNode.forEach(nextNode => 
+                graphics
+                .lineStyle((node.isClear && nextNode.isClear) ? 6 : 3, (node.isClear && nextNode.isClear) ? 0x000000 : 0x4D4D4D )
+                .lineBetween(node.x, node.y, nextNode.x, nextNode.y)
+                .setDepth(0)
+                );
             
             // 노드 이미지 추가
             this._nodeImageArr.push(this.add(new NodeImage(scene, node).setDepth(1)).last as NodeImage);
