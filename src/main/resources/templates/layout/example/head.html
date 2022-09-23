@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:fragment="head">
+
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title layout:fragment="title"></title>
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    
+    <!--tailwindcss -->
+    <script th:src="@{/js/tailwindcss.js}"></script>
+    <style th:replace="layout/example/tailwindcss :: common"></style>
+
+    <!-- 개별 CSS/JS -->
+    <th:block layout:fragment="customHead"></th:block>
+</head>
+
+</html>

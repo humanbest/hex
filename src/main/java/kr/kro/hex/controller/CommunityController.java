@@ -32,6 +32,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(path = "/community")
 public class CommunityController {
 
+    /** 레이아웃 */
+    private static final String LAYOUT = "example"; 
+
     /** 게시판 서비스 */
     private final BoardService boardService;
 
@@ -55,7 +58,7 @@ public class CommunityController {
     @GetMapping()
     public String getBoardListView(Model model) {
         model.addAttribute("boardList", boardService.getBoardList());
-        return "/Allboard/getBoardList";
+        return "/board/" + LAYOUT + "/getBoardList";
     }
 
     /**
@@ -74,7 +77,7 @@ public class CommunityController {
         model.addAttribute("nl", System.getProperty("line.separator"));
         model.addAttribute("layout", "default");
         model.addAttribute("board", boardService.getBoard(board));
-        return "/board/getBoard";
+        return "/board/" + LAYOUT + "/getBoard";
     }
 
     /**
@@ -90,7 +93,7 @@ public class CommunityController {
     public String insertBoardView(Model model) {
         model.addAttribute("layout", "default");
         model.addAttribute("categoryList", categoryService.getCategoryList());
-        return "/board/insertBoard";
+        return "/board/" + LAYOUT + "/insertBoard";
     }
 
     /**
@@ -109,7 +112,7 @@ public class CommunityController {
         model.addAttribute("layout", "default");
         model.addAttribute("board", boardService.getBoard(board));
         model.addAttribute("categoryList", categoryService.getCategoryList());
-        return "/board/insertBoard";
+        return "/board/" + LAYOUT + "/insertBoard";
     }
 
     /**
