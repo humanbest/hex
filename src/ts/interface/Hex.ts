@@ -185,7 +185,7 @@ enum ChampionPrimaryKey {
  * 챔피언 인터페이스
  */
 export interface Champion {
-    name: ChampionName;
+    name: string;
     hp: number;
     maxHp: number;
     defense: number;
