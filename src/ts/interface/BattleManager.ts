@@ -1,3 +1,4 @@
+import { Vector } from "matter";
 import Card from "../object/Card";
 import BattleScene from "../scene/BattleScene";
 import MapScene from "../scene/MapScene";
@@ -39,6 +40,10 @@ export default class BattleManager
     get scene() {return this._scene}
     private readonly _scene: Scene;
 
+    /** 타겟 포인터 객체 */
+    get targetPointer() {return this._targetPointer};
+    private readonly _targetPointer: TargetPointer;
+
     /**
      * 배틀 매니저 객체를 생성합니다.
      * 
@@ -50,8 +55,14 @@ export default class BattleManager
         this._battleNotification = new BattleNotification(this);
         this._cardManager = new CardManager(this);
         this._turnManager = new TurnManager(this);
-        this._plyerCharacter = new BattleCharacter(this, scene.game.player!.champion);
+        this._plyerCharacter = new BattleCharacter(this, 0, 0, scene.game.player!.champion);
         this._opponents = new Array<BattleCharacter>();
+        this._opponents.push(
+            scene.add.existing(
+                new BattleCharacter(this, scene.cameras.main.width / 2, scene.cameras.main.height / 2, scene.game.player!.champion, "middle_boss")
+            )
+        )
+        this._targetPointer = new TargetPointer(this);
     }
 
     /**
@@ -163,6 +174,8 @@ export default class BattleManager
     {
         return new Promise(resolve => setTimeout(resolve, second * 1000));
     }
+
+
 }
 
 /**
@@ -261,9 +274,12 @@ export class CardManager extends Phaser.GameObjects.Container
             .setInteractive()
             .on("pointerover", () => this.pointerOver(card))
             .on("pointerout", () => this.pointerOut(card))
-            .on("pointerdown", () => this.pointerDown(card))
-            .on("pointermove", (pointer: Phaser.Input.Pointer) => this.pointerMove(card, pointer))
-        ) : this;
+            .on("dragstart", ()=> this.dragStart(card))
+            .on("drag", (pointer: Phaser.Input.Pointer) => this.drag(pointer))
+            .on("dragend", () => this.dragEnd())
+            // .on("pointerdown", () => this.pointerDown(card))
+            // .on("pointermove", (pointer: Phaser.Input.Pointer) => this.pointerMove(card, pointer))
+        ).setDraggable(card) : this;
     }
 
     /**
@@ -384,20 +400,17 @@ export class CardManager extends Phaser.GameObjects.Container
      */
     private pointerOver(card: Card): void
     {
-        if(this.battleManager.turnManager.isLoading) return;
+        if(this.battleManager.turnManager.isLoading || this._selectedCard) return;
 
-        if(this.selectedCard !== card)
-        {
-            this.bringToTop(card);
-            this.scene.add.tween({
-                targets: card,
-                y: (CardManager.CARD_SCALE - 1) * Card.HEIGHT / 2,
-                angle: 0,
-                duration: 100,
-                scale: 1,
-                ease: 'Quad.easeInOut'
-            });
-        }
+        this.bringToTop(card);
+        this.scene.add.tween({
+            targets: card,
+            y: (CardManager.CARD_SCALE - 1) * Card.HEIGHT / 2,
+            angle: 0,
+            duration: 100,
+            scale: 1,
+            ease: 'Quad.easeInOut'
+        });
     }
 
     /**
@@ -407,7 +420,7 @@ export class CardManager extends Phaser.GameObjects.Container
      */
     private pointerOut(card: Card): void 
     {   
-        if(this.selectedCard !== card) {
+        if(!this._selectedCard) {
             this.moveTo(card, card.getData("originIndex"));
             this.scene.add.tween({
                 targets: card,
@@ -419,19 +432,45 @@ export class CardManager extends Phaser.GameObjects.Container
                 ease: 'Quad.easeInOut'
             });
         }
-        // if(card !== this._selectedCard) {
-        //     card.isSelected = false;
-        //     this.moveTo(card, card.getData("originIndex"));
-        //     this.scene.add.tween({
-        //         targets: card,
-        //         x: card.getData("originPosition").x,
-        //         y: card.getData("originPosition").y,
-        //         angle: card.getData("originAngle"),
-        //         duration: 100,
-        //         scale: CardManager.CARD_SCALE,
-        //         ease: 'Quad.easeInOut'
-        //     });
-        // }
+    }
+
+    /**
+     * 카드의 드래그를 시작합니다.
+     * 
+     * @param card 카드
+     */
+    private dragStart(card: Card): void 
+    {
+        this._selectedCard = card;
+        this.scene.add.tween({
+            targets: card,
+            y: -CardManager.CARD_SCALE * Card.HEIGHT * 0.2,
+            angle: 0,
+            duration: 100,
+            scale: CardManager.CARD_SCALE * 1.2,
+            ease: 'Quad.easeInOut'
+        });
+    }
+
+    /**
+     * 카드가 드래그되면 타켓 포인터가 생깁니다.
+     * 
+     * @param card 카드
+     */
+    private drag(pointer: Phaser.Input.Pointer): void
+    {
+        if(this._selectedCard) this.battleManager.targetPointer.createLineFromCardToPointer(this._selectedCard, pointer);
+    }
+
+    /**
+     * 카드의 드래그 상태가 끝나면 타겟 포인터가 사라집니다.
+     * 
+     * @param card 카드
+     */
+    private dragEnd(): void
+    {
+        this.battleManager.targetPointer.pointer.clear();
+        this._selectedCard = undefined;
     }
 
     /**
@@ -443,25 +482,24 @@ export class CardManager extends Phaser.GameObjects.Container
     {
         if(this.battleManager.turnManager.isLoading) return;
 
-        if(this._selectedCard === card) this._selectedCard = undefined;
-        else {
+        if(this._selectedCard === card) {
+            this._selectedCard = undefined;
+            this.pointerOut(card);
+            this.battleManager.targetPointer.pointer.clear();
+        } else {
             const preSelectedCard = this._selectedCard;
             this._selectedCard = card;
             if (preSelectedCard) this.pointerOut(preSelectedCard);
             this.bringToTop(card);
             this.scene.add.tween({
                 targets: card,
-                y: (CardManager.CARD_SCALE - 1) * Card.HEIGHT / 2 - 10,
+                y: -CardManager.CARD_SCALE * Card.HEIGHT * 0.2,
                 angle: 0,
                 duration: 100,
                 scale: CardManager.CARD_SCALE * 1.2,
                 ease: 'Quad.easeInOut'
             });
         }
-        // if(!this.battleManager.turnManager.isLoading) {
-        //     if(!card.isSelected) card.isSelected = true;
-        //     else this.pointerOut(card);
-        // }
     }
 
     /**
@@ -473,6 +511,11 @@ export class CardManager extends Phaser.GameObjects.Container
     private pointerMove(_card: Card, _pointer: Phaser.Input.Pointer): void 
     {
         // if(!this.battleManager.turnManager.isLoading && card.isSelected) card.setPosition(pointer.x - this.x, pointer.y - this.y);
+    }
+
+    private setDraggable(card: Card): this {
+        this.scene.input.setDraggable(card);
+        return this;
     }
 }
 
@@ -769,12 +812,7 @@ export class BattleNotification extends Phaser.GameObjects.Container {
  * @author Rubisco
  * @since 2022-09-19 오전 9:06
  */
-export class BattleCharacter implements Champion {
-
-    /** 캐릭터 이름 */
-    get name() {return this._name}
-    private set name(name) {this._name = name}
-    private _name: ChampionName;
+export class BattleCharacter extends Phaser.GameObjects.Container {
 
     /** 캐릭터 체력 */
     get hp() {return this._hp}
@@ -805,28 +843,27 @@ export class BattleCharacter implements Champion {
     get originData() {return this._originData};
     private readonly _originData: Champion;
 
-    /** 씬 객체 */
-    get scene() {return this._scene}
-    private readonly _scene: Scene;
-
     /** 배틀 매니저 객체 */
     get battleManager() {return this._battleManager}
     private readonly _battleManager: BattleManager;
 
-    /** 캐릭터 매니저 객체를 생성합니다.
+    /** 스프라이트 객체 */
+    get sprite() {return this._sprite}
+    private _sprite?: Phaser.GameObjects.Sprite;
+
+    /** 
+     * 캐릭터 매니저 객체를 생성합니다.
      * 
      * @param battleManager 배틀 매니저
      */
-    constructor(battleManager: BattleManager, champion: Champion) {
+    constructor(battleManager: BattleManager, x: number, y: number, champion: Champion, name?: string) {
 
-        /** 씬 객체를 주입합니다. */
-        this._scene = battleManager.scene;
+        super(battleManager.scene, x, y);
 
         /** 배틀 매니저 객체를 주입합니다. */
         this._battleManager = battleManager;
 
         /** 원본 캐릭터 데이터로부터 값을 복사합니다. */
-        this._name = champion.name
         this._hp = champion.hp
         this._maxHp = champion.maxHp
         this._defense = champion.defense
@@ -835,6 +872,23 @@ export class BattleCharacter implements Champion {
 
         /** 원본 캐릭터 데이터를 주입합니다. */
         this._originData = champion;
+
+        if(name) this.add(this._sprite = battleManager.scene.add.sprite(0, 0, name));
+
+        if(this._sprite) {
+            this.setSize(this._sprite.width, this._sprite.height);
+            const skills = this._sprite.anims.animationManager["anims"].keys();
+            let c = 0;
+            this._sprite.setInteractive().on('pointerdown', () => {
+                if(this._sprite) {
+                    if(++c === skills.length) c = 0;
+                    this._sprite.play(skills[c]);
+                }
+            })
+    
+            this._sprite.play("idle").setScale(3);
+        }
+
     }
 
     /**
@@ -857,4 +911,86 @@ export class BattleCharacter implements Champion {
      * @param buff 버프
      */
     addBuffCmd(buff: Buff): void { this.buffArr.push(buff) }
+ }
+
+ /**
+ * 타겟 포인터 객체
+ * 
+ * 카드를 제출할때 나타나는 타겟 포인터 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-23 오전 6:00
+ */
+ class TargetPointer extends Phaser.Curves.CubicBezier 
+ {
+    /** 배틀 매니저 객체 */
+    private readonly battleManager: BattleManager;
+
+    /** 포인터 */
+    private readonly _pointer: Phaser.GameObjects.Graphics;
+    get pointer() {return this._pointer}
+
+    /** 삼각형 */
+    private readonly triangle: Phaser.Geom.Triangle;
+    private readonly strokeTriangle: Phaser.Geom.Triangle;
+
+    /** 색상 */
+    private _color: number;
+    set color(color: number) {this._color = color}
+
+    /** 선 색상 */
+    private _strokeColor: number;
+    set strokeColor(color: number) {this._strokeColor = color}
+
+    /** 
+     * 타겟 포인터 객체를 생성합니다
+     * 
+     * @param battleManager 배틀 매니저
+     */
+    constructor(battleManager: BattleManager)
+    {
+        super(new Phaser.Math.Vector2(), new Phaser.Math.Vector2(), new Phaser.Math.Vector2(), new Phaser.Math.Vector2());
+        this.battleManager = battleManager;
+        this._pointer = battleManager.scene.add.graphics().setDepth(2);
+        this.triangle = Phaser.Geom.Triangle.BuildEquilateral(0, 0, 30);
+        this.strokeTriangle = Phaser.Geom.Triangle.BuildEquilateral(0, 0, 31);
+        this._color = 0xa8aaaa;
+        this._strokeColor = 0x41413f;
+    }
+
+    /** 타겟 포인터가 그려집니다.
+     * 
+     * @param start 시작 좌표
+     * @param end 끝 좌표
+     */
+    createLineFromCardToPointer(start: Vector, end: Vector): void
+    {
+        this._pointer.clear()
+
+        this.p0.x = start.x + this.battleManager.cardManager.x;
+        this.p0.y = start.y + this.battleManager.cardManager.y;
+
+        this.p1.x = start.x + this.battleManager.cardManager.x;
+        this.p1.y = end.y - 100;
+
+        this.p2.x = end.x;
+        this.p2.y = end.y;
+
+        this.p3.x = end.x;
+        this.p3.y = end.y;
+
+        Phaser.Geom.Triangle.CenterOn(this.triangle, end.x, end.y);
+        Phaser.Geom.Triangle.CenterOn(this.strokeTriangle, end.x, end.y);
+
+        this.getPoints(32).forEach(
+            point => 
+                this._pointer
+                    .fillStyle(this._color, 1)
+                    .lineStyle(2, this._strokeColor, 1)
+                    .fillCircle(point.x, point.y, 3)
+                    .strokeCircle(point.x, point.y, 4)
+                    .fillTriangleShape(this.triangle)
+                    .strokeTriangleShape(this.triangle)
+        );
+    }
  }

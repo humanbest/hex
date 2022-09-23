@@ -192,6 +192,10 @@ export interface Champion {
     cost: number;
 }
 
+export interface MonsterData extends Champion {
+    skill: Array<string>
+}
+
 /**
  * 인벤토리 인터페이스
  */
