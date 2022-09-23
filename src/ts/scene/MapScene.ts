@@ -1,6 +1,6 @@
 import { Scene } from "../interface/Hex";
 import MapObject, { NodeType } from "../object/MapObject";
-import TopMenu from "../interface/TopMenu";
+import TopMenu from "../object/TopMenu";
 import MapManager from "../interface/MapManager";
 import BattleScene from "./BattleScene";
 

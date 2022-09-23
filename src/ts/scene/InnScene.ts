@@ -1,5 +1,5 @@
 import { Scene } from "../interface/Hex";
-import TopMenu from "../interface/TopMenu";
+import TopMenu from "../object/TopMenu";
 
 export default class InnScene extends Scene{
 

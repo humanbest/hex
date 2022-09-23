@@ -1,4 +1,4 @@
-import TopMenu from "../interface/TopMenu";
+import TopMenu from "../object/TopMenu";
 import Card from "../object/Card";
 import {Scene} from "../interface/Hex";
 import LoadScene from "./LoadScene";

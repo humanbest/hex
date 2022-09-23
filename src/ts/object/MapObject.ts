@@ -1,6 +1,6 @@
 // import MapManager from "../interface/MapManager";
 import { Scene } from "../interface/Hex";
-import TopMenu from "../interface/TopMenu";
+import TopMenu from "../object/TopMenu";
 import MapScene from "../scene/MapScene";
 
 /**

@@ -1,5 +1,5 @@
 import LoadScene from "../scene/LoadScene";
-import { Scene } from "./Hex";
+import { Scene } from "../interface/Hex";
 
 /**
  * 상단 메뉴를 나타냅니다.
