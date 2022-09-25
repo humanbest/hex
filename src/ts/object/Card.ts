@@ -37,15 +37,12 @@ export default class Card extends Phaser.GameObjects.Container
     private static readonly titleColor: number[] = [0xffbb9d, 0x9fdbe1, 0xc2d6b5];
     
     /** 카드 데이터 리스트 */
-    static get cardDataList() {
-        return this._cardDataList;
-    }
-
-    static set cardDataList(cardDataList: {[key: string]: CardData}) {
-        this._cardDataList = cardDataList;
-    }
-
+    static get cardDataList() {return this._cardDataList }
+    static set cardDataList(cardDataList) { this._cardDataList = cardDataList }
     private static _cardDataList: {[key: string]: CardData};
+
+    get originData() {return this._originData}
+    private readonly _originData?: CardData;
     
     /** 카드의 선택 여부 */
     isSelected: boolean = false;
@@ -73,10 +70,11 @@ export default class Card extends Phaser.GameObjects.Container
         {
 
             /** 카드 데이터 주입 */
-            const cardData = Card.cardDataList[cardName];
+            let cardData = Card.cardDataList[cardName];
+            this.name = cardName;
 
             /** 카드 데이터 저장 */
-            this.setData(cardData).setData("key", cardName);
+            this._originData = cardData;
 
             /** 카드 타입 */
             const type: CardType = cardData.type;

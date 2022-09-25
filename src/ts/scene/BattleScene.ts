@@ -36,8 +36,6 @@ export default class BattleScene extends Scene
         this.load.image(BattleScene.KEY.IMAGE.SWORD, "assets/images/battleScene/battle_start.png");
         this.load.animation('middle_boss_data', 'assets/animations/middle_boss.json');
         this.load.atlas("middle_boss", "assets/atlas/middle_boss.png", "assets/atlas/middle_boss.json");
-
-        
     }
 
     create(): void
@@ -50,7 +48,7 @@ export default class BattleScene extends Scene
         new TopMenu(this, 0, 0).setDepth(10);
 
         /** 배틀 관리 객체 */
-        this.battleManager = new BattleManager(this);
+        this.battleManager = new BattleManager(this).addMonster();
         this.battleManager.cardManager.setDepth(1);
 
         /** 남은 카드 목록 UI 컨테이너 */
@@ -121,7 +119,7 @@ export default class BattleScene extends Scene
         this.battleManager.start();
     }
 
-    update(_time: number, _delta: number): void {
+    update(): void {
 
         if(!this.battleManager) return;
 

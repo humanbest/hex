@@ -46,6 +46,7 @@ window.WebFontConfig = {
                     debug: false
                 }
             },
+            parent: "game",
             scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene, DodgeScene, DodgeStartScene],
             player: defaultPlayer
         });
