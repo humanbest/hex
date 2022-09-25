@@ -1,7 +1,6 @@
-import { BattleCharacter, BattleNotification, TargetPointer } from "../object/BattleObject";
-import Card from "../object/Card";
+import {BattleCard as Card, BattleCharacter, BattleNotification, TargetPointer } from "../object/BattleObject";
 import MapScene from "../scene/MapScene";
-import { Scene } from "./Hex";
+import { BattleState, Scene } from "./Hex";
 
 /**
  * 배틀 매니저
@@ -22,8 +21,8 @@ export default class BattleManager
     private readonly _battleNotification: BattleNotification;
 
     /** 턴 매니저 객체 */
-    get turnManager() {return this._turnManager}
-    private readonly _turnManager: TurnManager;
+    get stateManager() {return this._stateManager}
+    private readonly _stateManager: StateManager;
 
     /** 플레이어 캐릭터 객체 */
     get plyerCharacter() {return this._plyerCharacter}
@@ -51,15 +50,21 @@ export default class BattleManager
         this._scene = scene;
         this._battleNotification = new BattleNotification(this);
         this._cardManager = new CardManager(this);
-        this._turnManager = new TurnManager(this);
+        this._stateManager = new StateManager(this);
         this._plyerCharacter = new BattleCharacter(this, 0, 0, scene.game.player!.champion);
         this._opponents = new Array<BattleCharacter>();
+        this._targetPointer = new TargetPointer(this);
+    }
+
+    addMonster(): this
+    {
         this._opponents.push(
-            scene.add.existing(
-                new BattleCharacter(this, scene.cameras.main.width / 2, scene.cameras.main.height / 2, scene.game.player!.champion, "ninza")
+            this._scene.add.existing(
+                new BattleCharacter(this, this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, this.scene.game.player!.champion, "ninza")
             )
         )
-        this._targetPointer = new TargetPointer(this);
+
+        return this;
     }
 
     /**
@@ -70,28 +75,25 @@ export default class BattleManager
         // 테스트를 위한 치트키 설정
         this.scene.input.keyboard.on('keydown-SPACE', async () => {
             
-            if(!this.turnManager.isLoading) {
+            if(!this._stateManager.isLoading) {
                 
-                this.turnManager.isLoading = true;
+                this._stateManager.state = BattleState.LOADING;
 
                 this.cardManager.resetPosition();
                 this.addCard();
 
                 await this.waitForSeconds(CardManager.TWEEN_SPEED / 1000);
 
-                this.turnManager.isLoading = false;
+                this._stateManager.state = BattleState.NORMAL;
             }
         }).on('keydown-Q', async () => {     
-            if(!this.turnManager.isLoading) {
-                this.turnManager.isLoading = true
-                this.turnManager.nextTurn();
-            }
+            if(!this.stateManager.isLoading) this.stateManager.nextTurn();
         }).on('keydown-ONE',  () => this.battleClear());
 
         // 배틀이 시작함을 알립니다.
         this.battleNotification
             .startNotification(this.scene.tweens.createTimeline())
-            .on("complete", () => this.turnManager.nextTurn())
+            .on("complete", () => this.stateManager.nextTurn())
             .play();
     }
 
@@ -110,6 +112,7 @@ export default class BattleManager
 
         // 카드를 분배받습니다.
         for(let i = 0; i < CardManager.INIT_CARD_COUNT; i++) await this.addCard();
+
     }
 
     /**
@@ -146,6 +149,10 @@ export default class BattleManager
      */
     async addCard(): Promise<void>
     {
+        this.stateManager.state = BattleState.LOADING;
+
+        this.targetPointer.clear();
+        
         this.cardManager
             .shuffle()
             .addCard(this.cardManager.remainCards.pop())
@@ -198,6 +205,22 @@ export class CardManager extends Phaser.GameObjects.Container
     /** 카드 애니메이션 속도 */
     static readonly TWEEN_SPEED: number = 300;
 
+    /** 카드 데미지 계산 메소드 */
+    // static readonly CALULATE_DAMAGE = (cardEffectArr: Array<CardEffect>) => {
+
+    //     let damage = 0;
+
+    //     cardEffectArr.filter(buff => buff.type === CardEffectType.ADD_DAMAGE).forEach(buff => {
+    //         damage += buff.value;
+    //     });
+    
+    //     cardEffectArr.filter(buff => buff.type === CardEffectType.ADD_DAMAGE_BY_RATIO).forEach(buff => {
+    //         damage += buff.value;
+    //     });
+        
+    //     return damage;
+    // }
+
     /** 남은 카드 목록 */
     get remainCards() { return this._remainCards }
     set remainCards(remainCards) { this._remainCards = remainCards }
@@ -207,11 +230,6 @@ export class CardManager extends Phaser.GameObjects.Container
     get usedCards() { return this._usedCards }
     set usedCards(usedCards: Array<string>) { this._usedCards = usedCards }
     private _usedCards: Array<string> = [];
-
-    /** 선택된 카드 */
-    get selectedCard() { return this._selectedCard }
-    set selectedCard(card) { this._selectedCard = card }
-    private _selectedCard?: Card;
 
     /** 씬 객체 인터페이스 재정의 */
     scene: Scene;
@@ -254,24 +272,7 @@ export class CardManager extends Phaser.GameObjects.Container
      */
     addCard(cardName?: string): this 
     {
-        let card: Card;
-
-        return cardName ? this.add(card = new Card(this.scene, cardName, true)
-            .setSize(Card.WIDTH, Card.HEIGHT)
-            .setPosition(-this.x + Card.WIDTH * 0.25, 0)
-            .setData({
-                originIndex: this.length,
-                originPosition: new Phaser.Math.Vector2(0, 0),
-                originAngle: 0
-            })
-            .setScale(0.2)
-            .setInteractive()
-            .on("pointerover", () => this.pointerOver(card))
-            .on("pointerout", () => this.pointerOut(card))
-            .on("dragstart", ()=> this.dragStart(card))
-            .on("drag", (pointer: Phaser.Input.Pointer) => this.drag(pointer))
-            .on("dragend", () => this.dragEnd())
-        ).setDraggable(card) : this;
+        return cardName ? this.add(new Card(this.battleManager, cardName, true)) : this;
     }
 
     /**
@@ -384,109 +385,28 @@ export class CardManager extends Phaser.GameObjects.Container
             onComplete: () => card.destroy()
         })
     }
-
-    /**
-     * 카드에 포인터를 올리면 카드가 커집니다.
-     * 
-     * @param card 카드
-     */
-    private pointerOver(card: Card): void
-    {
-        if(this.battleManager.turnManager.isLoading || this._selectedCard) return;
-
-        this.bringToTop(card);
-        this.scene.add.tween({
-            targets: card,
-            y: (CardManager.CARD_SCALE - 1) * Card.HEIGHT / 2,
-            angle: 0,
-            duration: 100,
-            scale: 1,
-            ease: 'Quad.easeInOut'
-        });
-    }
-
-    /**
-     * 카드에서 포인터가 벗어나면 원래 상태로 돌아갑니다.
-     * 
-     * @param card 카드
-     */
-    private pointerOut(card: Card): void 
-    {   
-        if(!this._selectedCard) {
-            this.moveTo(card, card.getData("originIndex"));
-            this.scene.add.tween({
-                targets: card,
-                x: card.getData("originPosition").x,
-                y: card.getData("originPosition").y,
-                angle: card.getData("originAngle"),
-                duration: 100,
-                scale: CardManager.CARD_SCALE,
-                ease: 'Quad.easeInOut'
-            });
-        }
-    }
-
-    /**
-     * 카드의 드래그를 시작합니다.
-     * 
-     * @param card 카드
-     */
-    private dragStart(card: Card): void 
-    {
-        this._selectedCard = card;
-        this.scene.add.tween({
-            targets: card,
-            y: -CardManager.CARD_SCALE * Card.HEIGHT * 0.2,
-            angle: 0,
-            duration: 100,
-            scale: CardManager.CARD_SCALE * 1.2,
-            ease: 'Quad.easeInOut'
-        });
-    }
-
-    /**
-     * 카드가 드래그되면 타켓 포인터가 생깁니다.
-     * 
-     * @param pointer 포인터 좌표
-     */
-    private drag(pointer: Phaser.Input.Pointer): void
-    {   
-        // 턴이 로딩중이면 리턴
-        if(this.battleManager.turnManager.isLoading) return;
-        
-        // 선택된 카드가 있으면 타겟 포인터 생성
-        if(this._selectedCard) this.battleManager.targetPointer.createLineFromCardToPointer(this._selectedCard, pointer);
-    }
-
-    /**
-     * 카드의 드래그 상태가 끝나면 타겟 포인터가 사라집니다.
-     */
-    private dragEnd(): void
-    {
-        this.battleManager.targetPointer.pointer.clear();
-        this._selectedCard = undefined;
-    }
-
-    private setDraggable(card: Card): this {
-        this.scene.input.setDraggable(card);
-        return this;
-    }
 }
 
 /**
- * 턴(Turn) 매니저
+ * 상태 매니저
  * 
- * 현재 배틀의 턴을 관리하는 객체입니다.
+ * 현재 배틀의 상태를 관리하는 객체입니다.
  * 
  * @author Rubisco
  * @since 2022-09-17 오후 10:21
  */
-export class TurnManager {
+export class StateManager {
 
-    /** 턴의 로딩 상태 여부 */
-    get isLoading() {return this._isLoading}
-    set isLoading(isLoading: boolean) {this._isLoading = isLoading}
-    private _isLoading: boolean;
+    /** 배틀 상태 */
+    get state() {return this._state}
+    set state(state: BattleState) {this._state = state}
+    private _state: BattleState;
+
+    /** 로딩 상태 */
+    get isLoading() {return this._state === BattleState.LOADING}
+
+    /** 드래그 상태 */
+    get isDraging() {return this._state === BattleState.DRAG}
 
     /** 플레이어 턴 여부 */
     get playerTurn() {return this._playerTurn}
@@ -498,10 +418,6 @@ export class TurnManager {
     private set currentTurn(turn: number) {this._currentTurn = turn}
     private _currentTurn: number;
 
-    /** 씬 객체 */
-    get scene() {return this._scene}
-    private readonly _scene: Scene;
-
     /** 배틀 매니저 객체 */
     get battleManager() {return this._battleManager}
     private readonly _battleManager: BattleManager;
@@ -511,11 +427,8 @@ export class TurnManager {
         // 배틀 매니저 주입
         this._battleManager = battleManager;
         
-        // 씬 주입
-        this._scene = battleManager.scene;
-        
-        // 로딩 상태의 기본값 설정
-        this._isLoading = true;
+        // 로딩 상태를 기본값으로 설정
+        this._state = BattleState.LOADING;
 
         // 플레이어 턴의 기본값 설정
         this._playerTurn = false;
@@ -526,17 +439,17 @@ export class TurnManager {
 
     async nextTurn(): Promise<void> {
         
-        // 카드 상호작용을 하지 못하도록 로딩상태를 true로 설정합니다.
-        this.isLoading = true;
+        // 카드 상호작용을 하지 못하도록 로딩상태로 설정합니다.
+        this._state = BattleState.LOADING;
 
         // 턴 상태를 토글하고, 턴 상태에 따른 메소드를 호출합니다.
         (this.playerTurn = !this.playerTurn) 
             ? ++this.currentTurn && await this.battleManager.playerTurn() 
             : await this.battleManager.opponentTurn();
 
-        await this.battleManager.waitForSeconds(0.5);
+        await this.battleManager.waitForSeconds(0.3);
 
-        // 카드와 상호작용 할 수 있도록 로딩 상태를 false로 설정합니다.
-        this.isLoading = false;
+        // 카드와 상호작용 할 수 있도록 노말상태로 설정합니다.
+        this._state = BattleState.NORMAL;
     }
 }
