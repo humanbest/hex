@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org/"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default/layout}">
+      layout:decorate="~{layout/example/layout}">
 
-<title layout:fragment="title">Hex</title>
+<title layout:fragment="title">Hex - 메인</title>
 
-<th:block layout:fragment="css">
-    
-</th:block>
+<th:block layout:fragment="customHead"></th:block>
 
-<th:block layout:fragment="content">
+<main layout:fragment="content">
       <h1 class="text-3xl font-bold underline">
             Hello world!
       </h1>
-</th:block>
+</main>
 </html>
