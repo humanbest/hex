@@ -1,0 +1,95 @@
+{
+    "anims": [
+        {
+            "key": "idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "angel",
+                    "frame": "idle-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "angel",
+                    "frame": "idle-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "angel",
+                    "frame": "idle-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "angel",
+                    "frame": "idle-03",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "duration": 1.6,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "attack",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "angel",
+                    "frame": "attack-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "angel",
+                    "frame": "attack-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "angel",
+                    "frame": "attack-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "angel",
+                    "frame": "attack-03",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "angel",
+                    "frame": "attack-04",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "angel",
+                    "frame": "attack-05",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "duration": 1.6,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        }
+    ],
+    "globalTimeScale": 1
+}

@@ -1,0 +1,272 @@
+{
+    "anims": [
+        {
+            "key": "shuriken",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "ninza",
+                    "frame": "shuriken-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "shuriken-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "shuriken-02",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "duration": 1.6,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "throw",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "ninza",
+                    "frame": "throw-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "throw-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "throw-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "throw-03",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "duration": 1.6,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "smoke",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "ninza",
+                    "frame": "smoke-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "smoke-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "smoke-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "smoke-03",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "smoke-04",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "duration": 1.6,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "idle",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "ninza",
+                    "frame": "idle-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "idle-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "idle-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "idle-03",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "duration": 1.6,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "fall-down",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "ninza",
+                    "frame": "fall-down-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "fall-down-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "fall-down-02",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "fall-down-03",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "fall-down-04",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "fall-down-05",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "duration": 1.6,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "run",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "ninza",
+                    "frame": "run-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "run-01",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "run-02",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "duration": 1.6,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        },
+        {
+            "key": "teleport",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "ninza",
+                    "frame": "teleport-00",
+                    "duration": 0,
+                    "visible": false
+                },
+                {
+                    "key": "ninza",
+                    "frame": "teleport-01",
+                    "duration": 0,
+                    "visible": false
+                }
+            ],
+            "frameRate": 8,
+            "duration": 1.6,
+            "skipMissedFrames": true,
+            "delay": 0,
+            "repeat": -1,
+            "repeatDelay": 0,
+            "yoyo": false,
+            "showOnStart": false,
+            "hideOnComplete": false
+        }
+    ],
+    "globalTimeScale": 1
+}
