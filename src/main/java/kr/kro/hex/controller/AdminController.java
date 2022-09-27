@@ -22,44 +22,44 @@ public class AdminController {
     // public final CharacterService characterService;
 
     //메인페이지(나중에 꾸밀것 - 통계 데이터 등등)
-    @GetMapping("/main")
+    @GetMapping()
     public String mainPageView(){
         return "admin/main";
     }
     
     //전체 회원 목록
-    @GetMapping("/memberList")
+    @GetMapping("/member")
     public String getMemberListView(AdminSearchDto searchDto, Model model){
         model.addAttribute("memberList", memberService.getMemberList());
-        return "/admin/memberList";
+        return "/admin/default/getList";
     }
 
     //전체 게시글 목록
-    @GetMapping("/boardList")
+    @GetMapping("/board")
     public String getboardList(AdminSearchDto searchDto, Model model){
-        model.addAttribute("BoardList", boardService.getBoardList());
-        return "/admin/boardList";
+        model.addAttribute("boardList", boardService.getBoardList());
+        return "admin/default/getList";
     }
 
     //전체 댓글 목록
-    @GetMapping("/CommentList")
+    @GetMapping("/comment")
     public String getCommentList(AdminSearchDto searchDto, Model model){
-        model.addAttribute("CommentList",commentService.getCommentList());
-        return "/admin/commentList";
+        model.addAttribute("commentList",commentService.getCommentList());
+        return "/admin/default/getList";
     }
 
     //전체 캐릭터 목록
-    @GetMapping("/CharacterList")
+    @GetMapping("/character")
     public String getCharacterList(AdminSearchDto searchDto, Model model){
         // model.addAttribute("getCommentList",characterService.getCharacterList());
-        return "/admin/characterList";
+        return "/admin/default/getList";
     }
 
     //회원 정보
-    @GetMapping("/memberInfo")
+    @GetMapping("/member/{memberId}")
     public String getMemberInfo(Member member, Model model){
-        model.addAttribute("memberInfo", memberService.getMember(member));
-        return "/admin/memberInfo";
+        model.addAttribute("member", memberService.getMember(member));
+        return "/member/admin/getMember";
     }
      
 
