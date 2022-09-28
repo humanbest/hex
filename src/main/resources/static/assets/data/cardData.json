@@ -4,16 +4,12 @@
         "type": 2,
         "ownership": 1,
         "cost": 2,
-        "effect": [
+        "attack": 0,
+        "defense": 0,
+        "buff": [
             {
-                "type": 2, 
-                "value": [
-                    {
-                        "type": 3,
-                        "vale": 2,
-                        "turn": 1
-                    }
-                ],
+                "type": 2,
+                "vale": 2,
                 "turn": 1
             }
         ]
@@ -23,10 +19,12 @@
         "type": 0,
         "ownership": 1,
         "cost": 2,
-        "effect": [
+        "attack": 15,
+        "defense": 0,
+        "buff": [
             {
-                "type": 7,
-                "value": 15,
+                "type": 6,
+                "value": 0,
                 "turn": 1
             }
         ]
@@ -36,21 +34,12 @@
         "type": 1,
         "ownership": 1,
         "cost": 2,
-        "effect": [
+        "attack": 0,
+        "defense": 8,
+        "buff": [
             {
-                "type": 1,
-                "value": 8,
-                "turn": 1
-            },
-            {
-                "type": 2,
-                "value": [
-                    {
-                        "type": 5,
-                        "value": 5,
-                        "turn": 1
-                    }
-                ],
+                "type": 4,
+                "value": 5,
                 "turn": 1
             }
         ]
@@ -60,9 +49,11 @@
         "type": 0,
         "ownership": 1,
         "cost": -1,
-        "effect": [
+        "attack": 0,
+        "defense": 0,
+        "buff": [
             {
-                "type": 3,
+                "type": 2,
                 "value": 5,
                 "turn": 1
             }
@@ -74,53 +65,38 @@
         "type": 0,
         "ownership": 2,
         "cost": 2,
-        "effect": [
-            {
-                "type": 0,
-                "value": 8,
-                "turn": 1
-            }
-        ]
+        "attack": 8,
+        "defense": 0,
+        "buff": []
     },
     "fist": {
         "name": "붕권",
         "type": 0,
         "ownership": 1,
         "cost": 2,
-        "effect": [
-            {
-                "type": 0,
-                "value": 15,
-                "turn": 1
-            }
-        ]
+        "attack": 15,
+        "defense": 0,
+        "buff": []
     },
     "leather_armor": {
         "name": "가죽 자켓",
         "type": 1,
         "ownership": 0,
         "cost": 1,
-        "effect": [
-            {
-                "type": 1,
-                "value": 10,
-                "turn": 1
-            }
-        ]
+        "attack": 0,
+        "defense": 10,
+        "buff": []
     },
     "revolver": {
         "name": "리볼버 한 발",
         "type": 0,
         "ownership": 1,
         "cost": 2,
-        "effect": [
+        "attack": 15,
+        "defense": 0,
+        "buff": [
             {
-                "type": 0,
-                "value": 15,
-                "turn": 1
-            },
-            {
-                "type": 9,
+                "type": 8,
                 "value": 0.1,
                 "turn": 1
             }
@@ -128,12 +104,14 @@
     },
     "shadow_partner": {
         "name": "쉐도우 파트너",
-        "type": 0,
+        "type": 2,
         "ownership": 1,
         "cost": 2,
-        "effect": [
+        "attack": 0,
+        "defense": 0,
+        "buff": [
             {
-                "type": 3,
+                "type": 2,
                 "value": 2,
                 "turn": 1
             }
@@ -144,10 +122,12 @@
         "type": 0,
         "ownership": 1,
         "cost": 2,
-        "effect": [
+        "attack": 3,
+        "defense": 0,
+        "buff": [
             {
-                "type": 6,
-                "value": 3,
+                "type": 5,
+                "value": 6,
                 "turn": 1
             }
         ]
@@ -157,23 +137,21 @@
         "type": 0,
         "ownership": 2,
         "cost": 5,
-        "effect": [
-            {
-                "type": 0,
-                "value": 50,
-                "turn": 1
-            }
-        ]
+        "attack": 50,
+        "defense": 0,
+        "buff": []
     },
     "mind_control": {
         "name": "정신공격",
         "type": 0,
         "ownership": 2,
         "cost": 2,
-        "effect": [
+        "attack": 10,
+        "defense": 0,
+        "buff": [
             {
-                "type": 7,
-                "value": 10,
+                "type": 6,
+                "value": 0,
                 "turn": 1
             }
         ]
@@ -183,9 +161,11 @@
         "type": 2,
         "ownership": 0,
         "cost": 0,
-        "effect": [
+        "attack": 0,
+        "defense": 0,
+        "buff": [
             {
-                "type": 10,
+                "type": 9,
                 "value": 1,
                 "turn": 1
             }
@@ -196,34 +176,21 @@
         "type": 0,
         "ownership": 2,
         "cost": 1,
-        "effect": [
-            {
-                "type": 0,
-                "value": 5,
-                "turn": 1
-            }
-        ]
+        "attack": 5,
+        "defense": 0,
+        "buff": []
     },
     "magic_robe": {
         "name": "매직 로브",
         "type": 1,
         "ownership": 2,
         "cost": 1,
-        "effect": [
+        "attack": 0,
+        "defense": 5,
+        "buff": [
             {
-                "type": 1,
+                "type": 4,
                 "value": 5,
-                "turn": 1
-            },
-            {
-                "type": 2,
-                "value": [
-                    {
-                        "type": 5,
-                        "value": 5,
-                        "turn": 1
-                    }
-                ],
                 "turn": 1
             }
         ]
@@ -233,17 +200,13 @@
         "type": 0,
         "ownership": 2,
         "cost": 0,
-        "effect": [
+        "attack": 0,
+        "defense": 0,
+        "buff": [
             {
-                "type": 2,
-                "value": [
-                    {
-                        "type": 0,
-                        "vale": 5,
-                        "turn": 3
-                    }
-                ],
-                "turn": 1
+                "type": 0,
+                "vale": 5,
+                "turn": 3
             }
         ]
     },
@@ -252,17 +215,13 @@
         "type": 0,
         "ownership": 2,
         "cost": 0,
-        "effect": [
+        "attack": 0,
+        "defense": 0,
+        "buff": [
             {
-                "type": 2,
-                "value": [
-                    {
-                        "type": 0,
-                        "vale": 10,
-                        "turn": 3
-                    }
-                ],
-                "turn": 1
+                "type": 0,
+                "vale": 10,
+                "turn": 3
             }
         ]
     }

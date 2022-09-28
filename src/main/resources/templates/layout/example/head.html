@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<head th:fragment="headFragment">
+<head th:fragment="head">
 
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,10 +15,10 @@
     
     <!--tailwindcss -->
     <script th:src="@{/js/tailwindcss.js}"></script>
-    <style th:replace="layout/default/tailwindcss :: section"></style>
+    <style th:replace="layout/example/tailwindcss :: common"></style>
 
-    <!-- 개별 CSS -->
-    <th:block layout:fragment="css"></th:block>
-
+    <!-- 개별 CSS/JS -->
+    <th:block layout:fragment="customHead"></th:block>
 </head>
+
 </html>

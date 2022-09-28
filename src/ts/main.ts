@@ -4,7 +4,7 @@ import BattleScene from "./scene/BattleScene";
 import ShopScene from "./scene/ShopScene";
 import CharacterScene from "./scene/CharacterScene";
 import MapScene from "./scene/MapScene";
-import DodgeScene from "./scene/dodgeScene";
+import DodgeScene from "./scene/DodgeScene";
 import DodgeStartScene from "./scene/DodgeStartScene";
 
 (function() {
@@ -46,6 +46,7 @@ window.WebFontConfig = {
                     debug: false
                 }
             },
+            parent: "game",
             scene: [LoadScene, CharacterScene, MapScene, BattleScene, ShopScene, DodgeScene, DodgeStartScene],
             player: defaultPlayer
         });

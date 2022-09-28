@@ -1,7 +1,8 @@
 import { Scene } from "../interface/Hex";
 import MapObject, { NodeType } from "../object/MapObject";
-import TopMenu from "../interface/TopMenu";
+import TopMenu from "../object/TopMenu";
 import MapManager from "../interface/MapManager";
+import BattleScene from "./BattleScene";
 
 
 /**
@@ -19,7 +20,8 @@ export default class MapScene extends Scene
             MAIN_MAP: "main_map",
             MAP_BACKGROUND: "map_background",
             EX_TEXT: "ex_text",
-            MAP_PLAYER: "map_player"
+            MAP_PLAYER: "map_player",
+            CLEAR_NODE: "clear_node"
         }
     }
 
@@ -31,6 +33,14 @@ export default class MapScene extends Scene
     
     preload(): void 
     {
+        /** 전체화면 */
+        super.preload();
+
+        /** 치트키 */
+        this.input.keyboard
+        .on('keydown-ONE',  () => this.scene.start(BattleScene.KEY.NAME))
+
+        /** 이미지 로드 */
         this.load.image(MapScene.KEY.IMAGE.MAIN_MAP, "assets/images/mapScene/MainMap.png");
         this.load.image(MapScene.KEY.IMAGE.MAP_BACKGROUND, "assets/images/mapScene/MapBackground.png");
         this.load.image(MapScene.KEY.IMAGE.EX_TEXT, "assets/images/mapScene/ExText.png");
@@ -41,6 +51,7 @@ export default class MapScene extends Scene
         this.load.image(NodeType.HIDDEN, "assets/images/mapScene/HiddenNode.png");
         this.load.image(NodeType.BOSS, "assets/images/mapScene/BossNode.png");
         this.load.image(MapScene.KEY.IMAGE.MAP_PLAYER, "assets/images/mapScene/MapPlayer.png");
+        this.load.image(MapScene.KEY.IMAGE.CLEAR_NODE, "assets/images/mapScene/ClearNode.png");
     }
 
     create(): void
@@ -50,7 +61,6 @@ export default class MapScene extends Scene
 
         /** 맵 오브젝트(지도, 노드, 엣지) */
         const mapObject: MapObject = new MapObject(this)
-
         const mapManager = new MapManager(this);
         mapManager.setNodeInteraction(mapObject.nodeImageArr, mapObject.playerImage);
 
@@ -58,38 +68,20 @@ export default class MapScene extends Scene
         const topMenu = new TopMenu(this, 0, 0).setDepth(2);
 
         /** 설명 텍스트 */
-        const exText = this.add.image(100, this.game.canvas.height - 100, "ex_text").setDepth(2);
+        const exText = this.add.image(200, this.game.canvas.height - 100, "ex_text").setDepth(2);
         
         /** 카메라 설정 */
-        const cursors = this.input.keyboard.createCursorKeys();
-
-        const mapCam = this.cameras.add(0, TopMenu.HEIGHT, this.game.canvas.width, this.game.canvas.height - TopMenu.HEIGHT);
-        
+        const mapCam = this.cameras.add(0, TopMenu.HEIGHT, this.game.canvas.width, this.game.canvas.height - TopMenu.HEIGHT, undefined, 'mapCam');
         const textCam = this.cameras.add(0, 0, this.game.canvas.width, this.game.canvas.height);
-        
-        const controlConfig = {
-            camera: mapCam,
-            // left: cursors.right,
-            // right: cursors.left,
-            up: cursors.down,
-            down: cursors.up,
-            zoomIn: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E),
-            zoomOut: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
-            acceleration: 0.06,
-            drag: 0.0005,
-            maxSpeed: 1.0,
-            minZoom: 1,
-            maxZoom: 2
-        };
+           
+        mapManager.mapCamMove(mapCam);
 
-        this.registry.set("controls", new Phaser.Cameras.Controls.SmoothedKeyControl(controlConfig));
-        
         this.cameras.main.ignore([mapObject, exText]);
-        
         mapCam.ignore([topMenu, mapBackground, exText]).setBounds(-115, 200, 1300, 1500);
-        
         textCam.ignore([topMenu, mapBackground, mapObject]);
         
+        mapManager.camMovePlayer(this.game.player!.currentNode!);       
+
     }
 
 

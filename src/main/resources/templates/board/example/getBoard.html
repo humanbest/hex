@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org/"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default/layout}">
+      layout:decorate="~{layout/example/layout}">
 
-<th:block layout:fragment="css">
+<th:block layout:fragment="customHead">
     <link rel="stylesheet" th:href="@{/css/document.css}">
     <link rel="stylesheet" th:href="@{/css/comment.css}">
 </th:block>
@@ -37,7 +37,7 @@
             </div>
         </div>
     </main>
-    <section th:replace="fragments/comment :: comment"></section>
+    <!-- <section th:replace="fragments/comment :: comment"></section> -->
 
     <script>
         window.onload=function(){

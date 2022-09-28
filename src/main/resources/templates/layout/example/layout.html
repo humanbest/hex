@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- 헤드 -->
+<head th:replace="layout/example/head :: head"></head>
+
+<body>
+    <!-- 상단바 -->
+    <header th:replace="layout/example/header :: header"></header>
+
+    <!-- 네비게이션 -->
+    <nav th:replace="layout/example/nav :: nav"></nav>
+
+    <!-- 본문 -->
+    <main layout:fragment="content"></main>
+
+    <!-- 푸터 -->
+    <footer th:replace="layout/example/footer :: footer"></footer>
+</body>
+</html>

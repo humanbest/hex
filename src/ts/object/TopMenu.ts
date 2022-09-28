@@ -1,5 +1,5 @@
 import LoadScene from "../scene/LoadScene";
-import { Scene } from "./Hex";
+import { Scene } from "../interface/Hex";
 
 /**
  * 상단 메뉴를 나타냅니다.
@@ -37,6 +37,10 @@ export default class TopMenu extends Phaser.GameObjects.Container
     /** 탑 메뉴 높이 */
     static readonly HEIGHT: number = 40;
 
+    /** 시간 텍스트 */
+    get timeText() {return this._timeText}
+    private readonly _timeText: Phaser.GameObjects.Text;
+
     /**
      * 상단 메뉴를 생성합니다.
      * 
@@ -66,6 +70,9 @@ export default class TopMenu extends Phaser.GameObjects.Container
         // 오른쪽 컨테이너 영역 생성
         const right = new Right(scene, game.canvas.width, 0);
 
+        // 시간 텍스트 주입
+        this._timeText = right.getByName(TopMenu.KEY.TEXT.TIME) as Phaser.GameObjects.Text;
+
         // 지도, 덱, 설정 아이콘을 마우스 포인터와 상호작용 가능하도록 설정
         [TopMenu.KEY.IMAGE.MAP, TopMenu.KEY.IMAGE.DEC, TopMenu.KEY.IMAGE.GEAR].forEach( name => {
             right.getByName(name).setInteractive();
@@ -81,6 +88,12 @@ export default class TopMenu extends Phaser.GameObjects.Container
             stroke: "black",
             strokeThickness: 1
         }).setShadow(2, 2, "#000000", 2, true, true).setName(TopMenu.KEY.TEXT.CARD_COUNT);
+
+        // 카드 개수의 상태 체크
+        scene.events.on("update", () => {
+            try { cardCount.setText(game.player!.dec.length.toString()) }
+            catch (e) { cardCount.setText("") }
+        });
 
         // 상단 메뉴를 씬에 추가
         this.add([background, left, right, cardCount]).setName(TopMenu.KEY.NAME);
@@ -240,7 +253,7 @@ class Right extends Phaser.GameObjects.Container {
             scene.add.image(0, 0, LoadScene.KEY.ATLAS.TOP, TopMenu.KEY.IMAGE.CLOCK).setScale(0.75).setName(TopMenu.KEY.IMAGE.CLOCK),
 
             // 시간 텍스트
-            scene.add.text(0, 0, "00:00", {
+            scene.add.text(0, 0, "", {
                 fontFamily: 'neodgm',
                 fontSize: "20px",
                 color: "gold",

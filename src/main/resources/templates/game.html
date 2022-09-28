@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org/"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default/layout}">
+      layout:decorate="~{layout/example/layout}">
 
 <title layout:fragment="title">Hex</title>
 
-<th:block layout:fragment="css">
+<th:block layout:fragment="customHead">
     <script src="/js/game.js"></script>
 </th:block>
 
-<th:block layout:fragment="content">
-
-</th:block>
+<main layout:fragment="content" id="game"></main>
 </html>

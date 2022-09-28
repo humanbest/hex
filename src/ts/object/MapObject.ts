@@ -1,5 +1,6 @@
 // import MapManager from "../interface/MapManager";
 import { Scene } from "../interface/Hex";
+import TopMenu from "../object/TopMenu";
 import MapScene from "../scene/MapScene";
 
 /**
@@ -9,7 +10,7 @@ import MapScene from "../scene/MapScene";
  * @since 2022-09-06 오전 11:09
  */
 export default class MapObject extends Phaser.GameObjects.Container {
-
+    
     /** 노드 배열 */
     private static _NODE_ARR: Array<Node>;
     static get NODE_ARR() {return MapObject._NODE_ARR;};
@@ -22,10 +23,10 @@ export default class MapObject extends Phaser.GameObjects.Container {
     private static readonly MIN_SPACE = 2;
     private static readonly MAX_SPACE = 4;
 
-    /**노드 등장 확률 설정 */
+    /**노드 등장 확률 설정(총 합이 1) */
     private static readonly BATTLE_NODES_PROBABILITY = 0.55;
-    private static readonly SHOP_NODES_PROBABILITY = 0.15;
-    private static readonly REST_NODES_PROBABILITY = 0.15;
+    private static readonly SHOP_NODES_PROBABILITY   = 0.15;
+    private static readonly REST_NODES_PROBABILITY   = 0.15;
     private static readonly HIDDEN_NODES_PROBABILITY = 0.15;
 
     /** 특수 노드(shop, rest, hidden) 출현 시작 뎁스 */
@@ -39,6 +40,7 @@ export default class MapObject extends Phaser.GameObjects.Container {
     /** 노드 배열 설정 */
     private static setNodeData(scene: Scene): void 
     {
+        //y축 시작지점, 간격
         const start: number = 1400;
         const step: number = 100;
 
@@ -48,9 +50,10 @@ export default class MapObject extends Phaser.GameObjects.Container {
         let restProbability = MapObject.BATTLE_NODES_PROBABILITY + MapObject.SHOP_NODES_PROBABILITY + MapObject.REST_NODES_PROBABILITY;
         let hiddenProbability = MapObject.BATTLE_NODES_PROBABILITY + MapObject.SHOP_NODES_PROBABILITY + MapObject.REST_NODES_PROBABILITY + MapObject.HIDDEN_NODES_PROBABILITY;
 
-        /** 노드 중앙 배치 기준좌표 */
-        const centerPoint = scene.game.canvas.width/2 + 50;
+        // 노드 중앙 배치 기준 좌표
+        const centerPoint = scene.game.canvas.width/2;
 
+        //NODE_ARR 초기화
         MapObject.NODE_ARR = [];
 
         //start 노드 푸쉬
@@ -60,7 +63,8 @@ export default class MapObject extends Phaser.GameObjects.Container {
             type: NodeType.START,
             depth: 0,
             space: 0,
-            nextNode: []
+            nextNode: [],
+            isClear: true
         });
 
         //노드 랜덤 생성 알고리즘 (start, boss 노드 제외한 노드 푸쉬)
@@ -112,7 +116,8 @@ export default class MapObject extends Phaser.GameObjects.Container {
                     type: randomNode,
                     depth: i,
                     space: j,
-                    nextNode: []
+                    nextNode: [],
+                    isClear: false
                 })
             }
         }
@@ -124,7 +129,8 @@ export default class MapObject extends Phaser.GameObjects.Container {
             type: NodeType.BOSS,
             depth: (MapObject.DEPTH + 1),
             space: 0,
-            nextNode: []
+            nextNode: [],
+            isClear: false
         });  
     }
 
@@ -171,14 +177,14 @@ export default class MapObject extends Phaser.GameObjects.Container {
     /** 노드 이미지 배열 */
     private _nodeImageArr: Array<NodeImage>;
     get nodeImageArr() {return this._nodeImageArr}
-    private set nodeImageArr(nodeImageArr: Array<NodeImage>) {this._nodeImageArr = nodeImageArr}
+    // private set nodeImageArr(nodeImageArr: Array<NodeImage>) {this._nodeImageArr = nodeImageArr}
 
     /** 플레이어 이미지 */
     private _playerImage: Phaser.GameObjects.Image;
     get playerImage() {return this._playerImage}
-    private set playerImage(playerImage: Phaser.GameObjects.Image) {this._playerImage = playerImage}
+    // private set playerImage(playerImage: Phaser.GameObjects.Image) {this._playerImage = playerImage}
 
-    constructor(scene: MapScene, x: number = 0, y: number = 0) {
+    constructor(scene: MapScene, x: number = TopMenu.HEIGHT, y: number = 0) {
 
         super(scene, x, y);
 
@@ -190,25 +196,28 @@ export default class MapObject extends Phaser.GameObjects.Container {
         }
 
         // 지도 이미지 추가
-        this.add(scene.add.image(-100, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0).setDepth(1));
+        this.add(scene.add.image(-150, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0));
 
-        //엣지 이미지 추가
-        let graphics = scene.add.graphics({lineStyle: {width: 3, color: 0x000000}})
-        
-        this.add(graphics)
+        const graphics = scene.add.graphics().setDepth(0);
+        this.add(graphics);
+        this._nodeImageArr = [];
 
-        for(let i = 0; i < MapObject.NODE_ARR.length-1; ++i)
-        {
-            for(let j = 0; j < MapObject.NODE_ARR[i].nextNode.length; ++j)
-            {
-                let line = new Phaser.Geom.Line(MapObject.NODE_ARR[i].x , MapObject.NODE_ARR[i].y, MapObject.NODE_ARR[i].nextNode[j].x, MapObject.NODE_ARR[i].nextNode[j].y);
+        MapObject.NODE_ARR.forEach(node => {
             
-                this.add(graphics.strokeLineShape(line));
-            }
-        }
-
-        // 노드 인터렉션
-        this.add(this._nodeImageArr = MapObject.NODE_ARR.map(node => new NodeImage(scene, node).setDepth(3)));
+            // 엣지 이미지 추가
+            node.nextNode.forEach(nextNode => 
+                graphics
+                .lineStyle((node.isClear && nextNode.isClear) ? 6 : 3, (node.isClear && nextNode.isClear) ? 0x000000 : 0x4D4D4D )
+                .lineBetween(node.x, node.y, nextNode.x, nextNode.y)
+                .setDepth(0)
+                );
+            
+            // 노드 이미지 추가
+            this._nodeImageArr.push(this.add(new NodeImage(scene, node).setDepth(1)).last as NodeImage);
+            
+            // 클리어 이미지 추가
+            MapObject.NODE_ARR[0] !== node && node.isClear ? this.add(scene.add.image(node.x, node.y, MapScene.KEY.IMAGE.CLEAR_NODE).setDepth(2)) : undefined;
+        })
 
         //플레이어 이미지 추가
         const currentNode = scene.game.player!.currentNode!;
@@ -237,6 +246,7 @@ export type Node = {
     depth: number;
     space: number;
     nextNode: Array<Node>;
+    isClear: boolean;
 }
 
 /** 노드 이미지 */
@@ -248,9 +258,4 @@ export class NodeImage extends Phaser.GameObjects.Image {
         super(scene, nodeData.x, nodeData.y, nodeData.type);
         this.nodeData = nodeData;
     }
-}
-
-/** 플레이어 인터페이스 */
-export type PlayerPoint = {
-    stayNode: Node
 }

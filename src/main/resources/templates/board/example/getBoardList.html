@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org/"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default/layout}">
+      layout:decorate="~{layout/example/layout}">
 
 <title layout:fragment="title">게시글 목록</title>
 
-<style layout:fragment="css" th:replace="board/fragment/css :: board"></style>
+<th:block layout:fragment="customHead">
+    <style th:replace="board/example/tailwindcss :: board"></style>
+</th:block>
 
 <section layout:fragment="content" class="container mx-auto">
     <p><font th:text="${session['member'].nickName}"></font>님, 환영합니다.</p>

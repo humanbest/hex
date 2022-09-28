@@ -32,6 +32,16 @@ export abstract class Scene extends Phaser.Scene {
         super(config);
         this.game = super.game;
     };
+
+    preload(): void {
+        this.input.keyboard.on('keydown-F',  () => {
+            if (this.scale.isFullscreen) {
+                this.scale.stopFullscreen();
+            } else {
+                this.scale.startFullscreen();
+            }
+        })
+    }
 }
 
 export type GameConfig = Phaser.Types.Core.GameConfig & {player?: Player}
@@ -53,23 +63,24 @@ export enum CardType {
 }
 
 /**
- * 카드 효과 열거형
+ * 버프 타입
  * 
- * 카드 효과를 전달하기 위한 열거형 타입입니다.
+ * 카드 버프효과의 열거형입니다.
  */
-export enum CardEffectPK {
+export enum BuffType {
     ADD_DAMAGE, // 0 데미지 추가 효과
     ADD_DEFENSE, // 1 방어력 증가 효과
-    ADD_BUFF, // 2 버프 추가 효과
-    ADD_DAMAGE_BY_RATIO, // 3 비례 데미지 공격 효과
-    ADD_DEFENSE_BY_RATIO, // 4 비례 방어력 증가 효과
-    REPLECT_DAMAGE, // 5 공격 반사 효과
-    RANDOM_DAMAGE, // 6 랜덤 데미지 효과
-    DEFENSE_IGNORE, // 7 방어력 무시 공격 효과
-    HP_RECOVERY, // 8 HP 회복 효과
-    iNSTANCE_DEATH, // 9 즉사 효과
-    COST_MAX_ADD // 10 코스트 증가 효과
+    ADD_DAMAGE_BY_RATIO, // 2 비례 데미지 공격 효과
+    ADD_DEFENSE_BY_RATIO, // 3 비례 방어력 증가 효과
+    REPLECT_DAMAGE, // 4 공격 반사 효과
+    RANDOM_DAMAGE, // 5 랜덤 데미지 효과
+    DEFENSE_IGNORE, // 6 방어력 무시 공격 효과
+    HP_RECOVERY, // 7 HP 회복 효과
+    iNSTANCE_DEATH, // 8 즉사 효과
+    COST_MAX_ADD // 9 코스트 증가 효과
 }
+
+
 
 /**
  * 카드 효과 인터페이스
@@ -80,26 +91,16 @@ export enum CardEffectPK {
  * @param value 카드 효과에 대한 값 입니다.
  * @param turn 카드 효과가 지속되는 턴의 수를 나타냅니다.
  */
-export interface CardEffect {
-    type: CardEffectPK;
+export interface Buff {
+    type: BuffType;
     value: number;
     turn?: number;
 }
-
-/** 
- * 버프 효과 인터페이스
- * 
- * 카드 효과 인터페이스의 별칭입니다. 
- */
-export type Buff = CardEffect;
 
 /**
  * 카드 데이터 인터페이스
  */
 export interface CardData {
-
-    /** 키값 */
-    key: number;
 
     /** 카드 이름 */
     name: string;
@@ -113,8 +114,14 @@ export interface CardData {
     /** 비용 */
     cost: number;
 
-    /** 카드 효과 리스트 */
-    effect: Array<CardEffect>;
+    /** 공격력 */
+    attack: number;
+
+    /** 방어력 */
+    defense: number;
+
+    /** 버프 리스트 */
+    buff: Array<Buff>;
 
     /** 카드가 뽑힐 확률 */
     probability: number;
@@ -175,11 +182,14 @@ enum ChampionPrimaryKey {
  * 챔피언 인터페이스
  */
 export interface Champion {
-    name: ChampionName;
+    name: string;
     hp: number;
-    maxHp: number;
     defense: number;
     cost: number;
+}
+
+export interface MonsterData extends Champion {
+    skill: Array<string>
 }
 
 /**
@@ -195,11 +205,19 @@ export interface Inventory {
  */
 export interface Player {
     nickName: string;
-    champion: Champion;
+    champion:  Champion & {maxHp: number};
     inventory: Inventory;
     dec: Array<string>;
     currentNode?: Node
 }
+
+/**
+ * 배틀 상태의 열거형
+ * 
+ * @author Rubisco
+ * @since 2022-09-25 오전 10:21
+ */
+ export enum BattleState { LOADING, NORMAL, DRAG }
 
 export const defaultPlayer: Player = {
     nickName:  "루비스코",
