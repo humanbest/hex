@@ -1,97 +1,61 @@
+import {defaultPlayer, Scene} from "./Hex";
+import ShopScene, {ShopCard} from "../scene/ShopScene";
 
-// import { CONFIG } from "../config";
-// import Card from "../object/Card";
-// import { HexGame } from "./Interface";
+export default class Shopproduct extends Phaser.GameObjects.Container {
 
+    public notEnough: Phaser.GameObjects.Image;
+    private buycomplete: Phaser.GameObjects.Image;
+    private maximumdec: Phaser.GameObjects.Image;
 
-import {Scene} from "./Hex";
-// import Card from "../object/Card";
-// import LoadScene from "../scene/LoadScene";
+    /** 덱 상한치 */
+    private maxDeclength: number = 18;
 
-export default class Shopproduct extends Phaser.GameObjects.Container{
+    constructor(shopScene: Scene) {
 
-    private BuyableCards : Array<string> = [];
-    // private CardPrice : Array<string> = [];
-
-    get BuyableCard (){
-        return this.BuyableCards;
-    }
-    getCardPrice (){
-        return this.BuyableCards;
-    }
-
-    // private BuyableItems : Array<string> = [];
-
-
-    constructor(scene: Scene, x: number, y: number, ) {
-
-        super(scene, x, y);
-
-
-        // const game = scene.game as HexGame;
-
-        this.BuyableCards.push("fireball");
-        this.BuyableCards.push("adrenaline");1
-        this.BuyableCards.push("bamboo_spear");
-
-
-        // const shopitems = new ShopItems(scene, 0, 0);
-        // const shopcards = new ShopCards(scene, 0, 0);
-
+        super(shopScene);
+        this.scene = shopScene;
+        this.notEnough = shopScene.add.image(this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, ShopScene.KEY.IMAGE.notenough).setDepth(100).setVisible(false);
+        this.buycomplete = shopScene.add.image(this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, ShopScene.KEY.IMAGE.buycomplete).setDepth(100).setVisible(false);
+        this.maximumdec = shopScene.add.image(this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, ShopScene.KEY.IMAGE.maximumdec).setDepth(100).setVisible(false);
     }
 
-    // private pointerOver(card: Card): void
-    // {
-    //     if(!card.isSelected)
-    //     {
-    //         this.scene.add.tween({
-    //             targets: card,
-    //             y: this.height - Card.HEIGHT / 2,
-    //             angle: 0,
-    //             duration: 100,
-    //             scale: 1,
-    //             ease: 'Quad.easeInOut'
-    //         });
-    //     }
-    // }
+    buyShopCard(shopcard: ShopCard): void {
 
-    // private shuffledDec (){
-    //
-    //     const dec : Array<string> = [];
-    //
-    //     dec.push(...Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD)));
-    //
-    //     dec = shuffle(dec);
-    //
-    //     return dec;
-    // }
+        if (defaultPlayer.dec.length > this.maxDeclength) {
+            this.notification(this.maximumdec);
+        } else {
+            if (defaultPlayer.inventory.coin > shopcard.price) {
+               defaultPlayer.dec.push(shopcard.name);
+               defaultPlayer.inventory.coin -= shopcard.price;
+               this.notification(this.buycomplete);
+               shopcard.destroy();
+            } else {
+                this.notification(this.notEnough);
+            }
+        }
+    }
 
+    notification(img: Phaser.GameObjects.Image) {
 
+        img.setAlpha(0).setVisible(true);
 
+        this.scene.tweens.createTimeline().add({
+            targets: img,
+            alpha: 1,
+            duration: 300
+        }).add({
+            targets: img,
+            alpha: 0,
+            duration: 300,
+            delay: 700
+        }).on("complete", () => img.setVisible(false)).play();
+    }
 
+    buyShopitem(): void {
+
+    }
+
+    delayimage(image: Phaser.GameObjects.Image): void {
+        image.destroy();
+    }
 }
-
-// class ShopItems extends Phaser.GameObjects.Container{
-//
-//     constructor(scene: Scene, x: number, y: number) {
-//
-//         super(scene, x, y);
-//
-//         // const game = scene.game as HexGame;
-//
-//         this.add()
-// }
-
-// }
-//
-// class ShopCards extends Phaser.GameObjects.Container {
-//
-//     constructor(scene: Scene, x: number, y: number) {
-//
-//         super(scene, x, y);
-//
-//
-//         // const game = scene.game as HexGame;
-//
-//     }
-// }
