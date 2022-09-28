@@ -44,9 +44,6 @@ export default class Card extends Phaser.GameObjects.Container
     get originData() {return this._originData}
     private readonly _originData?: CardData;
     
-    /** 카드의 선택 여부 */
-    isSelected: boolean = false;
-
     /** 카드의 앞면 여부 */
     readonly isFront: boolean;
 
