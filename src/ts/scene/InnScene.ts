@@ -1,13 +1,14 @@
-import { Scene } from "../interface/Hex";
+import {defaultPlayer, Scene} from "../interface/Hex";
 import TopMenu from "../interface/TopMenu";
+import MapScene from "./MapScene";
 
-export default class InnScene extends Scene{
+export default class InnScene extends Scene {
 
     static readonly KEY = {
         NAME: "InnScene",
         IMAGE: {
-            Inn:"Inn",
-            rest:"rest"
+            Inn: "Inn",
+            rest: "rest"
         }
     }
 
@@ -38,7 +39,7 @@ export default class InnScene extends Scene{
 
         new TopMenu(this, 0, 0);
 
-        const restbutton = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2-30,InnScene.KEY.IMAGE.rest);
+        const restbutton = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2 - 30, InnScene.KEY.IMAGE.rest);
         restbutton.setScale(0.45)
             .setInteractive()
             .on("pointerover", () => this.add.tween({
@@ -50,12 +51,25 @@ export default class InnScene extends Scene{
                 targets: restbutton,
                 duration: 70,
                 scale: 0.45
-            }));
-
-
+            }))
+            .on("pointerdown", () => this.add.tween({
+                targets: restbutton,
+                duration: 70,
+                scale: 0.5
+            }))
+            .on("pointerup", () => this.recoveryHealth())
     }
 
+    recoveryHealth(): void {
 
+        defaultPlayer.champion.hp = defaultPlayer.champion.hp + defaultPlayer.champion.maxHp/100*20;
+        if(defaultPlayer.champion.hp > defaultPlayer.champion.maxHp){
+            defaultPlayer.champion.hp = defaultPlayer.champion.maxHp
+        }
+
+        this.scene.start(MapScene.KEY.NAME);
+
+    }
 
 
 }

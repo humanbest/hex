@@ -1,5 +1,5 @@
-import {Scene} from "../interface/Hex";
-import ShopScene from "./ShopScene";
+import {defaultPlayer, Scene} from "../interface/Hex";
+import DodgeStartScene from "./DodgeStartScene";
 
 export default class DodgeScene extends Scene {
 
@@ -70,6 +70,12 @@ export default class DodgeScene extends Scene {
 
     create(): void {
 
+        this.add.image(this.cameras.main.width / 2,this.cameras.main.height / 2,DodgeStartScene.KEY.IMAGE.background);
+
+        defaultPlayer.inventory.coin -= 100;
+
+        this.playingtime = 0;
+
         this.count = 0;
 
         this.stoptimer = false;
@@ -107,14 +113,14 @@ export default class DodgeScene extends Scene {
                 .on("pointerover", () => this.add.tween({
                     targets: retry,
                     duration: 70,
-                    scale: 0.5
+                    scale: 0.44
                 }))
                 .on("pointerout", () => this.add.tween({
                     targets: retry,
                     duration: 70,
                     scale: 0.4
                 }))
-                .on("pointerdown", () => retry.setScale(0.6))
+                .on("pointerdown", () => retry.setScale(0.45))
                 .on("pointerup", () => this.scene.restart(this));
 
             let exit = this.add.image(this.cameras.main.width / 2 + 90, 250, DodgeScene.KEY.IMAGE.dodgeexit).setScale(0.4)
@@ -122,15 +128,15 @@ export default class DodgeScene extends Scene {
                 .on("pointerover", () => this.add.tween({
                     targets: exit,
                     duration: 70,
-                    scale: 0.5
+                    scale: 0.44
                 }))
                 .on("pointerout", () => this.add.tween({
                     targets: exit,
                     duration: 70,
                     scale: 0.4
                 }))
-                .on("pointerdown", () => exit.setScale(0.6))
-                .on("pointerup", () => this.scene.start(ShopScene.KEY.NAME));
+                .on("pointerdown", () => exit.setScale(0.45))
+                .on("pointerup", () => this.scene.stop());
 
             this.time.removeAllEvents();
 
@@ -140,6 +146,10 @@ export default class DodgeScene extends Scene {
             this.stoptimer = true;
 
             this.input.setDefaultCursor('default');
+
+            if(this.playingtime >= 10){
+                defaultPlayer.inventory.coin += 200;
+            }
         }
     }
 
@@ -147,7 +157,7 @@ export default class DodgeScene extends Scene {
 
         this.count += 1;
 
-        if (this.count >= 100) {
+        if (this.count >= 80) {
             this.timedEvent.remove(false)
         }
 
