@@ -36,7 +36,7 @@ export default class MapManager {
     }
 
     /** 노드 인터렉션 */
-    setNodeInteraction(nodeImageArr: Array<NodeImage>, playerImage: Phaser.GameObjects.Image) {
+    setNodeInteraction(nodeImageArr: Array<NodeImage>, playerImage: Phaser.GameObjects.Image): void {
         nodeImageArr.forEach(node =>
             node.setInteractive()
                 .on("pointerdown", () => {
@@ -45,7 +45,7 @@ export default class MapManager {
                     if(currentNode.nextNode.includes(node.nodeData))
                     {
                         this.playerMove(node, playerImage);
-                        this.camMovePlayer(node.nodeData);
+                        this.camMoveToPlayer(node.nodeData);
                     }
                 })
         );
@@ -69,7 +69,7 @@ export default class MapManager {
     }
 
     /** 맵 카메라 플레이어 위치로 이동 */
-    camMovePlayer(node: Node):void
+    camMoveToPlayer(node: Node):void
     {
         const mapCam = this.scene.cameras.getCamera('mapCam');
 
