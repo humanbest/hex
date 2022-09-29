@@ -6,10 +6,10 @@
         "cost": 2,
         "attack": 0,
         "defense": 0,
-        "buff": [
+        "command": [
             {
                 "type": 2,
-                "vale": 2,
+                "value": 2,
                 "turn": 1
             }
         ]
@@ -21,7 +21,7 @@
         "cost": 2,
         "attack": 15,
         "defense": 0,
-        "buff": [
+        "command": [
             {
                 "type": 6,
                 "value": 0,
@@ -36,10 +36,16 @@
         "cost": 2,
         "attack": 0,
         "defense": 8,
-        "buff": [
+        "command": [
             {
-                "type": 4,
-                "value": 5,
+                "type": 10,
+                "value": [
+                    {
+                        "type": 4,
+                        "value": 5,
+                        "turn": 1
+                    }
+                ],
                 "turn": 1
             }
         ]
@@ -51,9 +57,9 @@
         "cost": -1,
         "attack": 0,
         "defense": 0,
-        "buff": [
+        "command": [
             {
-                "type": 2,
+                "type": 11,
                 "value": 5,
                 "turn": 1
             }
@@ -67,7 +73,7 @@
         "cost": 2,
         "attack": 8,
         "defense": 0,
-        "buff": []
+        "command": []
     },
     "fist": {
         "name": "붕권",
@@ -76,7 +82,7 @@
         "cost": 2,
         "attack": 15,
         "defense": 0,
-        "buff": []
+        "command": []
     },
     "leather_armor": {
         "name": "가죽 자켓",
@@ -85,7 +91,7 @@
         "cost": 1,
         "attack": 0,
         "defense": 10,
-        "buff": []
+        "command": []
     },
     "revolver": {
         "name": "리볼버 한 발",
@@ -94,10 +100,10 @@
         "cost": 2,
         "attack": 15,
         "defense": 0,
-        "buff": [
+        "command": [
             {
                 "type": 8,
-                "value": 0.1,
+                "value": 0.3,
                 "turn": 1
             }
         ]
@@ -109,7 +115,7 @@
         "cost": 2,
         "attack": 0,
         "defense": 0,
-        "buff": [
+        "command": [
             {
                 "type": 2,
                 "value": 2,
@@ -124,7 +130,7 @@
         "cost": 2,
         "attack": 3,
         "defense": 0,
-        "buff": [
+        "command": [
             {
                 "type": 5,
                 "value": 6,
@@ -139,7 +145,7 @@
         "cost": 5,
         "attack": 50,
         "defense": 0,
-        "buff": []
+        "command": []
     },
     "mind_control": {
         "name": "정신공격",
@@ -148,7 +154,7 @@
         "cost": 2,
         "attack": 10,
         "defense": 0,
-        "buff": [
+        "command": [
             {
                 "type": 6,
                 "value": 0,
@@ -163,7 +169,7 @@
         "cost": 0,
         "attack": 0,
         "defense": 0,
-        "buff": [
+        "command": [
             {
                 "type": 9,
                 "value": 1,
@@ -178,7 +184,7 @@
         "cost": 1,
         "attack": 5,
         "defense": 0,
-        "buff": []
+        "command": []
     },
     "magic_robe": {
         "name": "매직 로브",
@@ -187,40 +193,46 @@
         "cost": 1,
         "attack": 0,
         "defense": 5,
-        "buff": [
+        "command": [
             {
-                "type": 4,
-                "value": 5,
+                "type": 10,
+                "value": [
+                    {
+                        "type": 4,
+                        "value": 5,
+                        "turn": 1
+                    }
+                ],
                 "turn": 1
             }
         ]
     },
     "normal_jewel": {
         "name": "평범한 보석",
-        "type": 0,
+        "type": 2,
         "ownership": 2,
         "cost": 0,
         "attack": 0,
         "defense": 0,
-        "buff": [
+        "command": [
             {
                 "type": 0,
-                "vale": 5,
+                "value": 5,
                 "turn": 3
             }
         ]
     },
     "unique_jewel": {
         "name": "희귀한 보석",
-        "type": 0,
+        "type": 2,
         "ownership": 2,
         "cost": 0,
         "attack": 0,
         "defense": 0,
-        "buff": [
+        "command": [
             {
                 "type": 0,
-                "vale": 10,
+                "value": 10,
                 "turn": 3
             }
         ]

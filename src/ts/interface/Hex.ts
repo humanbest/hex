@@ -67,20 +67,20 @@ export enum CardType {
  * 
  * 카드 버프효과의 열거형입니다.
  */
-export enum BuffType {
-    ADD_DAMAGE, // 0 데미지 추가 효과
-    ADD_DEFENSE, // 1 방어력 증가 효과
-    ADD_DAMAGE_BY_RATIO, // 2 비례 데미지 공격 효과
-    ADD_DEFENSE_BY_RATIO, // 3 비례 방어력 증가 효과
-    REPLECT_DAMAGE, // 4 공격 반사 효과
-    RANDOM_DAMAGE, // 5 랜덤 데미지 효과
-    DEFENSE_IGNORE, // 6 방어력 무시 공격 효과
-    HP_RECOVERY, // 7 HP 회복 효과
-    iNSTANCE_DEATH, // 8 즉사 효과
-    COST_MAX_ADD // 9 코스트 증가 효과
+export enum CommandType {
+    ADD_ATTACK, // 0 공격력 추가
+    ADD_DEFENSE, // 1 방어력 추가
+    ADD_ATTACK_BY_RATIO, // 2 공격력 비례 증가
+    ADD_DEFENSE_BY_RATIO, // 3 방어력 비례 증가
+    REPLECT_DAMAGE, // 4 공격 반사
+    ADD_RANDOM_ATTACK, // 5 랜덤 공격력 추가
+    DEFENSE_IGNORE, // 6 방어력 무시 공격
+    HP_RECOVERY, // 7 HP 회복
+    INSTANCE_DEATH, // 8 즉사
+    ADD_COST_MAX, // 9 코스트 증가
+    ADD_BUFF, // 10 버프 추가
+    ADD_ATTACK_BY_COST, // 11 코스트만큼 공격력 추가
 }
-
-
 
 /**
  * 카드 효과 인터페이스
@@ -91,14 +91,23 @@ export enum BuffType {
  * @param value 카드 효과에 대한 값 입니다.
  * @param turn 카드 효과가 지속되는 턴의 수를 나타냅니다.
  */
-export interface Buff {
-    type: BuffType;
-    value: number;
+export interface CardEffect {
+    type: CommandType;
+    value: number | Buff;
     turn?: number;
 }
 
 /**
+ * 버프 인터페이스
+ * 
+ * 카드 효과의 배열입니다.
+ */
+export type Buff = Array<CardEffect>
+
+/**
  * 카드 데이터 인터페이스
+ * 
+ * 카드 데이터의 인터페이스 입니다.
  */
 export interface CardData {
 
@@ -120,8 +129,8 @@ export interface CardData {
     /** 방어력 */
     defense: number;
 
-    /** 버프 리스트 */
-    buff: Array<Buff>;
+    /** 커맨드 */
+    command: Array<CardEffect> ;
 
     /** 카드가 뽑힐 확률 */
     probability: number;
@@ -169,12 +178,13 @@ export interface Item {
 export enum ChampionName {
     SMUGGLER = "스머글러",
     PHANTOM = "팬텀",
+    WARWOLF = "워울프"
 }
 
 /**
  * 챔피언 PK
  */
-enum ChampionPrimaryKey {
+export enum ChampionPrimaryKey {
     COMMON, SMUGGLER, PHANTOM, WARWOLF
 }
 

@@ -106,7 +106,7 @@ export default class BattleScene extends Scene
         this.add.container(Card.WIDTH * 0.5, this.game.canvas.height - Card.WIDTH * 0.8)
             .add(this.add.circle(0, 0, 42, 0xd2be97).setStrokeStyle(2, 0xffffff))
             .add(this.add.circle(0, 0, 35, 0xff7f00).setStrokeStyle(5, 0xff5500))
-            .add(this.costText = this.add.text(0, 0, `${this.battleManager.plyerCharacter.cost}/${this.battleManager.plyerCharacter.originData.cost}`, {
+            .add(this.costText = this.add.text(0, 0, `${this.battleManager.plyerCharacter.cost}/${this.battleManager.plyerCharacter.maxCost}`, {
                 fontFamily: 'neodgm',
                 fontSize: "30px",
                 color: "white",
@@ -125,6 +125,6 @@ export default class BattleScene extends Scene
 
         if(this.usedCardsCountText) this.usedCardsCountText.setText(this.battleManager.cardManager.usedCards.length.toString());
         if(this.remainCardsCountText) this.remainCardsCountText.setText(this.battleManager.cardManager.remainCards.length.toString());
-        if(this.costText) this.costText.setText(`${this.battleManager.plyerCharacter.cost}/${this.battleManager.plyerCharacter.originData.cost}`);
+        if(this.costText) this.costText.setText(`${this.battleManager.plyerCharacter.cost}/${this.battleManager.plyerCharacter.maxCost}`);
     }
 }
