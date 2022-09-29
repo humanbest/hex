@@ -1,4 +1,3 @@
-// import MapManager from "../interface/MapManager";
 import { Scene } from "../interface/Hex";
 import TopMenu from "../object/TopMenu";
 import MapScene from "../scene/MapScene";
@@ -36,6 +35,49 @@ export default class MapObject extends Phaser.GameObjects.Container {
     private static SHOP_NODES_LIMIT     = 2;
     private static REST_NODES_LIMIT     = 2;
     private static HIDDEN_NODES_LIMIT   = 2;
+
+    constructor(scene: MapScene, x: number = TopMenu.HEIGHT, y: number = 0) {
+
+        super(scene, x, y);
+
+        // 노드 정보가 없으면 노드 배열 생성
+        if(MapObject.NODE_ARR === undefined)
+        {
+            MapObject.setNodeData(scene);
+            MapObject.setEdgeData();
+        }
+
+        // 지도 이미지 추가
+        this.add(scene.add.image(-150, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0));
+
+        const graphics = scene.add.graphics().setDepth(0);
+        this.add(graphics);
+        this._nodeImageArr = [];
+
+        MapObject.NODE_ARR.forEach(node => {
+            
+            // 엣지 이미지 추가
+            node.nextNode.forEach(nextNode => 
+                graphics
+                .lineStyle((node.isClear && nextNode.isClear) ? 6 : 3, (node.isClear && nextNode.isClear) ? 0x000000 : 0x4D4D4D )
+                .lineBetween(node.x, node.y, nextNode.x, nextNode.y)
+                .setDepth(0)
+                );
+            
+            // 노드 이미지 추가
+            this._nodeImageArr.push(this.add(new NodeImage(scene, node).setDepth(1)).last as NodeImage);
+            
+            // 클리어 이미지 추가
+            MapObject.NODE_ARR[0] !== node && node.isClear ? this.add(scene.add.image(node.x, node.y, MapScene.KEY.IMAGE.CLEAR_NODE).setDepth(2)) : undefined;
+        })
+
+        //플레이어 이미지 추가
+        const currentNode = scene.game.player!.currentNode!;
+        this.add(this._playerImage = scene.add.image(currentNode.x, currentNode.y, MapScene.KEY.IMAGE.MAP_PLAYER).setScale(0.5).setDepth(4).setOrigin(0.5, 0.9));
+
+        // 씬에 맵 컨테이너 추가
+        scene.add.existing(this);
+    }  
 
     /** 노드 배열 설정 */
     private static setNodeData(scene: Scene): void 
@@ -183,49 +225,6 @@ export default class MapObject extends Phaser.GameObjects.Container {
     private _playerImage: Phaser.GameObjects.Image;
     get playerImage() {return this._playerImage}
     // private set playerImage(playerImage: Phaser.GameObjects.Image) {this._playerImage = playerImage}
-
-    constructor(scene: MapScene, x: number = TopMenu.HEIGHT, y: number = 0) {
-
-        super(scene, x, y);
-
-        // 노드 정보가 없으면 노드 배열 생성
-        if(MapObject.NODE_ARR === undefined)
-        {
-            MapObject.setNodeData(scene);
-            MapObject.setEdgeData();
-        }
-
-        // 지도 이미지 추가
-        this.add(scene.add.image(-150, scene.game.canvas.height/2, MapScene.KEY.IMAGE.MAIN_MAP).setScale(0.6).setOrigin(0));
-
-        const graphics = scene.add.graphics().setDepth(0);
-        this.add(graphics);
-        this._nodeImageArr = [];
-
-        MapObject.NODE_ARR.forEach(node => {
-            
-            // 엣지 이미지 추가
-            node.nextNode.forEach(nextNode => 
-                graphics
-                .lineStyle((node.isClear && nextNode.isClear) ? 6 : 3, (node.isClear && nextNode.isClear) ? 0x000000 : 0x4D4D4D )
-                .lineBetween(node.x, node.y, nextNode.x, nextNode.y)
-                .setDepth(0)
-                );
-            
-            // 노드 이미지 추가
-            this._nodeImageArr.push(this.add(new NodeImage(scene, node).setDepth(1)).last as NodeImage);
-            
-            // 클리어 이미지 추가
-            MapObject.NODE_ARR[0] !== node && node.isClear ? this.add(scene.add.image(node.x, node.y, MapScene.KEY.IMAGE.CLEAR_NODE).setDepth(2)) : undefined;
-        })
-
-        //플레이어 이미지 추가
-        const currentNode = scene.game.player!.currentNode!;
-        this.add(this._playerImage = scene.add.image(currentNode.x, currentNode.y, MapScene.KEY.IMAGE.MAP_PLAYER).setScale(0.5).setDepth(4).setOrigin(0.5, 0.9));
-
-        // 씬에 맵 컨테이너 추가
-        scene.add.existing(this);
-    }  
 }
 
 /** 노드 타입 */

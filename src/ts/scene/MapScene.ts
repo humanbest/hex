@@ -80,12 +80,12 @@ export default class MapScene extends Scene
         mapCam.ignore([topMenu, mapBackground, exText]).setBounds(-115, 200, 1300, 1500);
         textCam.ignore([topMenu, mapBackground, mapObject]);
         
-        mapManager.camMovePlayer(this.game.player!.currentNode!);       
+        mapManager.camMoveToPlayer(this.game.player!.currentNode!);       
 
     }
 
 
-    update (_time: number, delta: number) 
+    update (_time: number, delta: number): void 
     {
         const controls: Phaser.Cameras.Controls.SmoothedKeyControl = this.registry.get("controls");
         controls.update(delta);
