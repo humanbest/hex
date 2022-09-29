@@ -1,17 +1,52 @@
-import {BattleCard as Card, BattleCharacter, BattleNotification, TargetPointer } from "../object/BattleObject";
+import { BattleCard as Card, BattleCharacter, BattleNotification, TargetPointer } from "../object/BattleObject";
+import TopMenu from "../object/TopMenu";
 import MapScene from "../scene/MapScene";
-import { BattleState, Scene } from "./Hex";
+import { BattleState, Buff, CardEffect, CommandType, Scene } from "./Hex";
 
 /**
  * 배틀 매니저
  * 
- * 배틀의 흐름을 제어합니다.
+ * 배틀의 흐름을 제어하며, 배틀씬과 관련된 매니저 객체들의 퍼사드 입니다.
  * 
  * @author Rubisco
  * @since 2022-09-17 오후 3:02
  */
+
 export default class BattleManager
 {
+
+    /**
+     * 카드효과 커맨드 팩토리
+     * 
+     * `CardEffect` 인터페이스를 통해 카드효과 커맨드를 자동으로 생성하는 팩토리 메소드 입니다.
+     * 
+     * @param card 배틀카드 리시버 인터페이스
+     * @param character 배틀캐릭터 리시버 인터페이스
+     * @param cardEffect 카드 효과 인터페이스
+     * @returns 커맨드 객체
+     */
+    static CardEffectCommandFactory(
+        card: IBattleCardReceiver,
+        character: IBattleCharacterReceiver, 
+        cardEffect: CardEffect
+    ): Command {
+        switch (cardEffect.type) {
+            case CommandType.ADD_ATTACK: return new AddAttackCmd(card, cardEffect.value as number);
+            case CommandType.ADD_DEFENSE: return new AddDefenseCmd(card, cardEffect.value as number);
+            case CommandType.ADD_ATTACK_BY_RATIO: return new AddAttackByRatioCmd(card, cardEffect.value as number);
+            case CommandType.ADD_DEFENSE_BY_RATIO: return new AddDefenseByRatioCmd(card, cardEffect.value as number);
+            case CommandType.ADD_RANDOM_ATTACK: return new AddRandomAttackCmd(card, cardEffect.value as number);
+            case CommandType.ADD_ATTACK_BY_COST: return new AddAttackByCostCmd(card, cardEffect.value as number);
+            case CommandType.REPLECT_DAMAGE: return new ReflectDamageCmd(character, cardEffect.value as number);
+            case CommandType.DEFENSE_IGNORE: return new DefenseIgnoreCmd(character, cardEffect.value as number);
+            case CommandType.HP_RECOVERY: return new HpRecoveryCmd(character, cardEffect.value as number);
+            case CommandType.INSTANCE_DEATH: return new InstanceDeathCmd(character, cardEffect.value as number);
+            case CommandType.ADD_COST_MAX: return new AddMaxCostCmd(character, cardEffect.value as number);
+            case CommandType.ADD_BUFF: return new AddBuffCmd(character, cardEffect.value as Buff);
+            default: return new NoCommand();
+        }
+    }
+
     /** 카드 관리 컨테이너 객체 */
     get cardManager() {return this._cardManager}
     private readonly _cardManager: CardManager;
@@ -32,10 +67,6 @@ export default class BattleManager
     get opponents() {return this._opponents}
     private readonly _opponents: BattleCharacter[];
 
-    /** 씬 객체 */
-    get scene() {return this._scene}
-    private readonly _scene: Scene;
-
     /** 타겟 포인터 객체 */
     get targetPointer() {return this._targetPointer};
     private readonly _targetPointer: TargetPointer;
@@ -45,9 +76,9 @@ export default class BattleManager
      * 
      * @param scene 씬 객체
      */
-    constructor(scene: Scene)
+    constructor(public readonly scene: Scene)
     {
-        this._scene = scene;
+        /** 의존성 객체들을 생성하여 주입합니다. */
         this._battleNotification = new BattleNotification(this);
         this._cardManager = new CardManager(this);
         this._stateManager = new StateManager(this);
@@ -59,7 +90,7 @@ export default class BattleManager
     addMonster(): this
     {
         this._opponents.push(
-            this._scene.add.existing(
+            this.scene.add.existing(
                 new BattleCharacter(this, this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, this.scene.game.player!.champion, "ninza")
             )
         )
@@ -80,7 +111,7 @@ export default class BattleManager
                 this._stateManager.state = BattleState.LOADING;
 
                 this.cardManager.resetPosition();
-                this.addCard();
+                this.addCard(this._plyerCharacter);
 
                 await this.waitForSeconds(CardManager.TWEEN_SPEED / 1000);
 
@@ -111,7 +142,7 @@ export default class BattleManager
             .play();
 
         // 카드를 분배받습니다.
-        for(let i = 0; i < CardManager.INIT_CARD_COUNT; i++) await this.addCard();
+        for(let i = 0; i < CardManager.INIT_CARD_COUNT; i++) await this.addCard(this._plyerCharacter);
 
     }
 
@@ -145,17 +176,17 @@ export default class BattleManager
     }
 
     /**
-     * 카드를 한 장 추가합니다.
+     * 랜덤으로 카드를 한 장 추가합니다.
      */
-    async addCard(): Promise<void>
+    async addCard(battleCharacter: BattleCharacter): Promise<void>
     {
         this.stateManager.state = BattleState.LOADING;
 
         this.targetPointer.clear();
-        
+
         this.cardManager
             .shuffle()
-            .addCard(this.cardManager.remainCards.pop())
+            .addCard(battleCharacter, this.cardManager.remainCards.pop())
             .arangeCard();
         
         await this.waitForSeconds(CardManager.TWEEN_SPEED / 1000);
@@ -166,6 +197,13 @@ export default class BattleManager
      */
     battleClear(): void { 
         this.scene.game.player!.currentNode!.isClear = true; 
+    }
+
+    /**
+     * 맵씬으로 이동합니다.
+     */
+    goToMap(): void
+    {
         this.scene.scene.start(MapScene.KEY.NAME);
     }
 
@@ -205,30 +243,12 @@ export class CardManager extends Phaser.GameObjects.Container
     /** 카드 애니메이션 속도 */
     static readonly TWEEN_SPEED: number = 300;
 
-    /** 카드 데미지 계산 메소드 */
-    // static readonly CALULATE_DAMAGE = (cardEffectArr: Array<CardEffect>) => {
-
-    //     let damage = 0;
-
-    //     cardEffectArr.filter(buff => buff.type === CardEffectType.ADD_DAMAGE).forEach(buff => {
-    //         damage += buff.value;
-    //     });
-    
-    //     cardEffectArr.filter(buff => buff.type === CardEffectType.ADD_DAMAGE_BY_RATIO).forEach(buff => {
-    //         damage += buff.value;
-    //     });
-        
-    //     return damage;
-    // }
-
     /** 남은 카드 목록 */
     get remainCards() { return this._remainCards }
-    set remainCards(remainCards) { this._remainCards = remainCards }
     private _remainCards: Array<string> = [];
 
     /** 사용된 카드 목록 */
     get usedCards() { return this._usedCards }
-    set usedCards(usedCards: Array<string>) { this._usedCards = usedCards }
     private _usedCards: Array<string> = [];
 
     /** 씬 객체 인터페이스 재정의 */
@@ -262,6 +282,7 @@ export class CardManager extends Phaser.GameObjects.Container
 
         /** 컨테이너를 씬에 추가합니다. */
         battleManager.scene.add.existing(this);
+        
     }
 
     /**
@@ -270,9 +291,9 @@ export class CardManager extends Phaser.GameObjects.Container
      * @param cardName 카드 이름
      * @returns 카드 관리 컨테이너
      */
-    addCard(cardName?: string): this 
+    addCard(battleCharacter: BattleCharacter, cardName?: string): this 
     {
-        return cardName ? this.add(new Card(this.battleManager, cardName, true)) : this;
+        return cardName ? this.add(new Card(this.battleManager, battleCharacter, cardName, true)) : this;
     }
 
     /**
@@ -283,7 +304,7 @@ export class CardManager extends Phaser.GameObjects.Container
     shuffle(): this 
     {
         if(!this.remainCards.length) this.remainCards.push(...this.usedCards.splice(0));
-        this.remainCards = Phaser.Utils.Array.Shuffle(this.remainCards);
+        this._remainCards = Phaser.Utils.Array.Shuffle(this.remainCards);
         
         return this;
     }
@@ -374,7 +395,7 @@ export class CardManager extends Phaser.GameObjects.Container
      */
     moveToUsedCards(card: Card): void
     {
-        this.usedCards.push(card.getData("key") as string);
+        this._usedCards.push(card.name);
         this.scene.add.tween({
             targets: card,
             x: this.scene.game.canvas.width - this.x - Card.WIDTH * 0.25,
@@ -400,7 +421,6 @@ export class StateManager {
     /** 배틀 상태 */
     get state() {return this._state}
     set state(state: BattleState) {this._state = state}
-    private _state: BattleState;
 
     /** 로딩 상태 */
     get isLoading() {return this._state === BattleState.LOADING}
@@ -410,31 +430,49 @@ export class StateManager {
 
     /** 플레이어 턴 여부 */
     get playerTurn() {return this._playerTurn}
-    set playerTurn(playerTurn: boolean) {this._playerTurn = playerTurn}
-    private _playerTurn: boolean;
 
     /** 현재 턴 */
     get currentTurn() {return this._currentTurn}
-    private set currentTurn(turn: number) {this._currentTurn = turn}
-    private _currentTurn: number;
 
-    /** 배틀 매니저 객체 */
-    get battleManager() {return this._battleManager}
-    private readonly _battleManager: BattleManager;
+    /** 카드존 */
+    get cardZone() {return this._cardZone};
+    private readonly _cardZone: Phaser.GameObjects.Zone;
 
-    constructor(battleManager: BattleManager) {
-        
-        // 배틀 매니저 주입
-        this._battleManager = battleManager;
-        
-        // 로딩 상태를 기본값으로 설정
-        this._state = BattleState.LOADING;
+    /** 카드제출존 */
+    get submitZone() {return this._submitZone};
+    private readonly _submitZone: Phaser.GameObjects.Zone;
 
-        // 플레이어 턴의 기본값 설정
-        this._playerTurn = false;
+    constructor(
+        private readonly battleManager: BattleManager,
+        private _state: BattleState = BattleState.LOADING,
+        private _playerTurn: boolean = false,
+        private _currentTurn: number = 0
+    ) {
+        /** 카드존을 생성하여 드래그 가능하도록 설정 */
+        battleManager.scene.input.setDraggable(
+            this._cardZone = battleManager.scene.add
+            .zone(battleManager.cardManager.x, battleManager.cardManager.y, battleManager.cardManager.width, battleManager.cardManager.height)
+            .setRectangleDropZone(battleManager.cardManager.width, battleManager.cardManager.height).setOrigin(0, 0.5)
+        );
 
-        // 현재 턴 기본값 설정
-        this._currentTurn = 0;
+        /** 카드제출존을 생성하여 드래그 가능하도록 설정 */
+        battleManager.scene.input.setDraggable(
+            this._submitZone = battleManager.scene.add
+            .zone(
+                0, TopMenu.HEIGHT, 
+                battleManager.scene.game.canvas.width, 
+                battleManager.scene.game.canvas.height - TopMenu.HEIGHT - battleManager.cardManager.height
+            ).setRectangleDropZone(
+                battleManager.scene.game.canvas.width, 
+                battleManager.scene.game.canvas.height - TopMenu.HEIGHT - battleManager.cardManager.height
+            ).setOrigin(0)
+        );
+
+        var graphics = battleManager.scene.add.graphics();
+        graphics.lineStyle(2, 0xffff00);
+        graphics.strokeRect(this._cardZone.x, this._cardZone.y - this._cardZone.input.hitArea.height / 2 , this._cardZone.input.hitArea.width, this._cardZone.input.hitArea.height);
+        graphics.strokeRect(this._submitZone.x, this._submitZone.y , this._submitZone.input.hitArea.width, this._submitZone.input.hitArea.height);
+    
     }
 
     async nextTurn(): Promise<void> {
@@ -442,14 +480,400 @@ export class StateManager {
         // 카드 상호작용을 하지 못하도록 로딩상태로 설정합니다.
         this._state = BattleState.LOADING;
 
+        if (this._playerTurn = !this._playerTurn) 
+        {
+            this.battleManager.plyerCharacter.emit("nextTurn");
+            this.battleManager.plyerCharacter.cost = this.battleManager.plyerCharacter.maxCost;
+        } 
+
+        else 
+        {
+            this.battleManager.opponents.forEach(opponent => {
+                opponent.emit("nextTurn");
+                opponent.cost = opponent.maxCost;
+            });
+        }
+
         // 턴 상태를 토글하고, 턴 상태에 따른 메소드를 호출합니다.
-        (this.playerTurn = !this.playerTurn) 
-            ? ++this.currentTurn && await this.battleManager.playerTurn() 
+        this._playerTurn
+            ? ++this._currentTurn && await this.battleManager.playerTurn() 
             : await this.battleManager.opponentTurn();
 
+        // 0.3초 대기합니다.
         await this.battleManager.waitForSeconds(0.3);
+
 
         // 카드와 상호작용 할 수 있도록 노말상태로 설정합니다.
         this._state = BattleState.NORMAL;
+    }
+}
+
+/**
+ * 커맨드 인터페이스
+ * 
+ * 카드효과 커맨드의 인터페이스 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+interface Command {
+    excute(): void;
+}
+
+/**
+ * 배틀카드 리시버 인터페이스
+ * 
+ * 배틀카드 커맨드를 수신하는 리시버 인터페이스 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+export interface IBattleCardReceiver {
+
+    /**
+     * 공격력 추가
+     * @param value 공격력 추가값 
+     */
+    addAttack(value: number): void;
+
+    /**
+     * 방어력 추가
+     * @param value 방어력 추가값 
+     */
+    addDefense(value: number): void;
+
+    /**
+     * 공격력 비례 추가
+     * @param value 공격력 추가 비례값
+     */
+    addAttackByRatio(value: number): void;
+
+    /**
+     * 방어력 비례 추가
+     * @param value 방어력 추가 비례값
+     */
+    addDefenseByRatio(value: number): void;
+
+    /**
+     * 공격력 랜덤 추가
+     * @param value 랜덤 범위값
+     */
+    addRandomAttack(value: number): void;
+
+    /**
+     * 공격력이 코스트에 비례하여 추가
+     * @param value 코스트 비례값
+     */
+    addAttackByCost(value: number): void;
+}
+
+/**
+ * 배틀캐릭터 리시버 인터페이스
+ * 
+ * 배틀캐릭터 커맨드를 수신하는 리시버 인터페이스 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+export interface IBattleCharacterReceiver {
+
+    /**
+     * HP 증가
+     * @param value HP 증가값
+     */
+    increaseHp(value: number): void;
+
+    /**
+     * HP 감소
+     * @param value HP 감소값
+     */
+    decreaseHp(value: number): void;
+
+    /**
+     * 방어력 증가
+     * @param value 방여력 증가값
+     */
+    increaseDefense(value: number): void;
+
+    /**
+     * 방어력 감소
+     * @param value 방어력 감소값
+     */
+    decreaseDefense(value: number): void;
+ 
+    /**
+     * 방어력 무시
+     * @param value 체력 감소값
+     */
+    defenseIgnore(value: number): void;
+
+    /**
+     * 즉사
+     * @param value 체력 감소값
+     */
+    instanceDeath(value: number): void;
+    
+    /**
+     * 최대 코스트 증가
+     * @param value 코스트 증가값
+     */
+    addMaxCost(value: number): void;
+
+    /**
+     * 버프 추가
+     * @param buff 버프 리스트
+     */
+    addBuff(buff: Buff): void;
+}
+
+/**
+ * 커맨드 없음
+ * 
+ * 특정 커맨드가 없는 경우 생성되는 기본 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class NoCommand implements Command {
+    excute(): void {}
+}
+
+/**
+ * 공격력 추가 커맨드
+ * 
+ * 카드에 공격력을 추가하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class AddAttackCmd implements Command {
+    
+    constructor(
+        private readonly battleCard: IBattleCardReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCard.addAttack(this.value);
+    }
+}
+
+/**
+ * 방어력 추가 커맨드
+ * 
+ * 카드에 방어력을 추가하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class AddDefenseCmd implements Command {
+    
+    constructor(
+        private readonly battleCard: IBattleCardReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCard.addDefense(this.value);
+    }
+}
+
+/**
+ * 공격력 비례 추가 커맨드
+ * 
+ * 카드에 공격력을 일정 비율로 추가하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class AddAttackByRatioCmd implements Command {
+    
+    constructor(
+        private readonly battleCard: IBattleCardReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCard.addAttackByRatio(this.value);
+    }
+}
+
+/**
+ * 방어력 비례 추가 커맨드
+ * 
+ * 카드에 방어력을 일정 비율로 추가하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class AddDefenseByRatioCmd implements Command {
+    
+    constructor(
+        private readonly battleCard: IBattleCardReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCard.addDefenseByRatio(this.value);
+    }
+}
+
+/**
+ * 공격력 랜덤 추가 커맨드
+ * 
+ * 카드에 공격력을 랜덤으로 추가하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class AddRandomAttackCmd implements Command {
+    
+    constructor(
+        private readonly battleCard: IBattleCardReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCard.addRandomAttack(this.value);
+    }
+}
+
+/**
+ * 코스트 비례 공격력 추가 커맨드
+ * 
+ * 카드에 공격력을 코스트에 비례하여 추가하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class AddAttackByCostCmd implements Command {
+    
+    constructor(
+        private readonly battleCard: IBattleCardReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCard.addAttackByCost(this.value);
+    }
+}
+
+/**
+ * 데미지 반사 커맨드
+ * 
+ * 데미지 반사 효과를 적용하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class ReflectDamageCmd implements Command {
+    
+    constructor(
+        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCharacter.decreaseHp(this.value);
+    }
+}
+
+/**
+ * 방어력 무시 커맨드
+ * 
+ * 방어력 무시 효과를 적용하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class DefenseIgnoreCmd implements Command {
+    
+    constructor(
+        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCharacter.defenseIgnore(this.value);
+    }
+}
+
+/**
+ * 체력 회복 커맨드
+ * 
+ * 체력회복 효과를 적용하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class HpRecoveryCmd implements Command {
+    
+    constructor(
+        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCharacter.increaseHp(this.value);
+    }
+}
+
+/**
+ * 즉사 커맨드
+ * 
+ * 즉사 효과를 적용하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class InstanceDeathCmd implements Command {
+    
+    constructor(
+        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCharacter.instanceDeath(this.value);
+    }
+}
+
+/**
+ * 최대 코스트 증가 커맨드
+ * 
+ * 최대 코스트를 증가시키는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class AddMaxCostCmd implements Command {
+    
+    constructor(
+        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly value: number
+    ) {}
+    
+    excute(): void {
+        this.battleCharacter.addMaxCost(this.value);
+    }
+}
+
+/**
+ * 버프 추가 커맨드
+ * 
+ * 버프를 추가하는 커맨드 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-27 오후 10:21
+ */
+class AddBuffCmd implements Command {
+    
+    constructor(
+        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly buff: Buff
+    ) {}
+    
+    excute(): void {
+        this.battleCharacter.addBuff(this.buff);
     }
 }
