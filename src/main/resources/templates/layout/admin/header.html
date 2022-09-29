@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="header">
+  <div class="top-container border-b border-gray-200 pb-10">
+    <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0 ">
+      
+      <span class="ml-3 text-violet-700 font-bold text-3xl" >Hex</span>
+    </a>
+    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+      <a class="mr-5">First Link</a>
+      <a class="mr-5">Second Link</a>
+      <a class="mr-5">Third Link</a>
+      <a class="mr-5">Fourth Link</a>
+    </nav>
+    
+    <form action="/" method="post">
+    <input class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0" type="text" placeholder="검색어를 입력해주세요.">
+    <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0" type="submit">검색</button>
+    </form>
+  </div>
+</header>
+
+</html>

@@ -21,38 +21,40 @@ public class AdminController {
     public final CommentService commentService;
     // public final CharacterService characterService;
 
+    private static final String LAYOUT = "admin";
+
     //메인페이지(나중에 꾸밀것 - 통계 데이터 등등)
     @GetMapping()
     public String mainPageView(){
-        return "admin/main";
+        return "admin/" + LAYOUT + "/main";
     }
     
     //전체 회원 목록
     @GetMapping("/member")
     public String getMemberListView(AdminSearchDto searchDto, Model model){
         model.addAttribute("memberList", memberService.getMemberList());
-        return "/admin/default/getList";
+        return "/admin/" + LAYOUT + "/getList";
     }
 
     //전체 게시글 목록
     @GetMapping("/board")
     public String getboardList(AdminSearchDto searchDto, Model model){
         model.addAttribute("boardList", boardService.getBoardList());
-        return "admin/default/getList";
+        return "/admin/" + LAYOUT + "/getList";
     }
 
     //전체 댓글 목록
     @GetMapping("/comment")
     public String getCommentList(AdminSearchDto searchDto, Model model){
         model.addAttribute("commentList",commentService.getCommentList());
-        return "/admin/default/getList";
+        return "/admin/" + LAYOUT + "/getList";
     }
 
     //전체 캐릭터 목록
     @GetMapping("/character")
     public String getCharacterList(AdminSearchDto searchDto, Model model){
         // model.addAttribute("getCommentList",characterService.getCharacterList());
-        return "/admin/default/getList";
+        return "/admin/" + LAYOUT + "/getList";
     }
 
     //회원 정보
