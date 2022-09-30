@@ -94,6 +94,24 @@ export default class Card extends Phaser.GameObjects.Container
                 strokeThickness: 5
             }
 
+            const cardDescriptionTextStyle: Phaser.Types.GameObjects.Text.TextStyle = {
+                fontFamily: "neodgm",
+                fontSize: "16px",
+                color: "#f4efe8",
+                stroke: "#695a45",
+                strokeThickness: 5,
+                wordWrap: { width: Card.WIDTH - 40 }
+            }
+
+            const cardStatusTextStyle: Phaser.Types.GameObjects.Text.TextStyle = {
+                fontFamily: "neodgm",
+                fontSize: "18px",
+                color: "#f4efe8",
+                stroke: "#695a45",
+                strokeThickness: 5,
+                wordWrap: { width: Card.WIDTH - 40 }
+            }
+
             /** 카드 오차 데이터 */
             const adjust = Card.getCardAdjustData(this.scene.game, cardName);
 
@@ -118,8 +136,36 @@ export default class Card extends Phaser.GameObjects.Container
             /** 카드 이미지 */
             const cardImage = scene.add.image(adjust.position.x, adjust.position.y, LoadScene.KEY.ATLAS.CARD_IMAGE, cardName).setScale(adjust.scale.x, adjust.scale.y);
             
-            this.add([cardFrontImage, cardColorImage, titleColorImage, costBoxImage, costValueText, cardNameText, cardImage]);
+            /** 설명 */
+            const cardDescription = scene.add.text(cardFrontImage.getBottomLeft().x + 20, cardFrontImage.getBottomLeft().y - 100, cardData.description, cardDescriptionTextStyle).setOrigin(0);
+
+            /** 방어력 텍스트 */
+            const defenseText = scene.add.text(0, 0, cardData.defense.toString(), cardStatusTextStyle).setOrigin(1);
+            
+            /** 방패 이미지 */
+            const shield = scene.add.image(0, 0, LoadScene.KEY.IMAGE.SHIELD).setOrigin(1, 0.5).setScale(1.5);
+            
+            /** 공격력 텍스트 */
+            const attackText = scene.add.text(0, 0, cardData.attack.toString(), cardStatusTextStyle).setOrigin(1, 0.5);
+            
+            /** 검 이미지 */
+            const sword = scene.add.image(0, 0, LoadScene.KEY.IMAGE.SWORD).setOrigin(1, 0.5).setScale(1.5);
+           
+            /** 스테이터스 오브젝트 정렬 이벤트 등록 */
+            this.on("statAlign", ()=>{
+                defenseText.setPosition(Card.WIDTH/2 - 20, Card.HEIGHT/2 - 20);
+                shield.setPosition(defenseText.getLeftCenter().x - 5, defenseText.getLeftCenter().y);
+                attackText.setPosition(shield.getLeftCenter().x - 15, shield.getLeftCenter().y);
+                sword.setPosition(attackText.getLeftCenter().x - 5, attackText.getLeftCenter().y);
+            });
+
+            /** 스테이터스 오브젝트 정렬 */
+            this.emit("statAlign");
+
+            /** 컨테이너에 오브젝트 추가 */
+            this.add([cardFrontImage, cardColorImage, titleColorImage, costBoxImage, costValueText, cardNameText, cardImage, cardDescription, sword, attackText, shield, defenseText]);
         }
+
         else
         {
             this.add(scene.add.image(0, 0, LoadScene.KEY.IMAGE.CARD_BACK));

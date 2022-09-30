@@ -114,7 +114,7 @@ export default class BattleScene extends Scene
                 align: "center",
                 strokeThickness: 2
             }).setOrigin(0.5).setShadow(2, 2, "black", 2, true, true));
-
+        
         /** 배틀 시작 */
         this.battleManager.start();
     }
@@ -126,5 +126,6 @@ export default class BattleScene extends Scene
         if(this.usedCardsCountText) this.usedCardsCountText.setText(this.battleManager.cardManager.usedCards.length.toString());
         if(this.remainCardsCountText) this.remainCardsCountText.setText(this.battleManager.cardManager.remainCards.length.toString());
         if(this.costText) this.costText.setText(`${this.battleManager.plyerCharacter.cost}/${this.battleManager.plyerCharacter.maxCost}`);
+        if(!this.battleManager.opponents.getLength()) this.battleManager.battleClear();
     }
 }

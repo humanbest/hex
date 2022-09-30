@@ -1,6 +1,6 @@
 import { Vector } from "matter";
 import BattleManager, { IBattleCardReceiver, CardManager, StateManager, IBattleCharacterReceiver } from "../interface/BattleManager";
-import { BattleState, Buff, CardEffect, CommandType, CardType, Champion } from "../interface/Hex";
+import { BattleState, Buff, CardEffect, CommandType, CardType, Champion, Scene } from "../interface/Hex";
 import BattleScene from "../scene/BattleScene";
 import Card from "./Card";
 
@@ -35,20 +35,14 @@ export class BattleNotification extends Phaser.GameObjects.Container {
     /** 알림 토스트 턴(turn) 텍스트 박스 */
     private readonly turnText: Phaser.GameObjects.Text;
 
-    /** 배틀 매니저 객체 */
-    private readonly battleManager: BattleManager;
-
     /**
      * 알림 컨테이너를 생성합니다.
      * 
      * @param battleManager 배틀 매니저
      */
-    constructor(battleManager: BattleManager) {
+    constructor(readonly battleManager: BattleManager) {
 
         super(battleManager.scene, 0, battleManager.scene.game.canvas.height/2);
-
-        // 배틀 매니저를 주입합니다.
-        this.battleManager = battleManager;
         
         // 씬을 주입합니다.
         this.scene = battleManager.scene;
@@ -290,13 +284,13 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
         this._buff = new Array<CardEffect>;
 
         // 스프라이트를 생성합니다.
-        this._sprite = battleManager.scene.add.sprite(0, 0, name).setScale(3).play("idle");
+        this._sprite = new BattleCharacterSprite(battleManager.scene, 0, 0, name);
 
         // 애니메이션의 키값 리스트를 초기화합니다.
         this._animArr = this._sprite.anims.animationManager["anims"].keys();
 
         // 체력바를 생성합니다.
-        const healthBar = new HeathBar(this);
+        const healthBar = new HealthBar(this);
         
         // 체력 텍스트를 생성하고 씬에 업데이트 이벤트를 추가합니다.
         const healthBarText = this.scene.add.text(this._sprite.getBottomCenter().x, this._sprite.getBottomLeft().y + 10, `${this.hp}/${this.maxHp}`, {
@@ -330,12 +324,12 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
 
         /** 컨테이너에 스프라이트, 체력바, 체력 텍스트, 상호작용존 추가 */
         this.add([this._sprite, healthBar, healthBarText, zone]);
-
+        
+        /** 다음턴 이벤트가 발생하면 버프에서 턴을 하나 감소 */
         this.on("nextTurn", () => {
             const newBuff = this._buff.filter(effect => typeof effect.turn === "number" && --effect.turn > 0);
             this._buff.splice(0);
             this._buff.push(...newBuff);
-            console.log(this._buff);
         })
     }
 
@@ -385,6 +379,20 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
 }
 
 /**
+ * 배틀캐릭터 스프라이트
+ * 
+ * 배틀캐릭터의 스프라이트 입니다. 씬으로부터 생성하면 destroy시 발생하는 버그로 인해 따로 작성합니다.
+ * 
+ */
+class BattleCharacterSprite extends Phaser.GameObjects.Sprite
+{
+    constructor(scene: Scene, x: number, y: number, name: string){
+        super(scene, x, y, name)
+        this.setScale(3).play("idle");
+    }
+}
+
+/**
  * 배틀캐릭터존
  * 
  * 배틀캐릭터의 상호작용 영역을 설정하기 위한 배틀캐릭터존(Zone) 클래스 입니다.
@@ -392,8 +400,8 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
  * @author Rubisco
  * @since 2022-09-22 오전 6:00
  */
- export class BattleCharacterZone extends Phaser.GameObjects.Zone {
-    
+ export class BattleCharacterZone extends Phaser.GameObjects.Zone 
+ {
     /** 배틀캐릭터 객체 */
     get battleCharacter() {return this._battleCharacter}
     
@@ -420,7 +428,7 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
  * @author Rubisco
  * @since 2022-09-22 오전 6:00
  */
- class HeathBar extends Phaser.GameObjects.Graphics
+ class HealthBar extends Phaser.GameObjects.Graphics
  {
     /**
      * 배틀캐릭터의 체력바를 생성합니다.
@@ -646,6 +654,18 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
         CommandType.ADD_RANDOM_ATTACK,
         CommandType.ADD_ATTACK_BY_COST
     ]
+
+    private static readonly ATTACK_BUFF = [
+        CommandType.ADD_ATTACK,
+        CommandType.ADD_ATTACK_BY_RATIO,
+        CommandType.ADD_RANDOM_ATTACK,
+        CommandType.ADD_ATTACK_BY_COST
+    ]
+
+    private static readonly DEFENSE_BUFF = [
+        CommandType.ADD_DEFENSE,
+        CommandType.ADD_DEFENSE_BY_RATIO
+    ]
     
 
     /** 공격력 */
@@ -664,10 +684,10 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
      * 배틀카드를 생성합니다.
      * 
      * @param battleManager 배틀 매니저 객체
-     * @param battleCharacter 배틀 캐릭터 객체
+     * @param battleCharacter 카드를 소유할 캐릭터 객체
      * @param cardName 카드 이름
      * @param isFront 앞면 여부
-     * @param isCardManagerZone 카드존 객체
+     * @param isCardManagerZone 카드가 카드존에 존재하는지에 대한 여부
      * @param stateManager 상태 매니저 객체
      * @param cardManager 카드 매니저 객체
      * @param targetPointer 타겟 포인터 객체
@@ -709,13 +729,13 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
             .setScale(0.2)
             .setInteractive()
             .on("pointerover", this.pointerOver)
-            .on("pointerout", this.pointerout)
-            .on("dragstart", this.dragstart)
-            .on("dragenter", this.dragenter)
+            .on("pointerout", this.pointerOut)
+            .on("dragstart", this.dragStart)
+            .on("dragenter", this.dragEnter)
             .on("drag", this.drag)
             .on("drop", this.drop)
-            .on("dragleave", this.dragleave)
-            .on("dragend", this.dragend)
+            .on("dragleave", this.dragLeave)
+            .on("dragend", this.dragEnd)
         
         // 카드를 드래그 가능하도록 설정합니다.
         battleManager.scene.input.setDraggable(this);
@@ -742,7 +762,7 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
     /**
      * 카드에서 포인터가 벗어나면 원래 상태로 돌아갑니다.
      */
-    private pointerout(): void 
+    private pointerOut(): void 
     {   
         if(this.stateManager.state !== BattleState.NORMAL) return;
 
@@ -761,10 +781,12 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
     /**
      * 카드의 드래그를 시작합니다.
      */
-    private dragstart(): void
+    private dragStart(): void
     {
-        this.stateManager.state = BattleState.DRAG;
+        if(this.stateManager.isLoading) return;
 
+        this.stateManager.state = BattleState.DRAG;
+        
         this.cardManager.bringToTop(this);
         this.scene.add.tween({
             targets: this,
@@ -802,13 +824,13 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
      * 
      * @param zone 드랍존
      */
-    private dragenter(_pointer: Phaser.Input.Pointer, zone: Phaser.GameObjects.Zone): void
+    private dragEnter(_pointer: Phaser.Input.Pointer, zone: Phaser.GameObjects.Zone): void
     {
         if(zone === this.stateManager.cardZone)
         {
             this.isCardManagerZone = true;
 
-            this.dragstart();
+            this.dragStart();
 
             this.targetPointer.color = TargetPointer.DEFAULT_COLOR;
 
@@ -830,7 +852,7 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
      * 
      * @param zone 드랍존
      */
-    private dragleave(_pointer?: Phaser.Input.Pointer, zone?: Phaser.GameObjects.Zone): void
+    private dragLeave(_pointer?: Phaser.Input.Pointer, zone?: Phaser.GameObjects.Zone): void
     {   
         this.targetPointer.color = TargetPointer.DEFAULT_COLOR;
 
@@ -857,11 +879,22 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
 
         // 보조카드의 경우 버프추가 커맨드를 생성하여 실행
         if(this.originData.type === CardType.ASSISTANCE) {
+
             BattleManager.CardEffectCommandFactory(this, this.battleCharacter, {
                 type: CommandType.ADD_BUFF,
                 value: this.originData.command.filter(effect => BattleCard.VALID_BUFF.includes(effect.type)), 
                 turn: 1
             }).excute();
+
+            const addCostMax = this.originData.command.filter(effect => effect.type === CommandType.ADD_COST_MAX);
+
+            if(addCostMax.length) {
+                BattleManager.CardEffectCommandFactory(this, this.battleCharacter, {
+                    type: CommandType.ADD_COST_MAX,
+                    value: addCostMax[0].value, 
+                    turn: 1
+                }).excute();
+            }
         }
 
         // 방어카드의 경우 방어력 증가
@@ -888,14 +921,10 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
                     value: instanceDeath[0].value,
                     turn: 1
                 }).excute();
-
-                // 체력이 0이면 리턴
-                if(!zone.battleCharacter.hp) return;
-
             } 
             
             // 카드가 방어무시 커맨드 메시지를 가진 경우
-            if(defenseIgnore.length)
+            if(defenseIgnore.length && zone.battleCharacter.hp)
             {
                 // 방어무시 커맨드를 생성하여 실행
                 BattleManager.CardEffectCommandFactory(this, zone.battleCharacter, {
@@ -903,12 +932,10 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
                     value: this._attack,
                     turn: 1
                 }).excute();
-
-                if(!zone.battleCharacter.hp) return;
             }
             
             // 공격력만큼 상대 캐릭터의 체력을 감소시킴
-            zone.battleCharacter.decreaseHp(this._attack);
+            if(!defenseIgnore.length && zone.battleCharacter.hp) zone.battleCharacter.decreaseHp(this._attack);
 
         } else return;
 
@@ -926,13 +953,14 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
             }).excute();
         }
 
-        this.battleCharacter.cost -= this._cost;
+        // 코스트 감소
+        this.battleCharacter.cost -=  this._cost < 0 ? this.battleCharacter.cost : this._cost;
+        
+        this.setPosition(this.x + this.cardManager.x, this.y + this.cardManager.y);
+        this.cardManager.remove(this);
 
-        // 카드를 카드 매니저 컨테이너에서 제거
-        this.cardManager.remove(this.setVisible(false));
-
-        // 카드 매니저 내의 카드 정렬
-        this.cardManager.arangeCard();
+        // 카드를 카드 매니저 컨테이너에서 제거후 정렬
+        this.cardManager.remove(this.setVisible(false)).arangeCard();
 
         // 각 카드의 스테이터스 갱신
         this.cardManager.getAll().forEach(card => (card as BattleCard).initStat())
@@ -940,20 +968,22 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
         // 타켓 포인터 초기화
         this.clear();
 
+        // 묘지덱에 카드 이름 추가
         this.cardManager.usedCards.push(this.name);
 
-        // 카드 객체 제거
+        // 카드 제거
         this.destroy();
+        
     }
 
     /**
      * 카드의 드래그 상태가 끝나면 타겟 포인터가 사라집니다.
      */
-    private dragend(): void
+    private dragEnd(): void
     {
         this.isCardManagerZone = true;
         this.clear();
-        this.pointerout();
+        this.pointerOut();
     }
 
     /**
@@ -964,15 +994,36 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
         this._attack = this.originData ? this.originData.attack : 0;
         this._defense = this.originData ? this.originData.defense : 0;
 
+        // 캐릭터의 코스트가 카드 코스트보다 작으면 색상 변경
+        if(this.battleCharacter.cost < this._cost) (this.getAt(4) as Phaser.GameObjects.Text)?.setColor("#c5373c").setStroke("#822325", 5);
+
+        // 카드 기본 속성 적용
         if(this.originData?.type !== CardType.ASSISTANCE) {
             this.originData?.command
                 .filter(effect => BattleCard.VALID_BUFF.includes(effect.type))
                 .forEach(effect => BattleManager.CardEffectCommandFactory(this, this.battleCharacter, effect).excute())
         }
 
+        // 카드에 버프 적용
         this.battleCharacter.buff
             .filter(effect => BattleCard.VALID_BUFF.includes(effect.type))
-            .forEach(effect => BattleManager.CardEffectCommandFactory(this, this.battleCharacter, effect).excute())
+            .forEach(effect => {
+                if(this.originData) {
+                    if(
+                        BattleCard.ATTACK_BUFF.includes(effect.type) && this.originData.type === CardType.ATTACK ||
+                        BattleCard.DEFENSE_BUFF.includes(effect.type) && this.originData.type === CardType.DEFENSE
+                    ) BattleManager.CardEffectCommandFactory(this, this.battleCharacter, effect).excute();
+                    (this.getAt(9) as Phaser.GameObjects.Text).setColor(this._attack > this.originData.attack ? "#00ff00" : "#f4efe8");
+                    (this.getAt(11) as Phaser.GameObjects.Text).setColor(this._defense > this.originData.defense ? "#00ff00" : "#f4efe8");
+                }
+            })
+
+        // 최종 스테이터스 반영
+        if(this.originData) { 
+            (this.getAt(9) as Phaser.GameObjects.Text).setText(this._attack.toString());
+            (this.getAt(11) as Phaser.GameObjects.Text).setText(this._defense.toString());
+            this.emit("statAlign");
+        }
     }
 
     /**
@@ -1008,5 +1059,99 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
 
     addAttackByCost(value: number): void {
         this._attack += value * this.battleCharacter.cost;
+    }
+}
+
+/**
+ * 턴(turn) 전환 버튼
+ * 
+ * 턴을 전환하기 위한 버튼 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-30 오후 6:00
+ */
+export class NextButton extends Phaser.GameObjects.Container {
+
+    private static COLOR = [0x6666ff, 0xcccccc, 0xffd700, 0xdddddd];
+
+    private background: Phaser.GameObjects.Polygon;
+    private text: Phaser.GameObjects.Text;
+
+    constructor(battleManager: BattleManager) {
+
+        super(battleManager.scene, battleManager.scene.cameras.main.width + 100, battleManager.stateManager.submitZone.getBottomRight().y - 40);
+        
+        this.background = battleManager.scene.add.polygon(0, 0, [ 0,20, 20,0, 80,0, 100,20, 80,40, 20,40, 0,20 ], NextButton.COLOR[0]).setStrokeStyle(4, NextButton.COLOR[1]);
+        
+        this.text = battleManager.scene.add.text(0, 0, "턴 종료", {
+            fontFamily: 'neodgm',
+            color: "white",
+            stroke: "black",
+            align: "center",
+            strokeThickness: 2
+        })
+        .setOrigin(0.5)
+        .setShadow(1, 1, "black", 1, true, true)
+
+        this.add([this.background, this.text])
+            .setSize(100, 40)
+            .setScale(1.3)
+            .setInteractive()
+            .on("pointerover", () => {
+                if(battleManager.stateManager.isLoading) return;
+                this.setScale(1.5); 
+                this.text.setColor("gold");
+                this.background.setStrokeStyle(4, NextButton.COLOR[2])
+            })
+            .on("pointerout", () => {
+                this.setScale(1.3);
+                this.text.setColor("white");
+                this.background.setStrokeStyle(4, NextButton.COLOR[1])
+            })
+            .on("pointerup", () => {
+                if(battleManager.stateManager.isLoading) return;
+                battleManager.stateManager.nextTurn();
+            })
+
+        battleManager.scene.events
+            .on("plyerTurnCmd", ()=>this.setPlayerTurn())
+            .on("opponentTurnCmd", ()=>this.setOpponentTurn());
+
+        battleManager.scene.add.existing(this);
+    }
+
+    private setText(text: string): this
+    {
+        this.text.setText(text);
+
+        return this;
+    }
+
+    private setBackground(colors: [number, number]): this
+    {
+        this.background.setFillStyle(colors[0]);
+        this.background.setStrokeStyle(4, colors[1]);
+
+        return this;
+    }
+
+    setOpponentTurn(): void
+    {
+        this.removeInteractive()
+            .setScale(1.3)
+            .setText("적 턴")
+            .setBackground([NextButton.COLOR[3], NextButton.COLOR[1]]);
+        
+        this.text.setColor("white");
+    }
+
+    setPlayerTurn(): void
+    {
+        this.setInteractive()
+            .setScale(1.3)
+            .setText("턴 종료")
+            .setBackground([NextButton.COLOR[0], NextButton.COLOR[1]]);
+            
+        this.text.setColor("white");
     }
 }

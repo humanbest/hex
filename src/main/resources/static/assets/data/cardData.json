@@ -12,7 +12,8 @@
                 "value": 2,
                 "turn": 1
             }
-        ]
+        ],
+        "description": "공격력 2배 증가"
     },
     "bamboo_spear": {
         "name": "죽창",
@@ -27,7 +28,8 @@
                 "value": 0,
                 "turn": 1
             }
-        ]
+        ],
+        "description": "방어력 무시"
     },
     "chain_mail": {
         "name": "체인 메일",
@@ -48,7 +50,8 @@
                 ],
                 "turn": 1
             }
-        ]
+        ],
+        "description": "반사 데미지 5"
     },
     "dempsey_roll": {
         "name": "뎀프시롤",
@@ -64,7 +67,7 @@
                 "turn": 1
             }
         ],
-        "turn": 1
+        "description": "Cost의 5배 만큼의 데미지"
     },
     "fireball": {
         "name": "파이어볼",
@@ -73,7 +76,8 @@
         "cost": 2,
         "attack": 8,
         "defense": 0,
-        "command": []
+        "command": [],
+        "description": ""
     },
     "fist": {
         "name": "붕권",
@@ -91,7 +95,8 @@
         "cost": 1,
         "attack": 0,
         "defense": 10,
-        "command": []
+        "command": [],
+        "description": ""
     },
     "revolver": {
         "name": "리볼버 한 발",
@@ -106,7 +111,8 @@
                 "value": 0.3,
                 "turn": 1
             }
-        ]
+        ],
+        "description": "30% 확률로 즉사"
     },
     "shadow_partner": {
         "name": "쉐도우 파트너",
@@ -121,7 +127,8 @@
                 "value": 2,
                 "turn": 1
             }
-        ]
+        ],
+        "description": "공격력 2배 증가"
     },
     "throwed_dice": {
         "name": "던져진 주사위",
@@ -136,7 +143,8 @@
                 "value": 6,
                 "turn": 1
             }
-        ]
+        ],
+        "description": "랜덤 공격력 증가"
     },
     "blizzard": {
         "name": "블리자드",
@@ -145,7 +153,8 @@
         "cost": 5,
         "attack": 50,
         "defense": 0,
-        "command": []
+        "command": [],
+        "description": ""
     },
     "mind_control": {
         "name": "정신공격",
@@ -160,7 +169,8 @@
                 "value": 0,
                 "turn": 1
             }
-        ]
+        ],
+        "description": "방어력 무시"
     },
     "fallen_coin": {
         "name": "떨어진 금화",
@@ -175,7 +185,8 @@
                 "value": 1,
                 "turn": 1
             }
-        ]
+        ],
+        "description": "Max Cost +1"
     },
     "mana_release": {
         "name": "마력 방출",
@@ -184,7 +195,8 @@
         "cost": 1,
         "attack": 5,
         "defense": 0,
-        "command": []
+        "command": [],
+        "description": ""
     },
     "magic_robe": {
         "name": "매직 로브",
@@ -205,7 +217,8 @@
                 ],
                 "turn": 1
             }
-        ]
+        ],
+        "description": "반사 데미지 +5"
     },
     "normal_jewel": {
         "name": "평범한 보석",
@@ -220,7 +233,8 @@
                 "value": 5,
                 "turn": 3
             }
-        ]
+        ],
+        "description": "3턴 동안 추가 공격력 +5"
     },
     "unique_jewel": {
         "name": "희귀한 보석",
@@ -235,6 +249,7 @@
                 "value": 10,
                 "turn": 3
             }
-        ]
+        ],
+        "description": "3턴 동안 추가 공격력 +10"
     }
 }

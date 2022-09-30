@@ -1,4 +1,4 @@
-import { BattleCard as Card, BattleCharacter, BattleNotification, TargetPointer } from "../object/BattleObject";
+import { BattleCard as Card, BattleCharacter, BattleNotification, NextButton, TargetPointer } from "../object/BattleObject";
 import TopMenu from "../object/TopMenu";
 import MapScene from "../scene/MapScene";
 import { BattleState, Buff, CardEffect, CommandType, Scene } from "./Hex";
@@ -65,7 +65,7 @@ export default class BattleManager
 
     /** 상대 몬스터 객체 리스트 */
     get opponents() {return this._opponents}
-    private readonly _opponents: BattleCharacter[];
+    private readonly _opponents: Phaser.GameObjects.Group;
 
     /** 타겟 포인터 객체 */
     get targetPointer() {return this._targetPointer};
@@ -83,13 +83,13 @@ export default class BattleManager
         this._cardManager = new CardManager(this);
         this._stateManager = new StateManager(this);
         this._plyerCharacter = new BattleCharacter(this, 0, 0, scene.game.player!.champion);
-        this._opponents = new Array<BattleCharacter>();
+        this._opponents = this.scene.add.group();
         this._targetPointer = new TargetPointer(this);
     }
 
     addMonster(): this
     {
-        this._opponents.push(
+        this._opponents.add(
             this.scene.add.existing(
                 new BattleCharacter(this, this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, this.scene.game.player!.champion, "ninza")
             )
@@ -117,14 +117,25 @@ export default class BattleManager
 
                 this._stateManager.state = BattleState.NORMAL;
             }
-        }).on('keydown-Q', async () => {     
+        }).on('keydown-Q', async () => {
             if(!this.stateManager.isLoading) this.stateManager.nextTurn();
         }).on('keydown-ONE',  () => this.battleClear());
 
         // 배틀이 시작함을 알립니다.
         this.battleNotification
             .startNotification(this.scene.tweens.createTimeline())
-            .on("complete", () => this.stateManager.nextTurn())
+            .on("complete", () => {
+                
+                // 배틀시작 알림이 종료되면 턴넘김 버튼이 생성되어 나타납니다.
+                this.scene.add.tween({
+                    targets: new NextButton(this),
+                    x: this.scene.cameras.main.width - 100,
+                    duration: 300
+                });
+
+                // 다음턴이 시작됩니다.
+                this.stateManager.nextTurn();
+            })
             .play();
     }
 
@@ -135,6 +146,8 @@ export default class BattleManager
     {
         // 카드를 원래 포지션으로 되돌립니다.
         this.cardManager.resetPosition();
+
+        this.scene.events.emit("plyerTurnCmd");
 
         // 알림창 뛰웁니다.
         this.battleNotification
@@ -153,6 +166,8 @@ export default class BattleManager
     {
         // 카드를 원래 포지션으로 되돌립니다.
         this.cardManager.resetPosition();
+
+        this.scene.events.emit("opponentTurnCmd");
 
         // 플레이어의 모든 선택된 카드를 묘지덱으로 이동시킵니다.
         this.moveAllCardsToUsedCards();
@@ -196,13 +211,14 @@ export default class BattleManager
      * 배틀에서 승리한 경우 플레이어의 현재 노드의 clear 상태를 true로 전환합니다.
      */
     battleClear(): void { 
-        this.scene.game.player!.currentNode!.isClear = true; 
+        this.scene.game.player!.currentNode!.isClear = true;
+        this.goToMap();
     }
 
     /**
      * 맵씬으로 이동합니다.
      */
-    goToMap(): void
+    private goToMap(): void
     {
         this.scene.scene.start(MapScene.KEY.NAME);
     }
@@ -251,27 +267,14 @@ export class CardManager extends Phaser.GameObjects.Container
     get usedCards() { return this._usedCards }
     private _usedCards: Array<string> = [];
 
-    /** 씬 객체 인터페이스 재정의 */
-    scene: Scene;
-
-    /** 배틀 매니저 객체 */
-    get battleManager() {return this._battleManager}
-    private readonly _battleManager: BattleManager;
-
     /**
      * 카드 관리 컨테이너를 생성합니다.
      * 
      * @param battleManager 배틀 매니저
      */
-    constructor(battleManager: BattleManager)
+    constructor(private readonly battleManager: BattleManager)
     {
         super(battleManager.scene, 0, 0);
-
-        /** 배틀 매니저를 주입합니다. */
-        this._battleManager = battleManager;
-
-        /** 씬을 주입합니다. */
-        this.scene = battleManager.scene;
 
         /** 컨테이너 크기와 위치를 정의합니다. */
         this.setSize(battleManager.scene.game.canvas.width * CardManager.CONTAINER_SCALE, CardManager.CARD_SCALE * Card.HEIGHT)
@@ -288,6 +291,7 @@ export class CardManager extends Phaser.GameObjects.Container
     /**
      * 이름에 해당하는 카드를 한 장 생성하여 컨테이너에 추가합니다.
      * 
+     * @param battleCharacter 카드를 소유할 캐릭터 객체
      * @param cardName 카드 이름
      * @returns 카드 관리 컨테이너
      */
@@ -398,10 +402,11 @@ export class CardManager extends Phaser.GameObjects.Container
         this._usedCards.push(card.name);
         this.scene.add.tween({
             targets: card,
-            x: this.scene.game.canvas.width - this.x - Card.WIDTH * 0.25,
+            y: this.scene.game.canvas.height - this.y - Card.WIDTH * 0.25 - 8,
+            x: this.scene.game.canvas.width - this.x - Card.WIDTH * 0.25 + 8,
             angle: 0,
             duration: CardManager.TWEEN_SPEED,
-            scale: 0.2,
+            scale: 0,
             ease: 'Quad.easeInOut',
             onComplete: () => card.destroy()
         })
@@ -467,12 +472,6 @@ export class StateManager {
                 battleManager.scene.game.canvas.height - TopMenu.HEIGHT - battleManager.cardManager.height
             ).setOrigin(0)
         );
-
-        var graphics = battleManager.scene.add.graphics();
-        graphics.lineStyle(2, 0xffff00);
-        graphics.strokeRect(this._cardZone.x, this._cardZone.y - this._cardZone.input.hitArea.height / 2 , this._cardZone.input.hitArea.width, this._cardZone.input.hitArea.height);
-        graphics.strokeRect(this._submitZone.x, this._submitZone.y , this._submitZone.input.hitArea.width, this._submitZone.input.hitArea.height);
-    
     }
 
     async nextTurn(): Promise<void> {
@@ -488,7 +487,7 @@ export class StateManager {
 
         else 
         {
-            this.battleManager.opponents.forEach(opponent => {
+            (this.battleManager.opponents.getChildren() as BattleCharacter[]).forEach(opponent => {
                 opponent.emit("nextTurn");
                 opponent.cost = opponent.maxCost;
             });

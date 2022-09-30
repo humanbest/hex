@@ -130,10 +130,13 @@ export interface CardData {
     defense: number;
 
     /** 커맨드 */
-    command: Array<CardEffect> ;
+    command: Array<CardEffect>;
+
+    /** 설명 */
+    description: string;
 
     /** 카드가 뽑힐 확률 */
-    probability: number;
+    probability?: number;
 }
 
 /**

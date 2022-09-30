@@ -21,7 +21,9 @@ export default class LoadScene extends Scene
             CARD_IMAGE: "cardImage",
         },
         IMAGE: {
-            CARD_BACK: "cardBack"
+            CARD_BACK: "cardBack",
+            SWORD: "attack_sword",
+            SHIELD: "defense_shield"
         },
         DATA: {
             CARD: "cardData",
@@ -49,6 +51,8 @@ export default class LoadScene extends Scene
         this.load.atlas(LoadScene.KEY.ATLAS.CARD_BASE, "assets/atlas/card_base.png", "assets/atlas/card_base.json");
         this.load.atlas(LoadScene.KEY.ATLAS.CARD_IMAGE, "assets/atlas/card_image.png", "assets/atlas/card_image.json");
         this.load.image(LoadScene.KEY.IMAGE.CARD_BACK, "assets/images/card_back.png");
+        this.load.image(LoadScene.KEY.IMAGE.SWORD, "assets/images/sword.png");
+        this.load.image(LoadScene.KEY.IMAGE.SHIELD, "assets/images/shield.png");
         this.load.json(LoadScene.KEY.DATA.CARD, "assets/data/cardData.json");
         this.load.json(LoadScene.KEY.DATA.ADJUST, "assets/data/cardAdjust.json");
 

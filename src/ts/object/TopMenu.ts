@@ -38,8 +38,8 @@ export default class TopMenu extends Phaser.GameObjects.Container
     static readonly HEIGHT: number = 40;
 
     /** 시간 텍스트 */
-    get timeText() {return this._timeText}
     private readonly _timeText: Phaser.GameObjects.Text;
+    set timeText(text: string) {this._timeText.setText(text)}
 
     /**
      * 상단 메뉴를 생성합니다.
