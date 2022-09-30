@@ -1,6 +1,6 @@
 import { Vector } from "matter";
 import BattleManager, { IBattleCardReceiver, CardManager, StateManager, IBattleCharacterReceiver } from "../interface/BattleManager";
-import { BattleState, Buff, CardEffect, CommandType, CardType, Champion, Scene } from "../interface/Hex";
+import { BattleState, Buff, CardEffect, CommandType, CardType, Champion } from "../interface/Hex";
 import BattleScene from "../scene/BattleScene";
 import Card from "./Card";
 
@@ -253,11 +253,11 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
 
     /** 스킬 리스트 */
     get animArray() {return this._animArr}
-    private readonly _animArr: Array<string>;
+    private readonly _animArr?: Array<string>;
 
     /** 스프라이트 객체 */
     get sprite() {return this._sprite}
-    private readonly _sprite: Phaser.GameObjects.Sprite;
+    private readonly _sprite?: Phaser.GameObjects.Sprite;
     
     /** 
      * 캐릭터 매니저 객체를 생성합니다.
@@ -283,48 +283,54 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
         // 버프 리스트를 초기화합니다.
         this._buff = new Array<CardEffect>;
 
-        // 스프라이트를 생성합니다.
-        this._sprite = new BattleCharacterSprite(battleManager.scene, 0, 0, name);
+        let healthBarText: Phaser.GameObjects.Text;
 
-        // 애니메이션의 키값 리스트를 초기화합니다.
-        this._animArr = this._sprite.anims.animationManager["anims"].keys();
+        if(name) {
+            // 스프라이트를 생성합니다.
+            this._sprite = battleManager.scene.add.sprite(0, 0, name).setScale(3).play("idle");
 
-        // 체력바를 생성합니다.
-        const healthBar = new HealthBar(this);
-        
-        // 체력 텍스트를 생성하고 씬에 업데이트 이벤트를 추가합니다.
-        const healthBarText = this.scene.add.text(this._sprite.getBottomCenter().x, this._sprite.getBottomLeft().y + 10, `${this.hp}/${this.maxHp}`, {
-            fontFamily: 'neodgm',
-            color: "white",
-            stroke: "orangered",
-            align: "center",
-            strokeThickness: 3
-        }).setOrigin(0.5, 0).setShadow(2, 2, "black", 2, true, true);
+            // 애니메이션의 키값 리스트를 초기화합니다.
+            this._animArr = this._sprite.anims.animationManager["anims"].keys();
+
+            // 체력바를 생성합니다.
+            const healthBar = new HealthBar(this);
+            
+            // 체력 텍스트를 생성하고 씬에 업데이트 이벤트를 추가합니다.
+            healthBarText = this.scene.add.text(this._sprite.getBottomCenter().x, this._sprite.getBottomLeft().y + 10, `${this.hp}/${this.maxHp}`, {
+                fontFamily: 'neodgm',
+                color: "white",
+                stroke: "orangered",
+                align: "center",
+                strokeThickness: 3
+            }).setOrigin(0.5, 0).setShadow(2, 2, "black", 2, true, true);
+
+            // 상호작용존을 설정하고 이벤트를 추가합니다.
+            let c = 0;
+            const zone = new BattleCharacterZone(this, 0, 0, this._sprite.displayWidth, this._sprite.displayHeight)
+                .setRectangleDropZone(this._sprite.displayWidth, this._sprite.displayHeight)
+                .setInteractive()
+                .on('pointerdown', () => {
+                    if(!this._sprite) return;
+                    if(this._animArr) {
+                        if(++c === this._animArr.length) c = 0;
+                        this._sprite.play(this._animArr[c]);
+                    } 
+                });
+
+            /** 컨테이너에 스프라이트, 체력바, 체력 텍스트, 상호작용존 추가 */
+            this.add([this._sprite, healthBar, healthBarText, zone]);
+        }
 
         // 체력을 지속적으로 업데이트 합니다.
         this.scene.events.on("update", async () => {
             if(this._hp < 0) this._hp = 0;
-            healthBarText.setText(`${this._hp}/${this._maxHp}`);
+            if(healthBarText) healthBarText.setText(`${this._hp}/${this._maxHp}`);
             if(!this._hp) {
                 await this.battleManager.waitForSeconds(0.3);
                 this.destroy();
             }
         });
 
-        // 상호작용존을 설정하고 이벤트를 추가합니다.
-        let c = 0;
-        const zone = new BattleCharacterZone(this, 0, 0, this._sprite.displayWidth, this._sprite.displayHeight)
-            .setRectangleDropZone(this._sprite.displayWidth, this._sprite.displayHeight)
-            .setInteractive()
-            .on('pointerdown', () => {
-                if(!this._sprite) return;
-                if(++c === this._animArr.length) c = 0;
-                this._sprite.play(this._animArr[c]);
-            });
-
-        /** 컨테이너에 스프라이트, 체력바, 체력 텍스트, 상호작용존 추가 */
-        this.add([this._sprite, healthBar, healthBarText, zone]);
-        
         /** 다음턴 이벤트가 발생하면 버프에서 턴을 하나 감소 */
         this.on("nextTurn", () => {
             const newBuff = this._buff.filter(effect => typeof effect.turn === "number" && --effect.turn > 0);
@@ -384,13 +390,12 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
  * 배틀캐릭터의 스프라이트 입니다. 씬으로부터 생성하면 destroy시 발생하는 버그로 인해 따로 작성합니다.
  * 
  */
-class BattleCharacterSprite extends Phaser.GameObjects.Sprite
-{
-    constructor(scene: Scene, x: number, y: number, name: string){
-        super(scene, x, y, name)
-        this.setScale(3).play("idle");
-    }
-}
+// class BattleCharacterSprite extends Phaser.GameObjects.Sprite
+// {
+//     constructor(scene: Scene, x: number, y: number, name: string){
+//         super(scene, x, y, name)
+//     }
+// }
 
 /**
  * 배틀캐릭터존
@@ -438,9 +443,11 @@ class BattleCharacterSprite extends Phaser.GameObjects.Sprite
      */
     constructor(
         private readonly battleCharacter: BattleCharacter,
-        private readonly width: number = battleCharacter.sprite.displayWidth
+        private readonly width: number = battleCharacter.sprite?.displayWidth || 0
     ){
         super(battleCharacter.scene);
+
+        if(!battleCharacter.sprite) return this;
 
         // 체력바 위치를 설정합니다.
         this.setPosition(battleCharacter.sprite.getBottomLeft().x, battleCharacter.sprite.getBottomLeft().y + 10).draw();
@@ -562,15 +569,17 @@ interface ITargetPointer {
     { 
         this._marker.clear();
 
+        if(!character.sprite) return;
+
         const points = [
-            character.x + character.sprite!.getTopLeft().x + 0,
-            character.y + character.sprite!.getTopLeft().y + 0,
-            character.x + character.sprite!.getTopRight().x - 0,
-            character.y + character.sprite!.getTopRight().y + 0,
-            character.x + character.sprite!.getBottomLeft().x + 0,
-            character.y + character.sprite!.getBottomLeft().y - 0,
-            character.x + character.sprite!.getBottomRight().x - 0,
-            character.y + character.sprite!.getBottomRight().y - 0,
+            character.x + character.sprite.getTopLeft().x + 0,
+            character.y + character.sprite.getTopLeft().y + 0,
+            character.x + character.sprite.getTopRight().x - 0,
+            character.y + character.sprite.getTopRight().y + 0,
+            character.x + character.sprite.getBottomLeft().x + 0,
+            character.y + character.sprite.getBottomLeft().y - 0,
+            character.x + character.sprite.getBottomRight().x - 0,
+            character.y + character.sprite.getBottomRight().y - 0,
         ]
 
         this._marker.lineStyle(4, TargetPointer.ATTACK_COLOR[0])
@@ -1137,6 +1146,8 @@ export class NextButton extends Phaser.GameObjects.Container {
 
     setOpponentTurn(): void
     {
+        if(!this.scene) return;
+
         this.removeInteractive()
             .setScale(1.3)
             .setText("적 턴")
@@ -1147,6 +1158,8 @@ export class NextButton extends Phaser.GameObjects.Container {
 
     setPlayerTurn(): void
     {
+        if(!this.scene) return;
+
         this.setInteractive()
             .setScale(1.3)
             .setText("턴 종료")

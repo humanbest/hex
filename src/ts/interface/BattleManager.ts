@@ -91,7 +91,7 @@ export default class BattleManager
     {
         this._opponents.add(
             this.scene.add.existing(
-                new BattleCharacter(this, this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, this.scene.game.player!.champion, "ninza")
+                new BattleCharacter(this, this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, this.scene.game.player!.champion, "middle_boss")
             )
         )
 
@@ -472,6 +472,12 @@ export class StateManager {
                 battleManager.scene.game.canvas.height - TopMenu.HEIGHT - battleManager.cardManager.height
             ).setOrigin(0)
         );
+
+        // var graphics = battleManager.scene.add.graphics();
+        // graphics.lineStyle(2, 0xffff00);
+        // graphics.strokeRect(this._cardZone.x, this._cardZone.y - this._cardZone.input.hitArea.height / 2 , this._cardZone.input.hitArea.width, this._cardZone.input.hitArea.height);
+        // graphics.strokeRect(this._submitZone.x, this._submitZone.y , this._submitZone.input.hitArea.width, this._submitZone.input.hitArea.height);
+    
     }
 
     async nextTurn(): Promise<void> {
