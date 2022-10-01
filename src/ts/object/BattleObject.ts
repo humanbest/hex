@@ -758,7 +758,7 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
         if(this.stateManager.state !== BattleState.NORMAL) return;
 
         this.cardManager.bringToTop(this);
-        this.scene.add.tween({
+        this.scene?.add.tween({
             targets: this,
             y: (CardManager.CARD_SCALE - 1) * Card.HEIGHT / 2,
             angle: 0,
@@ -776,7 +776,7 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
         if(this.stateManager.state !== BattleState.NORMAL) return;
 
         this.cardManager.moveTo(this, this.getData("originIndex"));
-        this.scene.add.tween({
+        this.scene?.add.tween({
             targets: this,
             x: this.getData("originPosition").x,
             y: this.getData("originPosition").y,
@@ -797,7 +797,7 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
         this.stateManager.state = BattleState.DRAG;
         
         this.cardManager.bringToTop(this);
-        this.scene.add.tween({
+        this.scene?.add.tween({
             targets: this,
             x: this.getData("originPosition").x,
             y: -CardManager.CARD_SCALE * Card.HEIGHT * 0.2,
@@ -1166,5 +1166,143 @@ export class NextButton extends Phaser.GameObjects.Container {
             .setBackground([NextButton.COLOR[0], NextButton.COLOR[1]]);
             
         this.text.setColor("white");
+    }
+}
+
+/**
+ * 남은 카드의 목록을 나타내는 UI 오브젝트의 컨테이너 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-30 오후 6:00
+ */
+export class RemainCardContainer extends Phaser.GameObjects.Container
+{
+    /**
+     * 남은 카드의 UI를 나타내는 컨테이너를 생성합니다.
+     * 
+     * @param battleManager 배틀매니저 객체를 주입받습니다.
+     */
+    constructor(battleManager: BattleManager)
+    {
+        super(battleManager.scene, Card.WIDTH * 0.25, battleManager.scene.game.canvas.height - Card.WIDTH * 0.25)
+        
+        const text = battleManager.scene.add.text(Card.WIDTH * 0.6, Card.HEIGHT * 0.4, battleManager.cardManager.remainCards.length.toString(), {
+            fontFamily: 'neodgm',
+            fontSize: "80px",
+            color: "white",
+            stroke: "black",
+            align: "center",
+            strokeThickness: 10
+        }).setAngle(20).setOrigin(0.5).setShadow(2, 2, "black", 2, true, true); 
+        
+        this.add(
+            Array.from({length: 20}, (_, i) => 
+                new Card(battleManager.scene)
+                    .setSize(Card.WIDTH, Card.HEIGHT)
+                    .setPosition(2*i, -2*i)
+            ))
+            .add(battleManager.scene.add.circle(Card.WIDTH * 0.6, Card.HEIGHT * 0.4, 60, 0xffa500))
+            .add(text)
+            .setSize(Card.WIDTH, Card.HEIGHT)
+            .setScale(0.2)
+            .setAngle(-20)
+            .getAll(undefined, undefined, 0, 20)
+            .forEach(card => (card as Card).getAll().forEach(img => (img as Phaser.GameObjects.Image).setTint(0xeeafaf)));
+        
+        battleManager.scene.events.on("update", () => {
+            text.setText(battleManager.cardManager.remainCards.length.toString())
+        })
+
+        battleManager.scene.add.existing(this);
+    }
+}
+
+/**
+ * 사용된 카드의 목록을 나타내는 UI 오브젝트의 컨테이너 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-30 오후 6:00
+ */
+ export class UsedCardContainer extends Phaser.GameObjects.Container
+ {
+    /**
+     * 사용된 카드의 UI를 나타내는 컨테이너를 생성합니다.
+     * 
+     * @param battleManager 배틀매니저 객체를 주입받습니다.
+     */
+    constructor(battleManager: BattleManager)
+    {
+        super(
+            battleManager.scene, 
+            battleManager.scene.game.canvas.width - Card.WIDTH * 0.25 + 8, 
+            battleManager.scene.game.canvas.height - Card.WIDTH * 0.25 - 8
+        )
+
+        const text = battleManager.scene.add.text(-Card.WIDTH * 0.6 - 40, Card.HEIGHT * 0.4 + 40, battleManager.cardManager.usedCards.length.toString(), {
+            fontFamily: 'neodgm',
+            fontSize: "80px",
+            color: "white",
+            stroke: "black",
+            align: "center",
+            strokeThickness: 10
+        }).setAngle(-20).setOrigin(0.5).setShadow(2, 2, "black", 2, true, true);
+         
+        this.add(
+            Array.from({length: 20}, (_, i) => 
+                new Card(battleManager.scene)
+                    .setSize(Card.WIDTH, Card.HEIGHT)
+                    .setPosition(-2*i, 2*i)
+            ))
+            .add(battleManager.scene.add.circle(-Card.WIDTH * 0.6 - 40, Card.HEIGHT * 0.4 + 40, 60, 0xffa500))
+            .add(text)
+            .setSize(Card.WIDTH, Card.HEIGHT)
+            .setScale(0.2)
+            .setAngle(20)
+            .getAll(undefined, undefined, 0, 20)
+            .forEach(card => (card as Card).getAll().forEach(img => (img as Phaser.GameObjects.Image).setTint(0xaeddef)));
+
+            battleManager.scene.events.on("update", () => {
+                text.setText(battleManager.cardManager.usedCards.length.toString())
+            })
+    
+            battleManager.scene.add.existing(this);
+    }
+}
+
+/**
+ * 코스트의 UI 오브젝트 컨테이너 입니다.
+ * 
+ * @author Rubisco
+ * @since 2022-09-30 오후 6:00
+ */
+ export class CostContainer extends Phaser.GameObjects.Container
+ {
+    /**
+     * 코스트의 UI를 나타내는 컨테이너를 생성합니다.
+     * 
+     * @param battleManager 배틀매니저 객체를 주입받습니다.
+     */
+    constructor(battleManager: BattleManager)
+    {
+        super(battleManager.scene, Card.WIDTH * 0.5, battleManager.scene.game.canvas.height - Card.WIDTH * 0.8)
+
+        const text = battleManager.scene.add.text(0, 0, `${battleManager.plyerCharacter.cost}/${battleManager.plyerCharacter.maxCost}`, {
+            fontFamily: 'neodgm',
+            fontSize: "30px",
+            color: "white",
+            stroke: "black",
+            align: "center",
+            strokeThickness: 2
+        }).setOrigin(0.5).setShadow(2, 2, "black", 2, true, true);
+         
+        this.add(battleManager.scene.add.circle(0, 0, 42, 0xd2be97).setStrokeStyle(2, 0xffffff))
+            .add(battleManager.scene.add.circle(0, 0, 35, 0xff7f00).setStrokeStyle(5, 0xff5500))
+            .add(text);
+
+        battleManager.scene.events.on("update", () => {
+            text.setText(`${battleManager.plyerCharacter.cost}/${battleManager.plyerCharacter.maxCost}`);
+        })
+
+        battleManager.scene.add.existing(this);
     }
 }

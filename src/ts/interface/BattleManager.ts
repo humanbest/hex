@@ -85,12 +85,25 @@ export default class BattleManager
         this._plyerCharacter = new BattleCharacter(this, 0, 0, scene.game.player!.champion);
         this._opponents = this.scene.add.group();
         this._targetPointer = new TargetPointer(this);
+
+        /** 
+         * 씬의 업데이트 이벤트를 수신합니다.
+         * opponents의 자식 객체가 없다면 배틀에서 승리합니다.
+         */
+        scene.events.on("update", () => {
+            if(this._opponents.children && !this._opponents.getLength()) this.battleClear();
+        })
     }
 
+    /**
+     * 몬스터를 하나 추가합니다.
+     * 
+     * @returns 배틀 매니저 객체
+     */
     addMonster(): this
     {
         this._opponents.add(
-            this.scene.add.existing(
+            this.scene?.add.existing(
                 new BattleCharacter(this, this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, this.scene.game.player!.champion, "middle_boss")
             )
         )
@@ -127,7 +140,7 @@ export default class BattleManager
             .on("complete", () => {
                 
                 // 배틀시작 알림이 종료되면 턴넘김 버튼이 생성되어 나타납니다.
-                this.scene.add.tween({
+                this.scene?.add.tween({
                     targets: new NextButton(this),
                     x: this.scene.cameras.main.width - 100,
                     duration: 300
@@ -220,7 +233,7 @@ export default class BattleManager
      */
     private goToMap(): void
     {
-        this.scene.scene.start(MapScene.KEY.NAME);
+        this.scene.scene.stop(this.scene).start(MapScene.KEY.NAME);
     }
 
     /**
@@ -353,7 +366,7 @@ export class CardManager extends Phaser.GameObjects.Container
                 angle = Phaser.Math.Linear(-CardManager.CARD_MAX_ANGLE, CardManager.CARD_MAX_ANGLE, lerps[idx]);
             }
 
-            this.scene.add.tween({
+            this.scene?.add.tween({
                 targets: card.setData({
                     originIndex: idx,
                     originPosition: new Phaser.Math.Vector2(xPos, yPos),
@@ -379,7 +392,7 @@ export class CardManager extends Phaser.GameObjects.Container
     {
         this.getAll().forEach(card => {
             this.moveTo(card, card.getData("originIndex"));
-            this.scene.add.tween({
+            this.scene?.add.tween({
                 targets: card,
                 x: card.getData("originPosition").x,
                 y:  card.getData("originPosition").y,
@@ -400,7 +413,7 @@ export class CardManager extends Phaser.GameObjects.Container
     moveToUsedCards(card: Card): void
     {
         this._usedCards.push(card.name);
-        this.scene.add.tween({
+        this.scene?.add.tween({
             targets: card,
             y: this.scene.game.canvas.height - this.y - Card.WIDTH * 0.25 - 8,
             x: this.scene.game.canvas.width - this.x - Card.WIDTH * 0.25 + 8,

@@ -1,7 +1,7 @@
 import BattleManager from "../interface/BattleManager";
 import { Scene } from "../interface/Hex";
 import TopMenu from "../object/TopMenu";
-import Card from "../object/Card";
+import { CostContainer, RemainCardContainer, UsedCardContainer } from "../object/BattleObject";
 
 /**
  * Hex 게임의 배틀씬 입니다.
@@ -18,11 +18,6 @@ export default class BattleScene extends Scene
             SWORD: "sword"
         }
     }
-
-    private battleManager?: BattleManager;
-    private remainCardsCountText?: Phaser.GameObjects.Text;
-    private usedCardsCountText?: Phaser.GameObjects.Text;
-    private costText?: Phaser.GameObjects.Text;
 
     constructor()
     {
@@ -48,84 +43,19 @@ export default class BattleScene extends Scene
         new TopMenu(this, 0, 0).setDepth(10);
 
         /** 배틀 관리 객체 */
-        this.battleManager = new BattleManager(this).addMonster();
-        this.battleManager.cardManager.setDepth(1);
+        const battleManager = new BattleManager(this).addMonster();
+        battleManager.cardManager.setDepth(1);
 
         /** 남은 카드 목록 UI 컨테이너 */
-        this.add.container(Card.WIDTH * 0.25, this.game.canvas.height - Card.WIDTH * 0.25)
-            .add(
-                Array.from({length: 20}, (_, i) => 
-                    new Card(this)
-                        .setSize(Card.WIDTH, Card.HEIGHT)
-                        .setPosition(2*i, -2*i)
-                )
-            )
-            .add(this.add.circle(Card.WIDTH * 0.6, Card.HEIGHT * 0.4, 60, 0xffa500))
-            .add(this.remainCardsCountText = this.add.text(Card.WIDTH * 0.6, Card.HEIGHT * 0.4, this.battleManager.cardManager.remainCards.length.toString(), {
-                    fontFamily: 'neodgm',
-                    fontSize: "80px",
-                    color: "white",
-                    stroke: "black",
-                    align: "center",
-                    strokeThickness: 10
-                })
-                .setAngle(20).setOrigin(0.5).setShadow(2, 2, "black", 2, true, true)
-            )
-            .setSize(Card.WIDTH, Card.HEIGHT)
-            .setScale(0.2)
-            .setAngle(-20)
-            .getAll(undefined, undefined, 0, 20)
-            .forEach(card => (card as Card).getAll().forEach(img => (img as Phaser.GameObjects.Image).setTint(0xeeafaf)));
+        new RemainCardContainer(battleManager);
 
         /** 사용한 카드 목록 UI 컨테이너 */
-        this.add.container(this.game.canvas.width - Card.WIDTH * 0.25 + 8, this.game.canvas.height - Card.WIDTH * 0.25 - 8)
-            .add(
-                Array.from({length: 20}, (_, i) => 
-                    new Card(this)
-                        .setSize(Card.WIDTH, Card.HEIGHT)
-                        .setPosition(-2*i, 2*i)
-                )
-            )
-            .add(this.add.circle(-Card.WIDTH * 0.6 - 40, Card.HEIGHT * 0.4 + 40, 60, 0xffa500))
-            .add(this.usedCardsCountText = this.add.text(-Card.WIDTH * 0.6 - 40, Card.HEIGHT * 0.4 + 40, this.battleManager.cardManager.usedCards.length.toString(), {
-                    fontFamily: 'neodgm',
-                    fontSize: "80px",
-                    color: "white",
-                    stroke: "black",
-                    align: "center",
-                    strokeThickness: 10
-                }).setAngle(-20).setOrigin(0.5).setShadow(2, 2, "black", 2, true, true)
-            )
-            .setSize(Card.WIDTH, Card.HEIGHT)
-            .setScale(0.2)
-            .setAngle(20)
-            .getAll(undefined, undefined, 0, 20)
-            .forEach(card => (card as Card).getAll().forEach(img => (img as Phaser.GameObjects.Image).setTint(0xaeddef)));
+        new UsedCardContainer(battleManager);
         
         /** COST 표시 UI 컨테이너 */
-        this.add.container(Card.WIDTH * 0.5, this.game.canvas.height - Card.WIDTH * 0.8)
-            .add(this.add.circle(0, 0, 42, 0xd2be97).setStrokeStyle(2, 0xffffff))
-            .add(this.add.circle(0, 0, 35, 0xff7f00).setStrokeStyle(5, 0xff5500))
-            .add(this.costText = this.add.text(0, 0, `${this.battleManager.plyerCharacter.cost}/${this.battleManager.plyerCharacter.maxCost}`, {
-                fontFamily: 'neodgm',
-                fontSize: "30px",
-                color: "white",
-                stroke: "black",
-                align: "center",
-                strokeThickness: 2
-            }).setOrigin(0.5).setShadow(2, 2, "black", 2, true, true));
+        new CostContainer(battleManager);
         
         /** 배틀 시작 */
-        this.battleManager.start();
-    }
-
-    update(): void {
-
-        if(!this.battleManager) return;
-
-        if(this.usedCardsCountText) this.usedCardsCountText.setText(this.battleManager.cardManager.usedCards.length.toString());
-        if(this.remainCardsCountText) this.remainCardsCountText.setText(this.battleManager.cardManager.remainCards.length.toString());
-        if(this.costText) this.costText.setText(`${this.battleManager.plyerCharacter.cost}/${this.battleManager.plyerCharacter.maxCost}`);
-        if(!this.battleManager.opponents.getLength()) this.battleManager.battleClear();
+        battleManager.start();
     }
 }
