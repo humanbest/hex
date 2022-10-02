@@ -26,7 +26,7 @@ export class Game extends Phaser.Game {
  */
 export abstract class Scene extends Phaser.Scene {
     
-    game: Game;
+    readonly game: Game;
 
     constructor(config: string | Phaser.Types.Scenes.SettingsConfig) {
         super(config);
@@ -44,7 +44,7 @@ export abstract class Scene extends Phaser.Scene {
     }
 }
 
-export type GameConfig = Phaser.Types.Core.GameConfig & {player?: Player}
+export type GameConfig = Phaser.Types.Core.GameConfig & {readonly player?: Player}
 
 /**
  * 카드 속성
@@ -92,8 +92,8 @@ export enum CommandType {
  * @param turn 카드 효과가 지속되는 턴의 수를 나타냅니다.
  */
 export interface CardEffect {
-    type: CommandType;
-    value: number | Buff;
+    readonly type: CommandType;
+    readonly value: number | Buff;
     turn?: number;
 }
 
@@ -112,31 +112,31 @@ export type Buff = Array<CardEffect>
 export interface CardData {
 
     /** 카드 이름 */
-    name: string;
+    readonly name: string;
 
     /** 카드 타입 */
-    type: CardType;
+    readonly type: CardType;
 
     /** 소지가능 챔피언 PK */
-    ownership: ChampionPrimaryKey;
+    readonly ownership: ChampionPrimaryKey;
 
     /** 비용 */
-    cost: number;
+    readonly cost: number;
 
     /** 공격력 */
-    attack: number;
+    readonly attack: number;
 
     /** 방어력 */
-    defense: number;
+    readonly defense: number;
 
     /** 커맨드 */
-    command: Array<CardEffect>;
+    readonly command: Array<CardEffect>;
 
     /** 설명 */
-    description: string;
+    readonly description: string;
 
     /** 카드가 뽑힐 확률 */
-    probability?: number;
+    readonly probability?: number;
 }
 
 /**
@@ -145,10 +145,10 @@ export interface CardData {
 export interface CardAdjust {
 
     /** 카드 위치 오차값 */
-    position: Vector,
+    readonly position: Vector,
 
     /** 카드 크기 오차값 */
-    scale: Vector
+    readonly scale: Vector
 }
 
 /**
@@ -171,8 +171,8 @@ export interface ItemEffect {
  * 아이템 인터페이스
  */
 export interface Item {
-    name: string;
-    effect: Array<ItemEffect> | ItemEffect;
+    readonly name: string;
+    readonly effect: Array<ItemEffect> | ItemEffect;
 }
 
 /**
@@ -195,14 +195,14 @@ export enum ChampionPrimaryKey {
  * 챔피언 인터페이스
  */
 export interface Champion {
-    name: string;
-    hp: number;
-    defense: number;
-    cost: number;
+    readonly name: string;
+    readonly hp: number;
+    readonly defense: number;
+    readonly cost: number;
 }
 
 export interface MonsterData extends Champion {
-    skill: Array<string>
+    readonly skill: Array<string>
 }
 
 /**

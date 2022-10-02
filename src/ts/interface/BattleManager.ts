@@ -14,9 +14,8 @@ import { BattleState, Buff, CardEffect, CommandType, Scene } from "./Hex";
 
 export default class BattleManager
 {
-
     /**
-     * 카드효과 커맨드 팩토리
+     * 카드효과 커맨드 팩토리 메소드
      * 
      * `CardEffect` 인터페이스를 통해 카드효과 커맨드를 자동으로 생성하는 팩토리 메소드 입니다.
      * 
@@ -26,8 +25,8 @@ export default class BattleManager
      * @returns 커맨드 객체
      */
     static CardEffectCommandFactory(
-        card: IBattleCardReceiver,
-        character: IBattleCharacterReceiver, 
+        card: BattleCardReceiver,
+        character: BattleCharacterReceiver, 
         cardEffect: CardEffect
     ): Command {
         switch (cardEffect.type) {
@@ -48,27 +47,27 @@ export default class BattleManager
     }
 
     /** 카드 관리 컨테이너 객체 */
-    get cardManager() {return this._cardManager}
+    get cardManager(): CardManager {return this._cardManager}
     private readonly _cardManager: CardManager;
 
     /** 배틀 알림 컨테이너 객체 */
-    get battleNotification() {return this._battleNotification}
+    get battleNotification(): BattleNotification {return this._battleNotification}
     private readonly _battleNotification: BattleNotification;
 
     /** 턴 매니저 객체 */
-    get stateManager() {return this._stateManager}
+    get stateManager(): StateManager {return this._stateManager}
     private readonly _stateManager: StateManager;
 
     /** 플레이어 캐릭터 객체 */
-    get plyerCharacter() {return this._plyerCharacter}
+    get plyerCharacter(): BattleCharacter {return this._plyerCharacter}
     private readonly _plyerCharacter: BattleCharacter;
 
     /** 상대 몬스터 객체 리스트 */
-    get opponents() {return this._opponents}
+    get opponents(): Phaser.GameObjects.Group {return this._opponents}
     private readonly _opponents: Phaser.GameObjects.Group;
 
     /** 타겟 포인터 객체 */
-    get targetPointer() {return this._targetPointer};
+    get targetPointer(): TargetPointer {return this._targetPointer};
     private readonly _targetPointer: TargetPointer;
 
     /**
@@ -273,20 +272,21 @@ export class CardManager extends Phaser.GameObjects.Container
     static readonly TWEEN_SPEED: number = 300;
 
     /** 남은 카드 목록 */
-    get remainCards() { return this._remainCards }
-    private _remainCards: Array<string> = [];
+    get remainCards(): Array<string> { return this._remainCards }
 
     /** 사용된 카드 목록 */
-    get usedCards() { return this._usedCards }
-    private _usedCards: Array<string> = [];
+    get usedCards(): Array<string> { return this._usedCards }
 
     /**
      * 카드 관리 컨테이너를 생성합니다.
      * 
      * @param battleManager 배틀 매니저
      */
-    constructor(private readonly battleManager: BattleManager)
-    {
+    constructor(
+        private readonly battleManager: BattleManager,
+        private _remainCards: Array<string> = new Array<string>(),
+        private _usedCards: Array<string> = new Array<string>()
+    ){
         super(battleManager.scene, 0, 0);
 
         /** 컨테이너 크기와 위치를 정의합니다. */
@@ -437,27 +437,27 @@ export class CardManager extends Phaser.GameObjects.Container
 export class StateManager {
 
     /** 배틀 상태 */
-    get state() {return this._state}
+    get state(): BattleState {return this._state}
     set state(state: BattleState) {this._state = state}
 
     /** 로딩 상태 */
-    get isLoading() {return this._state === BattleState.LOADING}
+    get isLoading(): boolean {return this._state === BattleState.LOADING}
 
     /** 드래그 상태 */
-    get isDraging() {return this._state === BattleState.DRAG}
+    get isDraging(): boolean {return this._state === BattleState.DRAG}
 
     /** 플레이어 턴 여부 */
-    get playerTurn() {return this._playerTurn}
+    get playerTurn(): boolean {return this._playerTurn}
 
     /** 현재 턴 */
-    get currentTurn() {return this._currentTurn}
+    get currentTurn(): number {return this._currentTurn}
 
     /** 카드존 */
-    get cardZone() {return this._cardZone};
+    get cardZone(): Phaser.GameObjects.Zone {return this._cardZone};
     private readonly _cardZone: Phaser.GameObjects.Zone;
 
     /** 카드제출존 */
-    get submitZone() {return this._submitZone};
+    get submitZone(): Phaser.GameObjects.Zone {return this._submitZone};
     private readonly _submitZone: Phaser.GameObjects.Zone;
 
     constructor(
@@ -465,7 +465,7 @@ export class StateManager {
         private _state: BattleState = BattleState.LOADING,
         private _playerTurn: boolean = false,
         private _currentTurn: number = 0
-    ) {
+    ){
         /** 카드존을 생성하여 드래그 가능하도록 설정 */
         battleManager.scene.input.setDraggable(
             this._cardZone = battleManager.scene.add
@@ -546,7 +546,7 @@ interface Command {
  * @author Rubisco
  * @since 2022-09-27 오후 10:21
  */
-export interface IBattleCardReceiver {
+export interface BattleCardReceiver {
 
     /**
      * 공격력 추가
@@ -593,7 +593,7 @@ export interface IBattleCardReceiver {
  * @author Rubisco
  * @since 2022-09-27 오후 10:21
  */
-export interface IBattleCharacterReceiver {
+export interface BattleCharacterReceiver {
 
     /**
      * HP 증가
@@ -667,7 +667,7 @@ class NoCommand implements Command {
 class AddAttackCmd implements Command {
     
     constructor(
-        private readonly battleCard: IBattleCardReceiver,
+        private readonly battleCard: BattleCardReceiver,
         private readonly value: number
     ) {}
     
@@ -687,7 +687,7 @@ class AddAttackCmd implements Command {
 class AddDefenseCmd implements Command {
     
     constructor(
-        private readonly battleCard: IBattleCardReceiver,
+        private readonly battleCard: BattleCardReceiver,
         private readonly value: number
     ) {}
     
@@ -707,7 +707,7 @@ class AddDefenseCmd implements Command {
 class AddAttackByRatioCmd implements Command {
     
     constructor(
-        private readonly battleCard: IBattleCardReceiver,
+        private readonly battleCard: BattleCardReceiver,
         private readonly value: number
     ) {}
     
@@ -727,7 +727,7 @@ class AddAttackByRatioCmd implements Command {
 class AddDefenseByRatioCmd implements Command {
     
     constructor(
-        private readonly battleCard: IBattleCardReceiver,
+        private readonly battleCard: BattleCardReceiver,
         private readonly value: number
     ) {}
     
@@ -747,7 +747,7 @@ class AddDefenseByRatioCmd implements Command {
 class AddRandomAttackCmd implements Command {
     
     constructor(
-        private readonly battleCard: IBattleCardReceiver,
+        private readonly battleCard: BattleCardReceiver,
         private readonly value: number
     ) {}
     
@@ -767,7 +767,7 @@ class AddRandomAttackCmd implements Command {
 class AddAttackByCostCmd implements Command {
     
     constructor(
-        private readonly battleCard: IBattleCardReceiver,
+        private readonly battleCard: BattleCardReceiver,
         private readonly value: number
     ) {}
     
@@ -787,7 +787,7 @@ class AddAttackByCostCmd implements Command {
 class ReflectDamageCmd implements Command {
     
     constructor(
-        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly battleCharacter: BattleCharacterReceiver,
         private readonly value: number
     ) {}
     
@@ -807,7 +807,7 @@ class ReflectDamageCmd implements Command {
 class DefenseIgnoreCmd implements Command {
     
     constructor(
-        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly battleCharacter: BattleCharacterReceiver,
         private readonly value: number
     ) {}
     
@@ -827,7 +827,7 @@ class DefenseIgnoreCmd implements Command {
 class HpRecoveryCmd implements Command {
     
     constructor(
-        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly battleCharacter: BattleCharacterReceiver,
         private readonly value: number
     ) {}
     
@@ -847,7 +847,7 @@ class HpRecoveryCmd implements Command {
 class InstanceDeathCmd implements Command {
     
     constructor(
-        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly battleCharacter: BattleCharacterReceiver,
         private readonly value: number
     ) {}
     
@@ -867,7 +867,7 @@ class InstanceDeathCmd implements Command {
 class AddMaxCostCmd implements Command {
     
     constructor(
-        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly battleCharacter: BattleCharacterReceiver,
         private readonly value: number
     ) {}
     
@@ -887,7 +887,7 @@ class AddMaxCostCmd implements Command {
 class AddBuffCmd implements Command {
     
     constructor(
-        private readonly battleCharacter: IBattleCharacterReceiver,
+        private readonly battleCharacter: BattleCharacterReceiver,
         private readonly buff: Buff
     ) {}
     

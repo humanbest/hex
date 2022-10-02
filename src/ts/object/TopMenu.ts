@@ -37,9 +37,21 @@ export default class TopMenu extends Phaser.GameObjects.Container
     /** 탑 메뉴 높이 */
     static readonly HEIGHT: number = 40;
 
-    /** 시간 텍스트 */
-    private readonly _timeText: Phaser.GameObjects.Text;
-    set timeText(text: string) {this._timeText.setText(text)}
+    /** 시간 텍스트 설정 */
+    set timeText(text: string) {this.timerText.setText(text)}
+
+    /** 타이머 표시 여부 */
+    set timerVisible(boolean: boolean) 
+    {
+        this.timerText.setVisible(boolean);
+        this.timerImage.setVisible(boolean);
+    }
+
+    /** 타이머 텍스트 */
+    private readonly timerText: Phaser.GameObjects.Text;
+    
+    /** 타이머 이미지 */
+    private readonly timerImage: Phaser.GameObjects.Image;
 
     /**
      * 상단 메뉴를 생성합니다.
@@ -49,7 +61,7 @@ export default class TopMenu extends Phaser.GameObjects.Container
      * @param x x좌표
      * @param y y좌표
      */
-    constructor(scene: Scene, x: number, y: number) {
+    constructor(scene: Scene, x: number, y: number, timerVisible: boolean = false) {
 
         const game = scene.game;
 
@@ -71,7 +83,11 @@ export default class TopMenu extends Phaser.GameObjects.Container
         const right = new Right(scene, game.canvas.width, 0);
 
         // 시간 텍스트 주입
-        this._timeText = right.getByName(TopMenu.KEY.TEXT.TIME) as Phaser.GameObjects.Text;
+        this.timerText = right.getByName(TopMenu.KEY.TEXT.TIME) as Phaser.GameObjects.Text;
+        this.timerImage = right.getByName(TopMenu.KEY.IMAGE.CLOCK) as Phaser.GameObjects.Image;
+
+        // 타이머 기본값 입력
+        this.timerVisible = timerVisible;
 
         // 지도, 덱, 설정 아이콘을 마우스 포인터와 상호작용 가능하도록 설정
         [TopMenu.KEY.IMAGE.MAP, TopMenu.KEY.IMAGE.DEC, TopMenu.KEY.IMAGE.GEAR].forEach( name => {
@@ -157,15 +173,6 @@ export default class TopMenu extends Phaser.GameObjects.Container
  */
 class Left extends Phaser.GameObjects.Container {
 
-    static readonly KEY = {
-        TEXT: {
-            NICKNAME: "nickNameText"
-        },  
-        IMAGE: {
-            NICKNAME: ""
-        }
-    }
-
     /**
      * 상단 메뉴의 왼쪽 컨테이너 영역을 생성합니다.
      * 
@@ -187,14 +194,14 @@ class Left extends Phaser.GameObjects.Container {
                 fontFamily: 'neodgm',
                 fontSize: "20px",
                 color: "white"
-            }).setShadow(2, 2, '#000000', 2, true, true).setName(Left.KEY.TEXT.NICKNAME),
+            }).setShadow(2, 2, '#000000', 2, true, true).setName(TopMenu.KEY.TEXT.NICKNAME),
 
             // 플레이어 챔피언 이름
             scene.add.text(0, 0, game.player!.champion.name, {
                 fontFamily: 'neodgm',
                 fontSize: "16px",
                 color: "gray"
-            }).setShadow(2, 2, '#000000', 2, true, true).setName('champName'),
+            }).setShadow(2, 2, '#000000', 2, true, true),
 
             // HP 아이콘
             scene.add.image(0, 0, LoadScene.KEY.ATLAS.TOP, TopMenu.KEY.IMAGE.HP).setScale(0.75),

@@ -27,48 +27,40 @@ export default class Card extends Phaser.GameObjects.Container
     static readonly HEIGHT: number = 300;
 
     /** 카드 이미지 위치 오차 조절 */
-    static readonly IMAGE_POSITION: Vector = { x: 0, y: -35 };
+    private static readonly IMAGE_POSITION: Vector = { x: 0, y: -35 };
     
     /** 카드 이미지 크기 오차 조절 */
-    static readonly IMAGE_SCALE: Vector = { x: 0.7, y: 0.7 };
+    private static readonly IMAGE_SCALE: Vector = { x: 0.7, y: 0.7 };
 
     /** 카드 타입에 따른 이미지 영역 색상 */
     private static readonly imageColor: number[] = [0x923a37, 0x252a37, 0x71915c];
     private static readonly titleColor: number[] = [0xffbb9d, 0x9fdbe1, 0xc2d6b5];
     
     /** 카드 데이터 리스트 */
-    static get cardDataList() {return this._cardDataList }
+    static get cardDataList(): {[key: string]: CardData} {return this._cardDataList }
     static set cardDataList(cardDataList) { this._cardDataList = cardDataList }
     private static _cardDataList: {[key: string]: CardData};
 
-    get originData() {return this._originData}
+    /** 원본 데이터 */
+    get originData(): CardData | undefined {return this._originData}
     private readonly _originData?: CardData;
     
-    /** 카드의 앞면 여부 */
-    readonly isFront: boolean;
-
     /**
      * 카드 오브젝트를 생성합니다.
      * 
      * @param scene 씬
-     * @param cardName 카드 이름
-     * @param isFront 앞면 여부
+     * @param name 카드 이름
+     * @param isFront 카드 앞면 여부
      * @returns 카드
      */
-    constructor(scene: Scene, cardName?: string, isFront?: boolean) 
+    constructor(scene: Scene, public readonly name: string = "", isFront: boolean = false) 
     {
         super(scene, 0, 0);
 
-        if(isFront === undefined) isFront = false;
-
-        this.isFront = isFront;
-
-        if(isFront && cardName && Card.cardDataList[cardName])
+        if(isFront && name && Card.cardDataList[name])
         {
-
             /** 카드 데이터 주입 */
-            let cardData = Card.cardDataList[cardName];
-            this.name = cardName;
+            let cardData = Card.cardDataList[name];
 
             /** 카드 데이터 저장 */
             this._originData = cardData;
@@ -113,7 +105,7 @@ export default class Card extends Phaser.GameObjects.Container
             }
 
             /** 카드 오차 데이터 */
-            const adjust = Card.getCardAdjustData(this.scene.game, cardName);
+            const adjust = Card.getCardAdjustData(this.scene.game, name);
 
             /** 카드 앞면 이미지 */
             const cardFrontImage = scene.add.image(0, 0, LoadScene.KEY.ATLAS.CARD_BASE, Card.KEY.IMAGE.CARD_FRONT);
@@ -134,7 +126,7 @@ export default class Card extends Phaser.GameObjects.Container
             const cardNameText = scene.add.text(-10, cardFrontImage.getTopCenter().y + 27, cardData.name, cardNameTextStyle).setOrigin(0.5);
             
             /** 카드 이미지 */
-            const cardImage = scene.add.image(adjust.position.x, adjust.position.y, LoadScene.KEY.ATLAS.CARD_IMAGE, cardName).setScale(adjust.scale.x, adjust.scale.y);
+            const cardImage = scene.add.image(adjust.position.x, adjust.position.y, LoadScene.KEY.ATLAS.CARD_IMAGE, name).setScale(adjust.scale.x, adjust.scale.y);
             
             /** 설명 */
             const cardDescription = scene.add.text(cardFrontImage.getBottomLeft().x + 20, cardFrontImage.getBottomLeft().y - 100, cardData.description, cardDescriptionTextStyle).setOrigin(0);
@@ -159,7 +151,7 @@ export default class Card extends Phaser.GameObjects.Container
                 sword.setPosition(attackText.getLeftCenter().x - 5, attackText.getLeftCenter().y);
             });
 
-            /** 스테이터스 오브젝트 정렬 */
+            /** 스테이터스 오브젝트 정렬 이벤트 발행*/
             this.emit("statAlign");
 
             /** 컨테이너에 오브젝트 추가 */

@@ -1,5 +1,5 @@
 import { Vector } from "matter";
-import BattleManager, { IBattleCardReceiver, CardManager, StateManager, IBattleCharacterReceiver } from "../interface/BattleManager";
+import BattleManager, { BattleCardReceiver, CardManager, StateManager, BattleCharacterReceiver } from "../interface/BattleManager";
 import { BattleState, Buff, CardEffect, CommandType, CardType, Champion } from "../interface/Hex";
 import BattleScene from "../scene/BattleScene";
 import Card from "./Card";
@@ -15,13 +15,13 @@ import Card from "./Card";
 export class BattleNotification extends Phaser.GameObjects.Container {
 
     /** 알림 토스트 컨테이너 높이 */
-    static readonly HEIGHT: number = 120;
+    private static readonly HEIGHT: number = 120;
 
     /** 알림 토스트 컨테이너 depth */
-    static readonly DEPTH: number = 2;
+    private static readonly DEPTH: number = 2;
     
     /** 알림 토스트 배경색 */
-    static readonly COLOR: number = 0x000000;
+    private static readonly COLOR: number = 0x000000;
 
     /** 알림 토스트 배경 이미지 */
     private readonly background: Phaser.GameObjects.Rectangle;
@@ -207,15 +207,6 @@ export class BattleNotification extends Phaser.GameObjects.Container {
     }
 }
 
-interface IBattleCharacter {
-    hp: number;
-    maxHp: number;
-    defense: number;
-    cost: number
-    maxCost: number;
-    buff: Buff;
-}
-
 /**
  * 배틀 캐릭터
  * 
@@ -224,39 +215,39 @@ interface IBattleCharacter {
  * @author Rubisco
  * @since 2022-09-19 오전 9:06
  */
-export class BattleCharacter extends Phaser.GameObjects.Container implements IBattleCharacter, IBattleCharacterReceiver {
+export class BattleCharacter extends Phaser.GameObjects.Container implements BattleCharacterReceiver {
 
     /** 캐릭터 체력 */
-    get hp() {return this._hp}
+    get hp(): number {return this._hp}
     private _hp: number;
 
     /** 캐릭터 최대 체력 */
-    get maxHp() {return this._maxHp}
+    get maxHp(): number {return this._maxHp}
     private _maxHp: number;
 
     /** 캐릭터 방어력 */
-    get defense() {return this._defense}
+    get defense(): number {return this._defense}
     private _defense: number;
 
     /** 현재 코스트 */
-    get cost() {return this._cost}
+    get cost(): number {return this._cost}
     set cost(cost: number) {this._cost = cost}
     private _cost: number;
 
     /** 최대 코스트 */
-    get maxCost() {return this._maxCost}
+    get maxCost(): number {return this._maxCost}
     private _maxCost: number;
 
     /** 버프 리스트 */
-    get buff() {return this._buff}
+    get buff(): Buff {return this._buff}
     private readonly _buff: Buff;
 
     /** 스킬 리스트 */
-    get animArray() {return this._animArr}
-    private readonly _animArr?: Array<string>;
+    get animArray(): Array<string> {return this._animArr}
+    private readonly _animArr: Array<string>;
 
     /** 스프라이트 객체 */
-    get sprite() {return this._sprite}
+    get sprite(): Phaser.GameObjects.Sprite | undefined {return this._sprite}
     private readonly _sprite?: Phaser.GameObjects.Sprite;
     
     /** 
@@ -269,19 +260,20 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
      * @param name 스프라이트 키값
      */
     constructor(
-        private readonly battleManager: BattleManager, x: number, y: number, champion: Champion, name: string = ""
+        private readonly battleManager: BattleManager, x: number, y: number, champion: Champion & {maxHp?: number}, name: string = ""
     ){
         super(battleManager.scene, x, y);
 
         // 원본 캐릭터 데이터로부터 값을 복사합니다.
         this._hp = champion.hp
-        this._maxHp = champion.hp
+        this._maxHp = champion.maxHp ? champion.maxHp : champion.hp;
         this._defense = champion.defense
         this._cost = champion.cost
         this._maxCost = champion.cost
         
         // 버프 리스트를 초기화합니다.
-        this._buff = new Array<CardEffect>;
+        this._buff = new Array<CardEffect>();
+        this._animArr = new Array<string>();
 
         let healthBarText: Phaser.GameObjects.Text;
 
@@ -408,7 +400,7 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
  export class BattleCharacterZone extends Phaser.GameObjects.Zone 
  {
     /** 배틀캐릭터 객체 */
-    get battleCharacter() {return this._battleCharacter}
+    get battleCharacter(): BattleCharacter {return this._battleCharacter}
     
     /**
      * 배틀캐릭터존을 생성합니다.
@@ -469,14 +461,6 @@ export class BattleCharacter extends Phaser.GameObjects.Container implements IBa
     }
  }
 
-interface ITargetPointer {
-    marker: Phaser.GameObjects.Graphics;
-    pointer: Phaser.GameObjects.Graphics;
-    createLineFromCardToPointer(start: Vector, end: Vector): void;
-    createTargetMarker(character: BattleCharacter): void;
-    clear(): void;
-}
-
 /**
  * 타겟 포인터 객체
  * 
@@ -485,7 +469,7 @@ interface ITargetPointer {
  * @author Rubisco
  * @since 2022-09-23 오전 6:00
  */
- export class TargetPointer extends Phaser.Curves.CubicBezier implements ITargetPointer
+ export class TargetPointer extends Phaser.Curves.CubicBezier
  {
 
     static readonly DEFAULT_COLOR: [number, number] = [0xa8aaaa, 0x41413f];
@@ -611,8 +595,6 @@ interface ITargetPointer {
     { 
         this._marker.clear();
 
-        
-
         const points = [
             card.x + this.battleManager.cardManager.x - Card.WIDTH * CardManager.CARD_SCALE / 2 - 30,
             card.y + this.battleManager.cardManager.y - Card.HEIGHT * CardManager.CARD_SCALE / 2 - 30,
@@ -637,25 +619,16 @@ interface ITargetPointer {
 }
 
 /**
- * 배틀카드의 인터페이스입니다.
- */
-interface IBattleCard {
-    attack: number;
-    defense: number;
-    cost: number;
-}
-
-/**
  * 배틀카드 인터페이스와 배틀카드 리시버 인터페이스를 구현한 배틀카드 입니다.
 
  * @author Rubisco
  * @since 2022-09-27 오전 6:00
  * @see Card 객체를 상속
  */
-export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
+export class BattleCard extends Card implements BattleCardReceiver
 {
     /** 유효 버프 리스트 */
-    private static readonly VALID_BUFF = [
+    private static readonly VALID_BUFF: CommandType[] = [
         CommandType.ADD_ATTACK,
         CommandType.ADD_DEFENSE,
         CommandType.ADD_ATTACK_BY_RATIO,
@@ -664,29 +637,28 @@ export class BattleCard extends Card implements IBattleCard, IBattleCardReceiver
         CommandType.ADD_ATTACK_BY_COST
     ]
 
-    private static readonly ATTACK_BUFF = [
+    private static readonly ATTACK_BUFF: CommandType[] = [
         CommandType.ADD_ATTACK,
         CommandType.ADD_ATTACK_BY_RATIO,
         CommandType.ADD_RANDOM_ATTACK,
         CommandType.ADD_ATTACK_BY_COST
     ]
 
-    private static readonly DEFENSE_BUFF = [
+    private static readonly DEFENSE_BUFF: CommandType[] = [
         CommandType.ADD_DEFENSE,
         CommandType.ADD_DEFENSE_BY_RATIO
     ]
-    
 
     /** 공격력 */
-    get attack() {return this._attack};
+    get attack(): number {return this._attack};
     private _attack: number;
 
     /** 방어력 */
-    get defense() {return this._defense};
+    get defense(): number {return this._defense};
     private _defense: number;
 
     /** 비용 */
-    get cost() {return this._cost};
+    get cost(): number {return this._cost};
     private _cost: number;
     
     /**
