@@ -128,7 +128,7 @@ public class CommunityController {
     @PostMapping()
     public String insertBoard(Board board) {
         boardService.insertBoard(board);
-        return "redirect:/board";
+        return "redirect:/community";
     }
 
     /**
@@ -144,7 +144,7 @@ public class CommunityController {
     @PatchMapping(params = "documentId")
     public String updateBoard(Board board) {
         boardService.updateBoard(board);
-        return "redirect:/board/"+board.getDocumentId();
+        return "redirect:/community/"+board.getDocumentId();
     }
 
     /**
@@ -159,6 +159,6 @@ public class CommunityController {
     @DeleteMapping(params = "documentId")
     public String deleteBoard(Board board) {
         boardService.deleteBoard(board);
-        return "redirect:/board";
+        return "redirect:/community";
     }
 }

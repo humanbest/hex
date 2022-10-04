@@ -3,12 +3,64 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <style th:fragment="common" type="text/tailwindcss">
-header { @apply h-44 bg-indigo-500 flex justify-between font-extrabold text-white}
-header > .logo { @apply float-left text-5xl m-14 }
-header > .r-sec { @apply mt-3 }
-header > .r-sec > .t-btn { @apply text-right mt-4 mr-4 }
-header > .r-sec > .t-btn > a { @apply mr-5 }
-#section {@apply w-full bg-indigo-300 h-20 text-center;}
+
+      #theme { @apply before:content-['라이트모드'] dark:before:content-['다크모드'] }
+
+      header { @apply text-slate-500 h-[70px] justify-between xl:h-auto xl:pb-2.5 flex xl:justify-center xl:items-center xl:flex-col xl:gap-2.5 xl:w-full dark:bg-violet-500 dark:text-violet-100 }
+      header a { @apply hover:text-slate-700 dark:hover:text-yellow-300 }
+      header > label { @apply flex w-[70px] xl:hidden justify-center cursor-pointer }
+      header > label:nth-of-type(2) { @apply order-1 }
+      header > section { @apply xl:max-w-7xl xl:container justify-between items-center }
+      header > section:nth-of-type(1) { @apply hidden xl:flex }
+      header > section:nth-of-type(1) > div { @apply flex justify-center items-center }
+      header > section:nth-of-type(1) > div > div:not(:last-child) { @apply after:text-opacity-20 after:content-['|'] }
+      header > section:nth-of-type(1) > div > div > a { @apply inline-flex p-2.5 }
+      header > section:nth-of-type(2) { @apply flex xl:py-5 }
+      header > section:nth-of-type(2) > div.logo { @apply text-3xl leading-none font-black text-violet-500 dark:text-violet-100 xl:max-w-2xl xl:w-[300px] xl:text-5xl }
+      header > section:nth-of-type(2) > div.logo > a { @apply hover:text-violet-700 dark:hover:text-yellow-300 }
+      header > section:nth-of-type(2) > form { @apply hidden xl:flex xl:h-11 xl:rounded-2xl border-2 border-solid border-slate-400 hover:border-slate-500 dark:border-violet-200 dark:hover:border-white }
+      header > section:nth-of-type(2) > form > input { @apply xl:flex-1 xl:h-full xl:px-4 xl:border-none bg-transparent focus:outline-none dark:text-white dark:placeholder:text-violet-200 }
+      header > section:nth-of-type(2) > form > button { @apply xl:h-full xl:px-5 xl:bg-transparent xl:border-none text-slate-400 hover:text-slate-500 dark:text-violet-200 dark:hover:text-yellow-300 }
+
+      nav.main {
+            @apply fixed hidden justify-center items-start text-slate-600 top-0 left-0 w-full h-full flex-col gap-5 z-10 bg-black bg-opacity-50;
+            @apply xl:relative xl:items-center xl:bg-violet-400 xl:bg-opacity-100 xl:w-full xl:flex xl:h-auto;
+      }
+      #navToggle:checked + nav.main { @apply flex xl:relative }
+      nav.main > div { 
+            @apply flex flex-col leading-none overflow-y-scroll w-[70%] h-full max-w-xs bg-white gap-5;
+            @apply xl:w-[1280px] xl:max-w-7xl xl:flex-row xl:overflow-y-visible xl:bg-black xl:bg-opacity-10;
+      }
+      nav.main > div > ul.login { @apply flex gap-2.5 mt-5 mx-2.5 xl:hidden }
+      nav.main > div > ul.login > li { @apply flex-1 }
+      nav.main > div > ul.login > li > a { @apply flex justify-center items-center py-2.5 border border-solid border-black border-opacity-10 }
+      nav.main > div > ul.nav { @apply xl:flex xl:w-full }
+      nav.main > div > ul.nav > li { @apply flex flex-col w-full border-b border-solid border-black border-opacity-20 xl:border-0 xl:hover:bg-violet-700 xl:relative xl:flex-1 }
+      nav.main > div > ul.nav > li:first-child { @apply border-t }
+      nav.main > div > ul.nav > li > div { @apply flex justify-center items-stretch }
+      nav.main > div > ul.nav > li > div > a { @apply flex flex-1 justify-start items-center px-2.5 py-3.5 font-bold xl:justify-center xl:text-white xl:px-0 xl:py-5 xl:text-lg xl:leading-none }
+      nav.main > div > ul.nav > li:hover div > a { @apply xl:text-yellow-300 }
+      nav.main > div > ul.nav > li > div > i { @apply flex justify-center items-center text-slate-400 cursor-pointer w-16 xl:hidden }
+      nav.main > div > ul.nav > li > ul { @apply hidden flex-col bg-black bg-opacity-5 xl:absolute xl:w-full xl:justify-center xl:top-full xl:shadow-lg }
+      nav.main > div > ul.nav > li > ul.active { @apply flex xl:hidden }
+      nav.main > div > ul.nav > li:hover > ul { @apply xl:flex }
+      nav.main > div > ul.nav > li > ul > li { @apply border-t border-solid border-black border-opacity-10 xl:bg-white xl:w-full xl:flex xl:justify-center items-center xl:border-opacity-5 }
+      nav.main > div > ul.nav > li > ul > li > a { @apply flex px-6 py-3.5 hover:bg-violet-500 hover:text-white xl:hover:bg-violet-50 xl:hover:text-slate-600 xl:py-5 xl:px-0 xl:w-full xl:justify-center xl:items-center xl:font-bold }
+
+      main { @apply my-5 mx-auto px-5 xl:w-[1280px] xl:container xl:px-0 }
+
+      footer { @apply flex justify-center items-center flex-col gap-2.5 py-24 text-sm }
+      footer > section { @apply flex gap-2.5 }
+      footer > section > div:not(:last-child) { @apply after:content-['|'] text-black text-opacity-10 after:ml-2.5}
+      footer > section > div > a { @apply text-black text-opacity-30 hover:text-black hover:text-opacity-50 }
+      footer > div.license { @apply text-black text-opacity-30 }
+
+      .btn { 
+            @apply flex items-center gap-1.5 py-1 pr-3.5 pl-2.5 text-xs leading-relaxed border rounded tracking-[-1px] shadow-none text-center whitespace-nowrap cursor-pointer no-underline hover:shadow 
+            before:font-['fontello'] before:content-[''] before:transition-transform before:duration-300 before:hover:rotate-[360deg] border-violet-500;
+            transition: border-color .4s,box-shadow .4s,background .4s,color .4s,opacity .4s;
+      }
+      .btn.write { @apply before:content-['\E800'] bg-violet-500 hover:bg-violet-600 text-violet-50 }
 </style>
 
 </html>
