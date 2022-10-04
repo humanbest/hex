@@ -1,6 +1,6 @@
 import TopMenu from "../object/TopMenu";
 import Card from "../object/Card";
-import {CardData, CardEffect, ChampionPrimaryKey, defaultPlayer, Scene} from "../interface/Hex";
+import {CardData, ChampionPrimaryKey, defaultPlayer, Scene} from "../interface/Hex";
 import LoadScene from "./LoadScene";
 import Shopproduct from "../interface/Shopproduct";
 import DodgeStartScene from "./DodgeStartScene";
@@ -23,7 +23,6 @@ export class ShopCard extends Card implements CardData {
     name : string;
     ownership: ChampionPrimaryKey;
     cost: number;
-    effect: CardEffect[];
     probability: number;
 
     // @ts-ignore
@@ -54,7 +53,6 @@ export class ShopCard extends Card implements CardData {
         this.key = cardData.key;
         this.ownership = cardData.ownership;
         this.cost = cardData.cost;
-        this.effect = cardData.effect;
         this.probability = cardData.probability;
         this.price = this.setprice(this.cost);
         scene.add.existing(this);
@@ -100,7 +98,13 @@ export default class ShopScene extends Scene {
             notenough:"notenough",
             buycomplete:"buycomplete",
             dodgeicon:"dodgeicon",
-            maximumdec:"maximumdec"
+            maximumdec:"maximumdec",
+            woodtexture:"woodtexture",
+            woodtexture2:"woodtexture2",
+            ExitButton:"ExitButton",
+            sellBox:"sellBox",
+            sellYes:"sellYes",
+            sellNo:"sellNo"
         }
     }
 
@@ -131,9 +135,19 @@ export default class ShopScene extends Scene {
         /** 더미 카드 이미지 */
         this.load.image(ShopScene.KEY.IMAGE.dodgeicon, "assets/images/shopScene/dodgeicon.png");
         this.load.image(ShopScene.KEY.IMAGE.maximumdec, "assets/images/shopScene/maximumdec.png");
+        this.load.image(ShopScene.KEY.IMAGE.woodtexture, "assets/images/shopScene/woodtexture.png")
+        this.load.image(ShopScene.KEY.IMAGE.woodtexture2, "assets/images/shopScene/woodtexture2.png")
+
+        this.load.image(ShopScene.KEY.IMAGE.ExitButton, "assets/images/shopScene/ExitButton.png")
+
+        this.load.image(ShopScene.KEY.IMAGE.sellBox, "assets/images/shopScene/sellBox.png")
+        this.load.image(ShopScene.KEY.IMAGE.sellYes, "assets/images/shopScene/sellYes.png")
+        this.load.image(ShopScene.KEY.IMAGE.sellNo, "assets/images/shopScene/sellNo.png")
     }
 
     create(): void {
+
+        this.add.tileSprite(0, 0, this.game.canvas.width, this.game.canvas.height, ShopScene.KEY.IMAGE.woodtexture2).setOrigin(0, 0);
 
         let potion =  new Potion(this);
 
@@ -148,28 +162,28 @@ export default class ShopScene extends Scene {
 
         this.add.image(this.cameras.main.width-30, TopMenu.HEIGHT + 10, ShopScene.KEY.IMAGE.ShopOwner).setOrigin(1, 0).setScale(0.5);
 
-        const dodge = this.add.image(this.cameras.main.width-150, TopMenu.HEIGHT + 300, ShopScene.KEY.IMAGE.dodgeicon).setScale(0.5)
+        const dodge = this.add.image(this.cameras.main.width-150, TopMenu.HEIGHT + 300, ShopScene.KEY.IMAGE.dodgeicon).setScale(0.35)
             .setInteractive()
             .on("pointerover", () => this.add.tween({
                 targets: dodge,
                 duration: 70,
-                scale: 0.55
+                scale: 0.38
             }))
             .on("pointerout", () => this.add.tween({
                 targets: dodge,
                 duration: 70,
-                scale: 0.5
+                scale: 0.35
             }))
             .on("pointerdown",()=> this.gotododge());
 
 
-        this.add.image(5, 40, ShopScene.KEY.IMAGE.ShopPaper).setOrigin(0, 0);
+        // this.add.image(5, 40, ShopScene.KEY.IMAGE.ShopPaper).setOrigin(0, 0);
 
         [
             this.add.image(this.cameras.main.width - 150, 650, ShopScene.KEY.IMAGE.ShopExit)
                 .on("pointerup",()=> this.scene.start(MapScene.KEY.NAME)),
             this.add.image(this.cameras.main.width - 150, 550, ShopScene.KEY.IMAGE.ShopMyDec)
-                .on("pointerup", ()=> new DecViewer(this))
+                .on("pointerup", ()=> new DecViewer(this, true))
         ].forEach((image: Phaser.GameObjects.Image)=>image
             .setScale(0.27)
             .setInteractive()
@@ -194,7 +208,7 @@ export default class ShopScene extends Scene {
         const cardNameArr: Array<string> = Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD));
         const cardArr: Array<ShopCard> = Shuffle(cardNameArr).slice(0, 3).map(cardName => new ShopCard(this, cardName, true,true));
         cardArr.forEach((shopCard : ShopCard)=>shopCard
-            .on("pointerup",()=>shopproduct.buyShopCard(shopCard))
+            .on("pointerup",()=>shopproduct.buyShopCard(this,shopCard, cardNameArr))
         );
 
 
@@ -218,6 +232,10 @@ export default class ShopScene extends Scene {
         else{
             this.scene.launch(DodgeStartScene.KEY.NAME)
         }
+    }
+
+    createDecviewer () : void {
+        new DecViewer(this, true);
     }
     
 
