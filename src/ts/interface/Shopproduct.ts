@@ -8,7 +8,7 @@ export default class Shopproduct extends Phaser.GameObjects.Container {
     private maximumdec: Phaser.GameObjects.Image;
 
     /** 덱 상한치 */
-    private maxDeclength: number = 18;
+    private maxDeclength: number = 19;
 
     constructor(shopScene: Scene) {
 
@@ -19,13 +19,24 @@ export default class Shopproduct extends Phaser.GameObjects.Container {
         this.maximumdec = shopScene.add.image(this.scene.cameras.main.width / 2, this.scene.cameras.main.height / 2, ShopScene.KEY.IMAGE.maximumdec).setDepth(100).setVisible(false);
     }
 
-    buyShopCard(shopcard: ShopCard): void {
+    buyShopCard(scene : Scene, shopcard: ShopCard, CardList : Array<string>): void {
+
+        let selectedCard : string;
+
+        for(let i = 0; i<CardList.length; i++){
+            let card = new ShopCard(scene, CardList[i], true, false);
+            if(card.name == shopcard.name){
+                selectedCard = CardList[i];
+            }
+            card.destroy();
+        }
 
         if (defaultPlayer.dec.length > this.maxDeclength) {
             this.notification(this.maximumdec);
         } else {
             if (defaultPlayer.inventory.coin > shopcard.price) {
-               defaultPlayer.dec.push(shopcard.name);
+               // @ts-ignore
+                defaultPlayer.dec.push(selectedCard);
                defaultPlayer.inventory.coin -= shopcard.price;
                this.notification(this.buycomplete);
                shopcard.destroy();
@@ -34,6 +45,17 @@ export default class Shopproduct extends Phaser.GameObjects.Container {
             }
         }
     }
+
+    sellShopCard (scene : Scene, shopcardname: string) : void {
+        for(let i=0; i<defaultPlayer.dec.length; i++){
+            let card = new ShopCard(scene, defaultPlayer.dec[i], true, false);
+            if(card.name == shopcardname){
+                defaultPlayer.dec.splice(i,1);
+            }
+            card.destroy();
+        }
+    }
+
 
     notification(img: Phaser.GameObjects.Image) {
 

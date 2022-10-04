@@ -196,10 +196,12 @@ export enum ChampionPrimaryKey {
  */
 export interface Champion {
     readonly name: string;
-    readonly hp: number;
+    hp: number;
     readonly defense: number;
     readonly cost: number;
 }
+
+
 
 export interface MonsterData extends Champion {
     readonly skill: Array<string>

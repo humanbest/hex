@@ -1,5 +1,6 @@
-import { Scene } from "../interface/Hex";
+import {defaultPlayer, Scene} from "../interface/Hex";
 import TopMenu from "../object/TopMenu";
+import MapScene from "./MapScene";
 
 export default class InnScene extends Scene {
 
