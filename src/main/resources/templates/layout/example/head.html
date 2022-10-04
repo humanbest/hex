@@ -17,8 +17,12 @@
     <script th:src="@{/js/tailwindcss.js}"></script>
     <style th:replace="layout/example/tailwindcss :: common"></style>
 
+    <!-- 공통 스크립트 -->
+    <script th:replace="layout/example/js :: common"></script>
+
     <!-- 개별 CSS/JS -->
     <th:block layout:fragment="customHead"></th:block>
+
 </head>
 
 </html>

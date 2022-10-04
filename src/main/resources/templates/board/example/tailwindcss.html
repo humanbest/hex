@@ -3,22 +3,33 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <style th:fragment="board" type="text/tailwindcss">
-    #board { @apply text-xs text-slate-600 leading-normal border-collapse }
-    #board thead { @apply bg-gradient-to-b from-white to-slate-50 }
+    #board { @apply text-xs text-slate-600 leading-normal border-collapse pb-2.5 }
+    #board thead { @apply bg-gradient-to-b from-white to-violet-100 }
     #board th, #board td { @apply py-2 px-3 text-[11px] text-center whitespace-nowrap align-middle }
     #board th { @apply py-2 px-3  border-y border-t-gray-200 border-b-gray-300 border-solid shadow-[inset_0_-1px_0_white] }
     #board .title { @apply w-full pr-1.5 }
-    #board tbody tr { @apply hover:bg-gray-100 hover:border-gray-200 }
-    #board td { @apply border-b border-b-gray-300 border-solid }
+    #board tbody tr { @apply hover:bg-violet-100 hover:border-violet-200 }
+    #board td { @apply border-b border-b-violet-300 border-solid }
     #board td.category { @apply p-2 text-gray-600 }
     #board td.title { @apply text-left text-xs whitespace-normal break-all p-0 w-full }
     #board td.title > a { @apply block relative py-2 pr-3 pl-1.5 no-underline }
     #board .summary { 
-        @apply hidden absolute left-1.5 bottom-[calc(100%-10px)] z-[100] my-2 mx-0 text-[11px] bg-white border border-solid border-gray-400 rounded-md whitespace-nowrap shadow-[1px_1px_3px_rgb(0_0_0_/_20%)] 
+        @apply hidden absolute left-1.5 bottom-[calc(100%-10px)] z-[100] my-2 mx-0 text-[11px] bg-violet-50 border border-solid border-violet-400 rounded-md whitespace-nowrap shadow-[1px_1px_3px_rgb(0_0_0_/_20%)] 
         after:content-[''] after:block after:absolute after:-bottom-1.5 after:left-[20%] after:w-2 after:h-1.5 after:-ml-1 after:bg-[url(/images/edge.png)] after:bg-no-repeat
     }
     #board .summary > div { @apply font-normal leading-normal max-w-lg p-1.5 }
     #board td.title > a:hover .summary { @apply block }
+    #board .btn_area { @apply relative -mt-[1px] pt-2.5 border-t border-solid border-violet-50 w-full }
 </style>
 
+<style th:fragment="write" type="text/tailwindcss">
+    #write { @apply p-4 bg-violet-100 border border-solid border-violet-200 rounded-xl text-slate-500 text-xs leading-6 flex flex-col gap-4 w-full }
+    #write .row { @apply gap-2.5 h-7 }
+    #write .title { @apply w-full m-0 py-1 px-1.5 }
+    #write textarea .content { @apply w-full resize-none box-border p-4 }
+    #write .btn.write { @apply after:content-['등록'] }
+    #write .btn.write.update { @apply after:content-['수정'] }
+    #write .label { @apply self-center flex-shrink-0 text-sm before:content-['공지사항'] }
+    #write .btn.back { @apply absolute left-0 bottom-full }
+</style>
 </html>

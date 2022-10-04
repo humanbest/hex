@@ -9,7 +9,8 @@
     <style th:replace="board/example/tailwindcss :: board"></style>
 </th:block>
 
-<main layout:fragment="content">
+<section layout:fragment="content" class="container mx-auto">
+    <p><font th:text="${session['member'].nickName}"></font>님, 환영합니다.</p>
     <table id="board">
         <thead>
             <tr>
@@ -38,10 +39,10 @@
             </tr>
         </tbody>
     </table>
-    <div class="btn_area clear-both pt-2.5">
-        <div class="float-right">
+    <div class="btn_area clear">
+        <div class="fr">
             <a class="btn write" th:href="@{/community(act='write')}">쓰기</a>
         </div>
     </div>
-</main>
+</section>
 </html>

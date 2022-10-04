@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<script th:fragment="common">
+
+    tailwind.config = {
+        darkMode: 'class',
+    }
+
+    window.onload = function(){
+        
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        document.getElementById("theme").addEventListener(
+            "click", () => document.documentElement.classList.toggle('dark')
+        )
+
+        document.querySelectorAll('a[href^="#"]')
+            .forEach(el => el.addEventListener('click', e => e.preventDefault()));
+
+        document.querySelectorAll('nav.main > div > ul > li > div > i')
+            .forEach(el => el.addEventListener('click', function(){
+                const ul = this.parentElement.nextElementSibling;
+                if(ul && ul.tagName) ul.classList.toggle("active");
+            }));
+
+        document.querySelector("nav.main").addEventListener("click", (e) => {
+            const navToggleBtn = document.getElementById("navToggle");
+            if(document.querySelector("nav.main") !== e.target) return;
+            navToggleBtn !== null ? navToggleBtn.checked = !navToggleBtn.checked : '';
+        })
+    }
+
+</script>
+
+</html>
