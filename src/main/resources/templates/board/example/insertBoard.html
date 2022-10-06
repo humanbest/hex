@@ -11,38 +11,36 @@
 </th:block>
 
 <main layout:fragment="content">
-    <section>
-        <h3 th:text="${!isBoardExist} ? '새글 등록하기' : '글 수정하기'"></h3>
-        <a th:if="${isBoardExist}" class="btn back float-left" th:href="|/community/${board.documentId}|"></a>
-        <a th:unless="${isBoardExist}" class="btn back float-left" th:href="@{/community}"></a>
-    </section>
     <form id="write" th:object="${board}" action="/community" th:method="${isBoardExist} ? 'patch' : 'post'">
         <input th:if="${isBoardExist}" type="hidden" name="documentId" th:value="*{documentId}">
         <input type="hidden" name="memberId" th:value="${isBoardExist} ? *{member.memberId} : 5">
-        <div class="row">
+        <section class="top-section">
             <select name="categoryId" class="col category">
                 <option th:with="categoryId=${isBoardExist ? board.category.categoryId : categoryList.get(0).categoryId}"
                         th:each="category : ${categoryList}"
                         th:object="${category}"
                         th:value="*{categoryId}"
-                        th:selected="${category.categoryId} == ${categoryId}"
+                        th:selected="*{categoryId} == ${categoryId}"
                         th:text="*{category}"></option>
             </select>
-            <input class="col title" name="title" type="text"
+            <input class="violet" name="title" type="text"
                    th:placeholder="제목" th:value="${isBoardExist} ? *{title}">
-        </div>
-        <textarea class="content" name="content" th:rows="20" th:placeholder="내용"
+        </section>
+        <textarea class="violet" name="content" th:rows="20" th:placeholder="내용"
                   th:text="${isBoardExist} ? *{content}"></textarea>
-        <div class="row justify-between">
-            <label class="row label is_notice">
-                <input th:if="${isBoardExist}" type="checkbox" th:field="*{isNotice}">
-                <input th:unless="${isBoardExist}" type="checkbox" name="isNotice">
+        <section class="bottom-section">
+            <label>
+                <input th:if="${isBoardExist}" class="hidden" type="checkbox" th:field="*{isNotice}">
+                <input th:unless="${isBoardExist}" class="hidden" type="checkbox" name="isNotice">
+                <div class="checkbox"></div>
             </label>
-            <div class="row float-right">
-                <button class="btn write fl" th:classappend="${isBoardExist} ? 'update'"
+            <div class="flex float-right">
+                <a th:if="${isBoardExist}" class="btn back float-left" th:href="|/community/${board.documentId}|"></a>
+                <a th:unless="${isBoardExist}" class="btn back float-left" th:href="@{/community}"></a>
+                <button class="btn write float-right" th:classappend="${isBoardExist} ? 'update'"
                         type="submit" onclick="this.submit()"></button>
             </div>
-        </div>
+        </section>
     </form>
 </main>
 </html>

@@ -36,7 +36,7 @@ public class CommentController {
     @PostMapping(params = "documentId")
     public String insertComment(Comments comment) {
         commentService.insertComment(comment);
-        return "redirect:/board/" + comment.getDocumentId();
+        return "redirect:/community/" + comment.getDocumentId();
     }
 
     /**
@@ -64,6 +64,6 @@ public class CommentController {
     @DeleteMapping(params = {"documentId", "commentId"})
     public String deleteComment(Comments comment) {
         commentService.deleteComment(comment);
-        return "redirect:/board/"+ comment.getDocumentId();
+        return "redirect:/community/"+ comment.getDocumentId();
     }
 }

@@ -3,43 +3,41 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/example/layout}">
 
+<title layout:fragment="title" th:text="|자유게시판 - ${board.title}|"></title>
+
 <th:block layout:fragment="customHead">
-    <link rel="stylesheet" th:href="@{/css/document.css}">
-    <link rel="stylesheet" th:href="@{/css/comment.css}">
+    <style th:replace="board/example/tailwindcss :: document"></style>
 </th:block>
 
-<th:block layout:fragment="content">
-    <h1 th:align="center">게시글 상세</h1>
-    <main>
-        <div class="row">
-            <div class="category" th:text="${board.category.category}"></div>
-            <div class="title" th:text="${board.title}"></div>
-        </div>
-        <div class="row between">
-            <div class="name fl" th:text="${board.member.nickName}"></div>
-            <div class="fr">
-                <div class="date fl" th:text="${board.createDate}"></div>
-                <div class="cnt fl">
-                    <b>조회 수</b>
-                    <span th:text="${board.readedCount}"></span>
-                </div>
+<main layout:fragment="content">
+    <section>
+        <div class="category" th:text="${board.category.category}"></div>
+        <div class="title" th:text="${board.title}"></div>
+    </section>
+    <section>
+        <div class="name" th:text="${board.member.nickName}"></div>
+        <div class="float-left flex items-center">
+            <div class="date" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></div>
+            <div class="cnt">
+                <b class="px-2">조회 수</b>
+                <span th:text="${board.readedCount}"></span>
             </div>
         </div>
-        <article class="content" th:utext="${#strings.replace(board.content, nl, '&lt;br&gt;')}"></article>
-        <div class="row between">
-            <a class="btn back fl" th:href="@{/community}"></a>
-            <div class="row fr gap">
-                <a class="btn write fl" th:href="@{/community(documentId=${board.documentId}, act='update')}"></a>
-                <form class="fl" action="/community" th:method="delete">
-                    <input type="hidden" name="documentId" th:value="${board.documentId}">
-                    <button class="btn delete" onclick="this.submit()"></button>
-                </form>
-            </div>
+    </section>
+    <article class="content" th:utext="${#strings.replace(board.content, nl, '&lt;br&gt;')}"></article>
+    <section>
+        <a class="btn back float-left" th:href="@{/community}"></a>
+        <div class="flex float-right gap-1.5">
+            <a class="btn write update float-left" th:href="@{/community(documentId=${board.documentId}, act='update')}"></a>
+            <form class="float-left" action="/community" th:method="delete">
+                <input type="hidden" name="documentId" th:value="${board.documentId}">
+                <button class="btn delete" onclick="this.submit()"></button>
+            </form>
         </div>
-    </main>
-    <!-- <section th:replace="fragments/comment :: comment"></section> -->
+    </section>
+    <section th:replace="/board/example/comment :: comment"></section>
 
-    <script>
+    <!-- <script>
         window.onload=function(){
             document.getElementById('comment').querySelector('input[name=writer]').addEventListener('keydown', function(e) {
                 if(e.keyCode == 13) {
@@ -47,6 +45,6 @@
                 }
             });
         }
-    </script>
-</th:block>
+    </script> -->
+</main>
 </html>

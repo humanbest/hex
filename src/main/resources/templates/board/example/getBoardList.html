@@ -38,10 +38,14 @@
             </tr>
         </tbody>
     </table>
-    <div class="btn_area clear-both pt-2.5">
-        <div class="float-right">
-            <a class="btn write" th:href="@{/community(act='write')}">쓰기</a>
-        </div>
+    <div class="pt-2.5 flex flex-row-reverse">
+        <a class="btn write" th:href="@{/community(act='write')}"></a>
     </div>
+    <section class="page-nav">
+        <a class="prev" th:classappend="${!boardList.hasPrevious} ? 'disabled'" href="#">&laquo;</a>
+        <a th:each="page: ${#numbers.sequence(startPage, lastPage)}"
+            th:classappend="${page == boardList.number} ? 'active'" href="#" th:text="${page+1}"></a>
+        <a class="next" th:classappend="${!boardList.hasNext} ? 'disabled'" href="#">&raquo;</a>
+    </section>
 </main>
 </html>
