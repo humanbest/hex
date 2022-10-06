@@ -1,10 +1,5 @@
 package kr.kro.hex.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.kro.hex.dto.DocumentIdDto;
 import kr.kro.hex.service.AdminService;
-import kr.kro.hex.service.BoardService;
 import lombok.RequiredArgsConstructor;
 
 @RestController

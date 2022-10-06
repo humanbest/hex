@@ -1,20 +1,12 @@
 package kr.kro.hex.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.kro.hex.domain.Board;
 import kr.kro.hex.domain.Member;
@@ -62,8 +54,12 @@ public class AdminController {
 
     //전체 게시글 목록
     @GetMapping("/board")
-    public String getboardList(AdminSearchDto searchDto, Model model){
-        model.addAttribute("boardList", boardService.getBoardList());
+    public String getboardList(
+        AdminSearchDto searchDto, 
+        @PageableDefault(size = 10, sort = "documentId",  direction = Sort.Direction.DESC) Pageable pageable,
+        Model model
+    ){
+        model.addAttribute("boardList", boardService.getBoardList(pageable));
         return "/admin/" + LAYOUT + "/getList";
     }
     //게시판 상세
