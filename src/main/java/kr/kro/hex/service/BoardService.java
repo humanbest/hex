@@ -65,4 +65,9 @@ public interface BoardService {
      * @author Rubisco
      */
     void deleteBoard(Board board);
+
+    void deleteByIdList(List<Long> idList);
+
+    
 }
+       

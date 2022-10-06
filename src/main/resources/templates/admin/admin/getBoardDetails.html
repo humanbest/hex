@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2>TITLE selectOne</h2>
+
+
+<table th:object="${getBoardDetails}">
+  <tr>
+    <td>작성자:</td><td th:text="*{member.id}"></td>
+  </tr>
+  <tr>
+    <td>제목:</td><td th:text="*{title}"></td>
+  </tr>
+  <tr>
+    <td>내용:</td><td th:text="*{content}"></td>
+  </tr>
+  <tr>
+    <td>카테고리:</td><td th:text="*{category.categoryId}"></td>
+  </tr>
+ 
+  <tr>
+    <td colspan="2">
+      <a href="/admin/board/">이전</a>
+      <a th:href="|/admin/delete/*{documentId}|">삭제</a>
+    </td>
+  </tr>
+</table>
+
+
+</body>
+</html>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.kro.hex.domain.Member;
 import kr.kro.hex.persistance.MemberRepository;
+import lombok.RequiredArgsConstructor;
 
 //시큐리티 설정에서 loginProcessingUrl("/login");
 //login 요청이 오면 자동으로 UserDetailsService 타입으로 IoC되어 있는
@@ -16,10 +17,10 @@ import kr.kro.hex.persistance.MemberRepository;
 
 // 파라미터 username은 loginform에있는 name ="username"임.
 @Service
+@RequiredArgsConstructor
 public class PrincipalDetailsService implements UserDetailsService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
 
     //시큐리티 session = (내부Authentication(내부 UserDetails))

@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<table th:fragment="board" class="w-full border-collapse">
+    
+
+<table th:fragment="board" id="list" class="w-30 border-collapse m-auto mt-5 mb-5 border-b-2 border-solid border-black">
     <!-- board list -->
     <tr class="border-t-2 border-solid border-black">
-        <th class="w-20 py-2 px-3 h-7 border-b-2 border-solid border-gray-300"></th>
-        <th class="w-96 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">제목</th>
+        <th class="w-15 py-2 px-3 h-7 border-b-2 border-solid border-gray-300"></th>
+        <th class="w-15 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">All
+            <input type="checkbox" id="allcheck"> 
+        </th>
+        <th class="w-25 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">카테고리</th>
+        <th class="w-80 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">제목</th>
         <th class="w-44 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">작성자</th>
         <th class="w-20 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">날짜</th>
-        <th class="w-14 py-2 px-3 h-7 border-b-2 border-solid border-gray-300">조회수</th>
     </tr>
     <tr th:each="board : ${boardList}" th:object="${board}">
         <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle"></td>
-        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle" th:text="*{title}"></td>
-        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle" th:text="*{wirter}"></td>
-        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle" th:text="*{}"></td>
-        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle" th:text="*{}"></td>
+        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">
+            <input name="boardCheckBox" type="checkbox" th:value="*{documentId}">
+        </td>
+        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle" th:text="*{category.categoryId}"></td>
+        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">
+            <a th:href="|/admin/board/*{documentId}|" th:text="*{title}"></a>
+        </td>
+        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle" th:text="*{member.id}"></td>
+        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle" th:text="*{createDate}"></td>
     </tr>
 </table>

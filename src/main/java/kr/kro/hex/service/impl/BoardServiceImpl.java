@@ -45,7 +45,7 @@ public class BoardServiceImpl implements BoardService {
         board.setMember(Member.builder().memberId(board.getMemberId()).build())
             .setCategory(Category.builder().categoryId(board.getCategoryId()).build())
             .setGroup(Group.builder().GroupId(1L).build());
-
+        
         boardRepo.save(board);
     }
 
@@ -103,4 +103,10 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(Board board) {
         boardRepo.deleteById(board.getDocumentId());
     }
+
+    @Override
+    public void deleteByIdList(List<Long> idList){
+        boardRepo.deleteAll();
+    }
+
 }
