@@ -71,6 +71,7 @@ export default class LoadScene extends Scene
             Card.cardDataList = this.game.cache.json.get(LoadScene.KEY.DATA.CARD);
             if(this.game.player) this.game.player.dec.push(...Object.keys(this.game.cache.json.get(LoadScene.KEY.DATA.CARD)));
 
+            this.scene.start(CharacterScene.KEY.NAME)
         })
     }
 

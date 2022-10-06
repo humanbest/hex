@@ -6,6 +6,9 @@
 
       #theme { @apply before:content-['라이트모드'] dark:before:content-['다크모드'] }
 
+      a { @apply active:text-inherit visited:text-inherit }
+      input.violet, textarea.violet { @apply border border-violet-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 }
+
       header { @apply text-slate-500 h-[70px] justify-between xl:h-auto xl:pb-2.5 flex xl:justify-center xl:items-center xl:flex-col xl:gap-2.5 xl:w-full dark:bg-violet-500 dark:text-violet-100 }
       header a { @apply hover:text-slate-700 dark:hover:text-yellow-300 }
       header > label { @apply flex w-[70px] xl:hidden justify-center cursor-pointer }
@@ -57,10 +60,14 @@
 
       .btn { 
             @apply flex items-center gap-1.5 py-1 pr-3.5 pl-2.5 text-xs leading-relaxed border rounded tracking-[-1px] shadow-none text-center whitespace-nowrap cursor-pointer no-underline hover:shadow 
-            before:font-['fontello'] before:content-[''] before:transition-transform before:duration-300 before:hover:rotate-[360deg] border-violet-500;
+            before:font-['fontello'] before:transition-transform before:duration-300 before:hover:rotate-[360deg];
             transition: border-color .4s,box-shadow .4s,background .4s,color .4s,opacity .4s;
       }
-      .btn.write { @apply before:content-['\E800'] bg-violet-500 hover:bg-violet-600 text-violet-50 }
+      .btn.write { @apply after:content-['등록'] before:content-['\E800'] bg-violet-500 hover:bg-violet-600 border-violet-500 text-violet-50 }
+      .btn.write.update { @apply after:content-['수정'] bg-sky-500 hover:bg-sky-600 border-sky-500 text-sky-50 }
+      .btn.back { @apply mr-2 after:content-['뒤로가기'] before:content-['\0073'] bg-slate-400 hover:bg-slate-600 text-white shadow-sm border-slate-400 }
+      .btn.delete { @apply after:content-['삭제'] before:content-['\E802'] bg-rose-500 hover:bg-rose-600 border-rose-500 text-rose-50 }
+      .btn.confirm { @apply after:content-['확인'] before:content-['\E803'] }
 </style>
 
 </html>

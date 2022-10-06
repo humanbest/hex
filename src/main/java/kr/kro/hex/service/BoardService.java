@@ -1,6 +1,7 @@
 package kr.kro.hex.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import kr.kro.hex.domain.Board;
 
@@ -33,7 +34,7 @@ public interface BoardService {
      * @version 20220823.0
      * @author Rubisco
      */
-    List<Board> getBoardList();
+    Page<Board> getBoardList(Pageable pageable);
 
     /**
      * documentId에 해당하는 게시글을 조회합니다.

@@ -1,5 +1,9 @@
 package kr.kro.hex.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -56,8 +60,20 @@ public class CommunityController {
      * @author Rubisco
      */
     @GetMapping()
-    public String getBoardListView(Model model) {
-        model.addAttribute("boardList", boardService.getBoardList());
+    public String getBoardListView(
+        @PageableDefault(size = 10, sort = "documentId",  direction = Sort.Direction.DESC) Pageable pageable,
+        Model model
+    ) {
+
+        Page<Board> boardList = boardService.getBoardList(pageable);
+        int start = (int) Math.floor(boardList.getNumber()/boardList.getSize())*boardList.getSize()+1;
+        int last = start + boardList.getSize() - 1 < boardList.getTotalPages() ? start + boardList.getSize() - 1 : boardList.getTotalPages();
+
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("layout", LAYOUT);
+        model.addAttribute("startPage", start);
+        model.addAttribute("lastPage", last);
+
         return "/board/" + LAYOUT + "/getBoardList";
     }
 
@@ -75,7 +91,7 @@ public class CommunityController {
     @GetMapping("/{documentId}")
     public String getBoardView(Board board, Model model) {
         model.addAttribute("nl", System.getProperty("line.separator"));
-        model.addAttribute("layout", "default");
+        model.addAttribute("layout", LAYOUT);
         model.addAttribute("board", boardService.getBoard(board));
         return "/board/" + LAYOUT + "/getBoard";
     }
