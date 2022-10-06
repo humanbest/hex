@@ -32,4 +32,7 @@ public interface BoardRepository extends JpaRepository<Board, Long>  {
     @Override
     @Query("select distinct b from Board b join fetch b.member join fetch b.category join fetch b.group left outer join fetch b.commentList where b.documentId = :id")
     Optional<Board> findById(@Param("id") Long id);
+
+    // void deleteAllInBatch(List<Board> boardList);
+    
 }

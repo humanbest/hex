@@ -20,5 +20,43 @@
     <th:block th:replace="layout/admin/tailwindcss :: layout"></th:block>
     <th:block layout:fragment="customHead"></th:block>
 
+    <!--jquery-->
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#allcheck').on("change",function(){
+                if(this.checked){
+                    $("#list").find("input").prop("checked",true);
+                }else{
+                    $("#list").find("input").prop("checked",false);
+                }
+            })
+        })
+    </script>
+
+    <script>
+        function deleteValue(){
+            let valueArr = new Array();
+            let list = $("input[name = boardCheckBox]");
+            for(let i = 0; i<list.length; i++){
+                if(list[i].checked){
+                    valueArr.push(list[i].value);
+                }
+            }
+        
+        if(valueArr.length == 0){
+            alert("선택된 글이 없습니다.");
+        }else{
+            var chk = confirm("정말 삭제하시겠습니까?");
+            fetch('/delete',{
+                method:'post',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({documentIdList:valueArr})
+            }).then(res=>res.json()).then(data=>{})
+        }
+    }
+    </script>
+    
+
 </head>
 </html>

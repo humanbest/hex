@@ -6,15 +6,21 @@
 <title layout:fragment="title">리스트 불러오기</title>
 
 <th:block layout:fragment="customHead">
-
+     
 </th:block>
 
 
 <main layout:fragment="content" class="container mx-auto">
+      
 
       <th:block th:if="${boardList}">
             <table th:replace="admin/admin/board/getBoardList :: board"></table>
       </th:block>
+
+      <input type='button' value='삭제' onclick="deleteValue();">
+
+      
+
       
 
 </main>
