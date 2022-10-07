@@ -11,6 +11,7 @@ import kr.kro.hex.domain.Board;
 import kr.kro.hex.domain.Category;
 import kr.kro.hex.domain.Group;
 import kr.kro.hex.domain.Member;
+import kr.kro.hex.dto.AdminBoardSearchDto;
 import kr.kro.hex.persistance.BoardRepository;
 import kr.kro.hex.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -109,5 +110,23 @@ public class BoardServiceImpl implements BoardService {
     public void deleteByIdList(List<Long> idList){
         boardRepo.deleteAll();
     }
+
+    //Board 검색
+    @Override
+    public Page<Board> findByKeyword(AdminBoardSearchDto adminBoardSearchDto, Pageable pageable){
+        
+        if(adminBoardSearchDto.getCategory() == AdminBoardSearchDto.Category.wirter){
+            return boardRepo.findByMemberId(adminBoardSearchDto.getKeyword(), pageable);
+        }
+
+        else if(adminBoardSearchDto.getCategory() == AdminBoardSearchDto.Category.title){
+            return boardRepo.findByBoardTitle(adminBoardSearchDto.getKeyword(), pageable);
+        }
+
+        return null;
+    }
+
+    
+
 
 }

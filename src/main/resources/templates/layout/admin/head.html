@@ -48,12 +48,42 @@
             alert("선택된 글이 없습니다.");
         }else{
             var chk = confirm("정말 삭제하시겠습니까?");
+            if(!chk) return;
             fetch('/delete',{
                 method:'post',
                 headers:{'Content-Type':'application/json'},
                 body:JSON.stringify({documentIdList:valueArr})
-            }).then(res=>res.json()).then(data=>{})
+            }).then(res=>res.json()).then(data=>{
+                window.location.href = '/admin/board';
+            })
         }
+        
+    }
+    function getSearchList(){
+        
+        const category = +document.getElementsByName("category")[0].value;
+        const keyword = document.getElementsByName("keyword")[0].value;
+
+        console.log(category, keyword);
+
+        if(category === -1 || !keyword) return;
+
+        fetch('/getSearchList', {
+            method:'POST',
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({category: category, keyword: keyword})
+        }).then(res=>res.json()).then(data=>{
+            $('#boardtable > tbody').empty();
+            if(data.length>=1){
+                data.forEach(item => {
+                    str='<tr>'
+                    str+= "<td>"+item.title+"</td>";
+                    str+="<td>"+item.id+"</td>";
+                    str+="</tr>"
+                    $('#boardtable').append(str);
+                });
+            }
+        })
     }
     </script>
     

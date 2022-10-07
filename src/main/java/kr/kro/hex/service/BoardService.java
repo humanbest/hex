@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import kr.kro.hex.domain.Board;
+import kr.kro.hex.dto.AdminBoardSearchDto;
 
 /**
  * 게시판 서비스의 인터페이스
@@ -68,9 +69,9 @@ public interface BoardService {
      * @author Rubisco
      */
     void deleteBoard(Board board);
-
     void deleteByIdList(List<Long> idList);
 
+    Page<Board> findByKeyword(AdminBoardSearchDto adminBoardSearchDto, Pageable pageable);
     
 }
        

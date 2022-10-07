@@ -6,7 +6,7 @@
 <title layout:fragment="title">리스트 불러오기</title>
 
 <th:block layout:fragment="customHead">
-     
+     <style th:replace="/admin/admin/tailwindcss :: common"></style>
 </th:block>
 
 
@@ -14,12 +14,54 @@
       
 
       <th:block th:if="${boardList}">
+            <p><a href="/"></a>현재 <span th:text="${boardList.totalElements}" style="font-weight: bold">10</span>개의 게시물이 존재합니다.</p>
+            <div>
+                  <form name="searchForm" autocomplete="off" onsubmit="return false;">
+                        <select name ="category">
+                              <option selected value=-1>검색 내용 선택</option>
+                              <option value=0>제목</option>
+                              <option value=1>작성자</option>
+                        </select>
+                        <input type="text" name ="keyword" value=""></input>
+                  </form>
+                  <button class="btn bg-slate-400 text-white hover:bg-slate-500" type="button" onclick="getSearchList()">검색</button>
+            </div>
             <table th:replace="admin/admin/board/getBoardList :: board"></table>
-      </th:block>
+            <div class="flex flex-grow-0 relative justify-between w-full mx-10">
+                  <div>
+                        <span >현재 페이지</span> <span style="color: green; font-weight: bold" th:text="${boardList.pageable.pageNumber+1}"></span> /
+                        <span>총 페이지 </span> <span style="color: blue; font-weight: bold" th:text="${boardList.totalPages}"></span>
+                  </div>
+                  
+                  <div>
+                        <span>페이지 이동</span>
+                        <span>
+                              <th:block th:if="${boardList.pageable.pageNumber+1 == 1 }">
+                              <span>[Previous/</span>
+                              </th:block>
 
-      <input type='button' value='삭제' onclick="deleteValue();">
+                              <th:block th:unless="${boardList.pageable.pageNumber+1 == 1 }">
+                              <a href="#" th:href="@{/admin/board(page=${boardList.pageable.pageNumber-1},size=10)}">[Previous/</a>
+                               </th:block>
 
+                        </span>
+                        
+                        <span>
+                              <th:block th:if="${boardList.totalPages == boardList.number+1 }">
+                              <span>Next]</span>
+                              </th:block>
       
+                              <th:block th:unless="${boardList.totalPages == boardList.number+1 }">
+                              <a href="#" th:href="@{/admin/board( page=${boardList.number}+1, size=10)}">Next]</a>
+                              </th:block>
+                        </span>
+                        
+                  </div>
+
+                 
+                  <input class="btn bg-rose-400 text-white hover:bg-rose-500" type='button' value='삭제' onclick="deleteValue();">
+            </div>
+      </th:block>
 
       
 

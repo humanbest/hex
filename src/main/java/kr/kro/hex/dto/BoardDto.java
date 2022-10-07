@@ -12,6 +12,8 @@ public class BoardDto {
     private Boolean isNotice;
     private String title;
     private String content;
+    private String nickName;
+    private String id;
     private Long likeCount;
     private Long dislikeCount;
     private Long readedCount;
@@ -24,6 +26,8 @@ public class BoardDto {
         isNotice = board.getIsNotice();
         title = board.getTitle();
         content = board.getContent();
+        nickName = board.getMember().getNickName();
+        id = board.getMember().getId();
         likeCount = board.getLikeCount();
         dislikeCount = board.getDislikeCount();
         readedCount = board.getReadedCount();
