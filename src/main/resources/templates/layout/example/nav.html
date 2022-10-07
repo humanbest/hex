@@ -4,9 +4,12 @@
 
 <nav th:fragment="nav" class="main">
     <div>
-        <ul class="login"> 
+        <ul sec:authorize="isAnonymous()" class="login"> 
             <li><a href="#">회원가입</a></li>
-            <li><a href="#">로그인</a></li>     
+            <li><a th:href="@{/auth(act='login')}">로그인</a></li>     
+        </ul>
+        <ul sec:authorize="isAuthenticated()" class="login"> 
+            <li><a th:href="@{/logout}">로그아웃</a></li>     
         </ul>
         <ul class="nav">
             <li>
@@ -26,11 +29,11 @@
             </li>
             <li>
                 <div>
-                    <a href="#">커뮤니티</a>
+                    <a href="/community">커뮤니티</a>
                     <i><svg th:replace="layout/example/icon :: dropdown"></svg></i>
                 </div>
                 <ul>
-                    <li><a href="#">자유게시판</a></li>
+                    <li><a href="/community">자유게시판</a></li>
                     <li><a href="#">스크린샷</a></li> 
                 </ul> 
             </li>

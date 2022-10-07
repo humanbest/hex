@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <header th:fragment="header">
     <label for="navToggle"><svg th:replace="layout/example/icon :: navToggle"></svg></label>
     <label for="alarm"><svg th:replace="layout/example/icon :: alarm"></svg></label>
@@ -10,9 +13,12 @@
             <div><a href="#">새글</a></div>
             <div><a id="theme" href="#"></a></div>
         </div>
-        <div>
+        <div sec:authorize="isAnonymous()">
             <div><a href="#">회원가입</a></div>
-            <div><a href="#">로그인</a></div>
+            <div><a th:href="@{/auth(act='login')}">로그인</a></div>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <div><a th:href="@{/logout}">로그아웃</a></div>
         </div>
     </section>
     <section>
