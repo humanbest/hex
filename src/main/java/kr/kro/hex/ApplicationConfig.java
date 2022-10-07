@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * 어플리케이션 설정
@@ -20,10 +19,5 @@ public class ApplicationConfig {
     @Bean
     public LayoutDialect layoutDialect() {
         return new LayoutDialect();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

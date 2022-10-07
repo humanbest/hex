@@ -3,26 +3,30 @@ package kr.kro.hex.auth;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import kr.kro.hex.domain.Member;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@RequiredArgsConstructor
 public class PrincipalDetails implements UserDetails {
 
-    private Member member; //컴포지션
+    /** role 접두어 */
+    private static final String PREFIX = "ROLE_";
 
-    public PrincipalDetails(Member member){
-        this.member = member;
-    } //생성자
+    /** 멤버 주입 */
+    @Getter
+    private final Member member;
 
-    //해당 User의 권한을 리턴하는 곳
+    /** 인가/인증 */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<>();
         collect.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return "ROLE_" + member.getGroup().getGroupName();
+                return PREFIX + member.getGroup().getGroupName();
             }
         });
         return collect;
@@ -63,9 +67,5 @@ public class PrincipalDetails implements UserDetails {
     public boolean isEnabled() {
 
         return true;
-    }
-
-    public Member getMember() {
-        return member;
     }
 }

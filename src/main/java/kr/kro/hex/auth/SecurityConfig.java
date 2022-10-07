@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import lombok.RequiredArgsConstructor;
 @Configuration
@@ -27,7 +28,8 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().mvcMatchers("/css/**","/js/**","/imges/**","/fonts/**","/webpageimg/**");
+        return (web) -> web.ignoring()
+            .mvcMatchers("/css/**","/js/**","/imges/**","/fonts/**","/webpageimg/**");
     }
 
     @Bean
@@ -40,7 +42,8 @@ public class SecurityConfig {
             .authorizeRequests()
                 .mvcMatchers("/hex/**").authenticated()
                 .mvcMatchers("/community/**").authenticated()
-                .mvcMatchers("/auth/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
+                .mvcMatchers("/auth/manager/**")
+                .access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
                 .mvcMatchers("/admin/**").hasRole("Admin")
                 .anyRequest().permitAll()
             .and()
@@ -69,5 +72,10 @@ public class SecurityConfig {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
         jdbcTokenRepository.setDataSource(dataSource);
         return jdbcTokenRepository;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
