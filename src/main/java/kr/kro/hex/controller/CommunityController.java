@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import kr.kro.hex.domain.Board;
@@ -39,6 +40,8 @@ public class CommunityController {
     /** 레이아웃 */
     private static final String LAYOUT = "example"; 
 
+    private static final int PAGE_BATCH_SIZE = 10;
+
     /** 게시판 서비스 */
     private final BoardService boardService;
 
@@ -62,15 +65,19 @@ public class CommunityController {
     @GetMapping()
     public String getBoardListView(
         @PageableDefault(size = 10, sort = "documentId",  direction = Sort.Direction.DESC) Pageable pageable,
+        @RequestParam(value="size", required=false) Integer size,
         Model model
     ) {
-
         Page<Board> boardList = boardService.getBoardList(pageable);
-        int start = (int) Math.floor(boardList.getNumber()/boardList.getSize())*boardList.getSize()+1;
-        int last = start + boardList.getSize() - 1 < boardList.getTotalPages() ? start + boardList.getSize() - 1 : boardList.getTotalPages();
+        
+        if(size == null) size = PAGE_BATCH_SIZE;
+
+        int start = (int) Math.floor(boardList.getNumber() / PAGE_BATCH_SIZE) * PAGE_BATCH_SIZE + 1;
+        int last = start + PAGE_BATCH_SIZE - 1 < boardList.getTotalPages() ? start + PAGE_BATCH_SIZE - 1 : boardList.getTotalPages();
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("layout", LAYOUT);
+        model.addAttribute("size", size);
         model.addAttribute("startPage", start);
         model.addAttribute("lastPage", last);
 

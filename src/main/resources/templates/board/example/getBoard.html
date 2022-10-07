@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/example/layout}">
 
-<title layout:fragment="title" th:text="|자유게시판 - ${board.title}|"></title>
+<title layout:fragment="title">자유게시판 - [[${board.title}]]</title>
 
 <th:block layout:fragment="customHead">
     <style th:replace="board/example/tailwindcss :: document"></style>
@@ -17,7 +17,6 @@
     <section>
         <div class="name" th:text="${board.member.nickName}"></div>
         <div class="float-left flex items-center">
-            <div class="date" th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd')}"></div>
             <div class="cnt">
                 <b class="px-2">조회 수</b>
                 <span th:text="${board.readedCount}"></span>
@@ -28,7 +27,8 @@
     <section>
         <a class="btn back float-left" th:href="@{/community}"></a>
         <div class="flex float-right gap-1.5">
-            <a class="btn write update float-left" th:href="@{/community(documentId=${board.documentId}, act='update')}"></a>
+            <a class="btn write update float-left" 
+                th:href="@{/community(documentId=${board.documentId}, act='update')}"></a>
             <form class="float-left" action="/community" th:method="delete">
                 <input type="hidden" name="documentId" th:value="${board.documentId}">
                 <button class="btn delete" onclick="this.submit()"></button>
@@ -36,15 +36,5 @@
         </div>
     </section>
     <section th:replace="/board/example/comment :: comment"></section>
-
-    <!-- <script>
-        window.onload=function(){
-            document.getElementById('comment').querySelector('input[name=writer]').addEventListener('keydown', function(e) {
-                if(e.keyCode == 13) {
-                    document.getElementById('comment').querySelector('textarea').focus();
-                }
-            });
-        }
-    </script> -->
 </main>
 </html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<script th:fragment="comment">
+    const counter = document.querySelector('body > main > section.comment > div');
+    
+    function deleteComment(el) {
+
+        const li = el.parentElement.parentElement;
+
+        if(!li.dataset.commentId) return;
+
+        fetch('/api/comment', {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({commentId: li.dataset.commentId})
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            counter.childNodes[0].textContent = --counter.nextElementSibling.dataset.count;
+            li.remove();
+        })
+    }
+</script>
+
+</html>
