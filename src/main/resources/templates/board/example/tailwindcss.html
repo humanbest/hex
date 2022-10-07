@@ -23,8 +23,10 @@
     
     .btn.write { @apply after:content-['쓰기'] }
 
-    section.page-nav { @apply text-xs xl:text-base flex gap-1 justify-center m-4 }
+    section.page-nav { @apply text-xs xl:text-base flex gap-1 justify-center m-4 select-none }
     section.page-nav > a { @apply border-2 border-violet-300 text-violet-500 w-7 h-7 xl:w-8 xl:h-8 flex justify-center items-center hover:bg-violet-500 hover:text-violet-50 }
+    section.page-nav > a.active { @apply bg-violet-500 text-violet-50 pointer-events-none font-semibold }
+    section.page-nav .disabled { @apply pointer-events-none bg-slate-200 text-slate-400 border-slate-400 }
 </style>
 
 <style th:fragment="write" type="text/tailwindcss"> 

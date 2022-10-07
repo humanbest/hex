@@ -6,6 +6,7 @@
 
       #theme { @apply before:content-['라이트모드'] dark:before:content-['다크모드'] }
 
+      body { @apply dark:bg-violet-100 }
       a { @apply active:text-inherit visited:text-inherit }
       input.violet, textarea.violet { @apply border border-violet-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 }
 
@@ -52,11 +53,11 @@
 
       main { @apply my-5 mx-auto px-5 xl:w-[1280px] xl:container xl:px-0 }
 
-      footer { @apply flex justify-center items-center flex-col gap-2.5 py-24 text-sm }
+      footer { @apply flex justify-center items-center flex-col gap-2.5 py-12 text-sm }
       footer > section { @apply flex gap-2.5 }
-      footer > section > div:not(:last-child) { @apply after:content-['|'] text-black text-opacity-10 after:ml-2.5}
-      footer > section > div > a { @apply text-black text-opacity-30 hover:text-black hover:text-opacity-50 }
-      footer > div.license { @apply text-black text-opacity-30 }
+      footer > section > div:not(:last-child) { @apply after:content-['|'] text-black text-opacity-10 dark:text-opacity-25 after:ml-2.5}
+      footer > section > div > a { @apply text-black text-opacity-30 dark:text-opacity-50 hover:text-opacity-50 dark:hover:text-opacity-70 }
+      footer > div.license { @apply text-black text-opacity-30 dark:text-opacity-50}
 
       .btn { 
             @apply flex items-center gap-1.5 py-1 pr-3.5 pl-2.5 text-xs leading-relaxed border rounded tracking-[-1px] shadow-none text-center whitespace-nowrap cursor-pointer no-underline hover:shadow 

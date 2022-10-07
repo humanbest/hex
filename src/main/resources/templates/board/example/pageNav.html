@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<section th:fragment="pageNav" class="page-nav">
+    <a th:with="url=${size} eq 10 ? @{/community(page=1)} : @{/community(page=1, size=${size})}"
+        class="first" th:classappend="${!boardList.hasPrevious} ? 'disabled'" 
+        th:href="${boardList.number} lt 1 ? '#' : ${url}">&laquo;</a>
+    <a th:with="url=${size} eq 10 ? @{/community(page=${boardList.number})} : @{/community(page=${boardList.number}, size=${size})}"
+        class="first" th:classappend="${!boardList.hasPrevious} ? 'disabled'" 
+        th:href="${boardList.number} lt 1 ? '#' : ${url}">&lt;</a>
+    <a th:each="page: ${#numbers.sequence(startPage, lastPage)}" 
+        th:with="url=${size} eq 10 ? @{/community(page=${page})} : @{/community(page=${page}, size=${size})}"
+        th:classappend="${page-1 == boardList.number} ? 'active'" th:href="${url}" th:text="${page}"></a>
+    <a th:with="url=${size} eq 10 ? @{/community(page=${boardList.number+2})} : @{/community(page=${boardList.number+2}, size=${size})}"
+        class="last" th:classappend="${!boardList.hasNext} ? 'disabled'" 
+        th:href="${boardList.number} ge ${boardList.totalPages} ? '#' : ${url}">&gt;</a>
+    <a th:with="url=${size} eq 10 ? @{/community(page=${boardList.totalPages})} : @{/community(page=${boardList.totalPages}, size=${size})}"
+        class="last" th:classappend="${!boardList.hasNext} ? 'disabled'" 
+        th:href="${boardList.number} ge ${boardList.totalPages} ? '#' : ${url}">&raquo;</a>
+</section>
+
+</html>

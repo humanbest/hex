@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org/"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
       layout:decorate="~{layout/example/layout}">
 
 <title layout:fragment="title">게시글 목록</title>
@@ -28,7 +29,8 @@
                         <span th:text="*{title}"></span>
                         <div class="summary">
                             <div th:with="content=*{content}"
-                                 th:text="${content.length < 20 ? content : content.substring(0,20)} + ${content.length > 20 ? '...' : ''}"></div>
+                                 th:text="${content.length < 20 ? content : 
+                                    content.substring(0,20)} + ${content.length > 20 ? '...' : ''}"></div>
                         </div>
                     </a>
                 </td>
@@ -41,11 +43,6 @@
     <div class="pt-2.5 flex flex-row-reverse">
         <a class="btn write" th:href="@{/community(act='write')}"></a>
     </div>
-    <section class="page-nav">
-        <a class="prev" th:classappend="${!boardList.hasPrevious} ? 'disabled'" href="#">&laquo;</a>
-        <a th:each="page: ${#numbers.sequence(startPage, lastPage)}"
-            th:classappend="${page == boardList.number} ? 'active'" href="#" th:text="${page+1}"></a>
-        <a class="next" th:classappend="${!boardList.hasNext} ? 'disabled'" href="#">&raquo;</a>
-    </section>
+    <section th:replace="/board/example/pageNav :: pageNav"></section>
 </main>
 </html>
