@@ -1,11 +1,14 @@
 package kr.kro.hex.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import kr.kro.hex.auth.PrincipalDetails;
+import kr.kro.hex.config.HexProperties;
 import kr.kro.hex.domain.Member;
 import kr.kro.hex.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +19,18 @@ import lombok.RequiredArgsConstructor;
 @SessionAttributes("member")
 public class MemberController {
 
+    /** hex 어플리케이션 설정값 주입 */
+    private final HexProperties hexProperties;
 
     /** 멤버 서비스 */
     private final MemberService memberService;
     
     @GetMapping(params={"act=signUp"})
-    public String getSignUpView() {
-        return "member/signUpForm";
+    public String getSignUpView(@AuthenticationPrincipal PrincipalDetails member) {
+
+        if(member != null) return "redirect:/";
+
+        return "/member/" + hexProperties.getLayout() + "/signUpForm";
     }
 
     /**
@@ -38,6 +46,6 @@ public class MemberController {
     @PostMapping()
     public String insertMember(Member member) {
         memberService.insertMember(member);
-        return "redirect:/";
+        return "redirect:/auth/?act=login";
     }
 }
