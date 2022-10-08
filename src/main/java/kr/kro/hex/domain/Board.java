@@ -4,7 +4,7 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.Assert;
-import kr.kro.hex.BooleanToYNConverter;
+import kr.kro.hex.config.BooleanToYNConverter;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 

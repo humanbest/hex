@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import kr.kro.hex.config.HexProperties;
 import kr.kro.hex.domain.Board;
 import kr.kro.hex.domain.Member;
 import kr.kro.hex.service.BoardService;
@@ -22,7 +23,7 @@ import kr.kro.hex.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 커뮤니티 컨트롤러
+ * 게시판 컨트롤러
  *
  * @since 2022-08-20 오후 6:24
  * @version 20220823.0
@@ -35,10 +36,10 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(path = "/community")
-public class CommunityController {
+public class BoardController {
 
-    /** 레이아웃 */
-    private static final String LAYOUT = "example"; 
+    /** hex 어플리케이션 설정값 주입 */
+    private final HexProperties hexProperties;
 
     private static final int PAGE_BATCH_SIZE = 10;
 
@@ -54,7 +55,7 @@ public class CommunityController {
     }
 
     /**
-     * 커뮤니티 게시글 목록의 뷰를 반환합니다.
+     * 게시글 목록의 뷰를 반환합니다.
      *
      * @param model 모델
      * @return getBoardList.html
@@ -76,12 +77,11 @@ public class CommunityController {
         int last = start + PAGE_BATCH_SIZE - 1 < boardList.getTotalPages() ? start + PAGE_BATCH_SIZE - 1 : boardList.getTotalPages();
 
         model.addAttribute("boardList", boardList);
-        model.addAttribute("layout", LAYOUT);
         model.addAttribute("size", size);
         model.addAttribute("startPage", start);
         model.addAttribute("lastPage", last);
 
-        return "/board/" + LAYOUT + "/getBoardList";
+        return "/board/" + hexProperties.getLayout() + "/getBoardList";
     }
 
     /**
@@ -98,9 +98,8 @@ public class CommunityController {
     @GetMapping("/{documentId}")
     public String getBoardView(Board board, Model model) {
         model.addAttribute("nl", System.getProperty("line.separator"));
-        model.addAttribute("layout", LAYOUT);
         model.addAttribute("board", boardService.getBoard(board));
-        return "/board/" + LAYOUT + "/getBoard";
+        return "/board/" + hexProperties.getLayout() + "/getBoard";
     }
 
     /**
@@ -114,9 +113,8 @@ public class CommunityController {
      */
     @GetMapping(params = "act=write")
     public String insertBoardView(Model model) {
-        model.addAttribute("layout", "default");
         model.addAttribute("categoryList", categoryService.getCategoryList());
-        return "/board/" + LAYOUT + "/insertBoard";
+        return "/board/" + hexProperties.getLayout() + "/insertBoard";
     }
 
     /**
@@ -132,10 +130,9 @@ public class CommunityController {
      */
     @GetMapping(params = {"documentId","act=update"})
     public String updateBoardView(Board board, Model model) {
-        model.addAttribute("layout", "default");
         model.addAttribute("board", boardService.getBoard(board));
         model.addAttribute("categoryList", categoryService.getCategoryList());
-        return "/board/" + LAYOUT + "/insertBoard";
+        return "/board/" + hexProperties.getLayout() + "/insertBoard";
     }
 
     /**

@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "hex.layout",
+  "type": "java.lang.String",
+  "description": "Hex 어플리케이션의 기본 레이아웃"
+}]}

@@ -1,4 +1,4 @@
-package kr.kro.hex;
+package kr.kro.hex.config;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

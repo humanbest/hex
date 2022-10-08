@@ -1,4 +1,4 @@
-package kr.kro.hex;
+package kr.kro.hex.config;
 
 import lombok.RequiredArgsConstructor;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
