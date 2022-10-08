@@ -14,7 +14,7 @@
             <div><a id="theme" href="#"></a></div>
         </div>
         <div sec:authorize="isAnonymous()">
-            <div><a href="#">회원가입</a></div>
+            <div><a th:href="@{/member(act='signUp')}">회원가입</a></div>
             <div><a th:href="@{/auth(act='login')}">로그인</a></div>
         </div>
         <div sec:authorize="isAuthenticated()">

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org/"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/example/layout}">
+      layout:decorate="~{layout/example/layout}"
+      sec:authorize="isAuthenticated()"
+      th:with="member=${#authentication.principal.member}">
 
 <title layout:fragment="title">자유게시판 - [[${board.title}]]</title>
 
@@ -9,28 +11,28 @@
     <style th:replace="board/example/tailwindcss :: document"></style>
 </th:block>
 
-<main layout:fragment="content">
+<main layout:fragment="content" th:object="${board}">
     <section>
-        <div class="category" th:text="${board.category.category}"></div>
-        <div class="title" th:text="${board.title}"></div>
+        <div class="category" th:text="*{category.category}"></div>
+        <div class="title" th:text="*{title}"></div>
     </section>
     <section>
-        <div class="name" th:text="${board.member.nickName}"></div>
+        <div class="name" th:text="*{member.nickName}"></div>
         <div class="float-left flex items-center">
             <div class="cnt">
                 <b class="px-2">조회 수</b>
-                <span th:text="${board.readedCount}"></span>
+                <span th:text="*{readedCount}"></span>
             </div>
         </div>
     </section>
     <article class="content" th:utext="${#strings.replace(board.content, nl, '&lt;br&gt;')}"></article>
     <section>
         <a class="btn back float-left" th:href="@{/community}"></a>
-        <div class="flex float-right gap-1.5">
+        <div th:if="${member.memberId} eq *{member.memberId}" class="flex float-right gap-1.5">
             <a class="btn write update float-left" 
-                th:href="@{/community(documentId=${board.documentId}, act='update')}"></a>
+                th:href="@{/community(documentId=*{documentId}, act='update')}"></a>
             <form class="float-left" action="/community" th:method="delete">
-                <input type="hidden" name="documentId" th:value="${board.documentId}">
+                <input type="hidden" name="documentId" th:value="*{documentId}">
                 <button class="btn delete" onclick="this.submit()"></button>
             </form>
         </div>

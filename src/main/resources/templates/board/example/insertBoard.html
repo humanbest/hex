@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org/"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/example/layout}"
-      th:with="isBoardExist=${board != null}">
+      layout:decorate="~{layout/example/layout}" 
+      sec:authorize="isAuthenticated()" 
+      th:with="member=${#authentication.principal.member}, isBoardExist=${board != null}">
 
 <title layout:fragment="title" th:text="${!isBoardExist} ? '새글등록' : '글수정'"></title>
 
@@ -13,7 +14,7 @@
 <main layout:fragment="content">
     <form id="write" th:object="${board}" action="/community" th:method="${isBoardExist} ? 'patch' : 'post'">
         <input th:if="${isBoardExist}" type="hidden" name="documentId" th:value="*{documentId}">
-        <input type="hidden" name="memberId" th:value="${isBoardExist} ? *{member.memberId} : 5">
+        <input type="hidden" name="memberId" th:value="${isBoardExist} ? *{member.memberId} : ${member.memberId}">
         <section class="top-section">
             <select name="categoryId" class="col category">
                 <option th:with="categoryId=${isBoardExist ? board.category.categoryId : categoryList.get(0).categoryId}"

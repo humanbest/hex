@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/example/layout}">
 
-<title layout:fragment="title">Hex - 404 Error</title>
+<title layout:fragment="title">Hex - 400 Error</title>
 
 <th:block layout:fragment="customHead">
     <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
@@ -14,6 +14,6 @@
 </th:block>
 
 <main layout:fragment="content" id="error" class="flex justify-center h-fit">
-    <script th:replace="error/js :: js(error=404)"></script>
+    <script th:replace="error/js :: js(error=400)"></script>
 </main>
 </html>

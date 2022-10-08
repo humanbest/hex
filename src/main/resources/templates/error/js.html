@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<script th:fragment="js(error)" th:inline="javascript">
+/*<![CDATA[*/
+    (function() {
+        const wf = document.createElement('script');
+        wf.src = `${document.location.protocol === 'https:' ? 'https' : 'http'}://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js`;
+        wf.type = 'text/javascript';
+        wf.async = true;
+        const s = document.getElementsByTagName('script')[0];
+        s.parentNode?.insertBefore(wf, s);
+        const element = document.createElement('style');
+        document.head.appendChild(element);
+        if(element.sheet) element.sheet.insertRule('@font-face { font-family: "neodgm"; src: url("/fonts/neodgm.woff") format("woff"); }\n', 0);
+    }());
+
+    window.WebFontConfig = {
+        custom: {
+            families: [ 'neodgm' ]
+        },
+        active() {
+            const config = {
+                type: Phaser.AUTO,
+                scale: {
+                    mode: Phaser.Scale.FIT,
+                    width: 800,
+                    height: 350,
+                    max: {
+                        width: 800,
+                        height: 350
+                    }
+                },
+                scene: {
+                    create: create
+                },
+                pixelArt: true,
+                parent: "error",
+                transparent: true,
+            };
+
+            new Phaser.Game(config);
+
+            function create ()
+            {
+                const error = "[[${error}]]";
+                const text1 = this.add.text(this.game.canvas.width/2, 0, error,{
+                    fontFamily: 'neodgm',
+                    fontSize: "300px",
+                    color: "rgb(109 40 217 / 1)"
+                }).setOrigin(0.5, 0);
+
+                let text = '';
+                let fontSize = "0";
+
+                /*[# th:if="${error} eq 400"]*/
+                text = "Bad Request";
+                fontSize = "100px";
+                /*[/]*/
+
+                /*[# th:if="${error} eq 404"]*/
+                text = "Forbidden";
+                fontSize = "100px";
+                /*[/]*/
+
+                /*[# th:if="${error} eq 500"]*/
+                text = "Unexpected Error";
+                fontSize = "80px";
+                /*[/]*/
+
+                const _text = `${text} `;
+                const text_ = `${text}_`;
+
+                const text2 = this.add.text(this.game.canvas.width/2, text1.height - 50, text_, {
+                    fontFamily: 'neodgm',
+                    fontSize: fontSize,
+                    color: "rgb(167 139 250 / 1)",
+                    stroke: "rgb(167 139 250 / 1)",
+                    strokeThickness: 3
+                }).setOrigin(0.5, 0);
+
+                setInterval(()=>text2.setText(text = text === _text ? text_ : _text), 500);
+            }
+        }
+    };
+/*]]>*/
+</script>
+
+</html>

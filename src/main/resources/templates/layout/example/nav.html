@@ -5,7 +5,7 @@
 <nav th:fragment="nav" class="main">
     <div>
         <ul sec:authorize="isAnonymous()" class="login"> 
-            <li><a href="#">회원가입</a></li>
+            <li><a th:href="@{/member(act='signUp')}">회원가입</a></li>
             <li><a th:href="@{/auth(act='login')}">로그인</a></li>     
         </ul>
         <ul sec:authorize="isAuthenticated()" class="login"> 
@@ -29,7 +29,7 @@
             </li>
             <li>
                 <div>
-                    <a href="/community">커뮤니티</a>
+                    <a th:classappend="${module} eq 'community' ? 'active'" href="/community">커뮤니티</a>
                     <i><svg th:replace="layout/example/icon :: dropdown"></svg></i>
                 </div>
                 <ul>

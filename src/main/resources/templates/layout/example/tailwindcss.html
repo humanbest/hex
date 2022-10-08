@@ -40,10 +40,11 @@
       nav.main > div > ul.login > li > a { @apply flex justify-center items-center py-2.5 border border-solid border-black border-opacity-10 }
       nav.main > div > ul.nav { @apply xl:flex xl:w-full }
       nav.main > div > ul.nav > li { @apply flex flex-col w-full border-b border-solid border-black border-opacity-20 xl:border-0 xl:hover:bg-violet-700 xl:relative xl:flex-1 }
-      nav.main > div > ul.nav > li:first-child { @apply border-t }
+      nav.main > div > ul.nav > li:first-child { @apply border-t xl:border-t-0}
       nav.main > div > ul.nav > li > div { @apply flex justify-center items-stretch }
       nav.main > div > ul.nav > li > div > a { @apply flex flex-1 justify-start items-center px-2.5 py-3.5 font-bold xl:justify-center xl:text-white xl:px-0 xl:py-5 xl:text-lg xl:leading-none }
       nav.main > div > ul.nav > li:hover div > a { @apply xl:text-yellow-300 }
+      nav.main > div > ul.nav > li > div > a.active { @apply bg-violet-700 }
       nav.main > div > ul.nav > li > div > i { @apply flex justify-center items-center text-slate-400 cursor-pointer w-16 xl:hidden }
       nav.main > div > ul.nav > li > ul { @apply hidden flex-col bg-black bg-opacity-5 xl:absolute xl:w-full xl:justify-center xl:top-full xl:shadow-lg }
       nav.main > div > ul.nav > li > ul.active { @apply flex xl:hidden }
