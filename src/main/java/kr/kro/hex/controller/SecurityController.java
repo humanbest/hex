@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
@@ -14,22 +13,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping(path = "/auth")
 public class SecurityController {
-
-    /**임시 접근**/
-    @GetMapping("/user")
-    public @ResponseBody String user() {
-        return "user";
-    }
-
-    @GetMapping("/admin")
-    public @ResponseBody String admin() {
-        return "admin";
-    }
-
-    @GetMapping("/manager")
-    public @ResponseBody String manager() {
-        return "manager";
-    }
     
     @GetMapping(params={"act=login"})
     public String getLoginView(
@@ -49,5 +32,4 @@ public class SecurityController {
     public String BackToLogin(){
         return "/";
     }
-
 }

@@ -47,7 +47,7 @@ public class CommentController {
      * @since 2022-08-23 오후 6:24
      * @author Rubisco
      */
-    @PatchMapping(params = {"documentId", "commentId"})
+    @PatchMapping(params = {"commentId"})
     public String updateComment(Comments comment) {
         commentService.updateComment(comment);
         return "redirect:/board/"+ comment.getDocumentId();
@@ -61,7 +61,7 @@ public class CommentController {
      * @since 2022-08-23 오후 6:24
      * @author Rubisco
      */
-    @DeleteMapping(params = {"documentId", "commentId"})
+    @DeleteMapping(params = {"commentId"})
     public String deleteComment(Comments comment) {
         commentService.deleteComment(comment);
         return "redirect:/community/"+ comment.getDocumentId();
