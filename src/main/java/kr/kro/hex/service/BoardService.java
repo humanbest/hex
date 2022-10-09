@@ -69,8 +69,19 @@ public interface BoardService {
      * @author Rubisco
      */
     void deleteBoard(Board board);
-    void deleteByIdList(List<Long> idList);
 
+    /**
+     * List에 포함된 documentId에 해당하는 게시글을 삭제합니다.
+     *
+     * @param documentIdList 게시글 PK의 리스트 객체입니다.
+     */
+    void deleteByIdList(List<Long> documentIdList);
+
+    /**
+     * List에 포함된 documentId에 해당하는 게시글을 삭제합니다.
+     *
+     * @param adminBoardSearchDto keyword와 category를 담고있는 객체입니다.
+     */
     Page<Board> findByKeyword(AdminBoardSearchDto adminBoardSearchDto, Pageable pageable);
     
 }
