@@ -37,6 +37,7 @@ public class BoardController {
     /** hex 어플리케이션 설정값 주입 */
     private final HexProperties hexProperties;
 
+    /** 한 페이지에 대한 Entity 기본 사이즈 */
     private static final int PAGE_BATCH_SIZE = 10;
 
     /** 게시판 서비스 */
@@ -66,6 +67,9 @@ public class BoardController {
 
         int start = (int) Math.floor(boardList.getNumber() / PAGE_BATCH_SIZE) * PAGE_BATCH_SIZE + 1;
         int last = Math.min(start + PAGE_BATCH_SIZE - 1, boardList.getTotalPages());
+
+
+        System.out.println(hexProperties.getGroup().getAdmin());
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("size", size);
@@ -130,7 +134,7 @@ public class BoardController {
      * 게시글 등록 요청을 처리합니다.
      *
      * @param board 게시글
-     * @return redirect:/board
+     * @return redirect:/community
      * @since 2022-08-20 오후 6:24
      * @version 20220823.0
      * @author Rubisco
@@ -146,7 +150,7 @@ public class BoardController {
      * 게시글 수정 요청을 처리합니다.
      *
      * @param board 게시글
-     * @return redirect:/board/{documentId}
+     * @return redirect:/community/{documentId}
      * @since 2022-08-20 오후 6:24
      * @version 20220823.0
      * @author Rubisco
@@ -162,7 +166,7 @@ public class BoardController {
      * 게시글 삭제 요청을 처리합니다.
      *
      * @param board
-     * @return redirect:/board
+     * @return redirect:/community
      * @since 2022-08-20 오후 6:24
      * @version 20220823.0
      * @author Rubisco

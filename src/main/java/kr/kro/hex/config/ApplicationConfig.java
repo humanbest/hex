@@ -1,7 +1,7 @@
 package kr.kro.hex.config;
 
-import lombok.RequiredArgsConstructor;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
  * @author Rubisco
  */
 @Configuration
-@RequiredArgsConstructor
 public class ApplicationConfig {
 
     @Bean

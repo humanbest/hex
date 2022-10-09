@@ -15,9 +15,7 @@ public class ModuleInterceptor implements HandlerInterceptor {
     public void postHandle(
         HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView
     ) throws Exception {
-        System.out.println(request.getRequestURI());
         String module = request.getRequestURI().split("/").length > 1  ? request.getRequestURI().split("/")[1] : request.getRequestURI();
-
         if(modelAndView != null) modelAndView.addObject("module", module);
     }
 }

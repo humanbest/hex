@@ -30,7 +30,6 @@ public class AdminRestController {
     //게시글 선택 삭제
     @PostMapping("/delete")
     public ResponseEntity<DocumentIdDto> deleteBoard(@RequestBody DocumentIdDto documentIdDto){
-        System.out.println(documentIdDto.getDocumentIdList()[0]);
         adminService.deleteAllInBatch(documentIdDto);
         return ResponseEntity.ok(documentIdDto);
     }

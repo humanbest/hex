@@ -1,5 +1,42 @@
-{"properties": [{
-  "name": "hex.layout",
-  "type": "java.lang.String",
-  "description": "Hex 어플리케이션의 기본 레이아웃"
-}]}
+{"properties": [
+  {
+    "name": "hex.layout",
+    "type": "java.lang.String",
+    "description": "Hex 어플리케이션의 기본 레이아웃"
+  },
+  {
+    "name": "hex.group.admin",
+    "type": "java.lang.String",
+    "description": "기본 ADMIN 그룹명"
+  },
+  {
+    "name": "hex.group.general",
+    "type": "java.lang.String",
+    "description": "기본 그룹명"
+  },
+  {
+    "name": "hex.admin.id",
+    "type": "java.lang.String",
+    "description": "Admin 계정 기본 id"
+  },
+  {
+    "name": "hex.admin.password",
+    "type": "java.lang.String",
+    "description": "Admin 계정 기본 패스워드"
+  },
+  {
+    "name": "hex.admin.email",
+    "type": "java.lang.String",
+    "description": "Admin 계정 기본 이메일 주소"
+  },
+  {
+    "name": "hex.admin.name",
+    "type": "java.lang.String",
+    "description": "Admin 계정 기본 이름"
+  },
+  {
+    "name": "hex.admin.nickName",
+    "type": "java.lang.String",
+    "description": "Admin 계정 기본 닉네임"
+  }
+]}
