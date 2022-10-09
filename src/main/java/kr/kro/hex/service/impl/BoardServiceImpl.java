@@ -46,7 +46,7 @@ public class BoardServiceImpl implements BoardService {
     public void insertBoard(Board board) {
         board.setMember(Member.builder().memberId(board.getMemberId()).build())
             .setCategory(Category.builder().categoryId(board.getCategoryId()).build())
-            .setGroup(Group.builder().GroupId(1L).build());
+            .setGroup(Group.builder().groupId(1L).build());
         
         boardRepo.save(board);
     }

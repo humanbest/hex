@@ -26,7 +26,7 @@ import javax.persistence.*;
 public class Group extends BaseTime {
 
     @Id @GeneratedValue
-    private Long GroupId;
+    private Long groupId;
 
     @Column(length = 80, nullable = false, unique = true)
     private String groupName;
@@ -38,8 +38,8 @@ public class Group extends BaseTime {
     private List<Member> memberList = new ArrayList<>();
 
     @Builder
-    public Group(Long GroupId, String groupName) {
-        this.GroupId = GroupId;
+    public Group(Long groupId, String groupName) {
+        this.groupId = groupId;
         this.groupName = groupName;
     }
 

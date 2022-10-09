@@ -74,7 +74,7 @@ public class BoardController {
         if(size == null) size = PAGE_BATCH_SIZE;
 
         int start = (int) Math.floor(boardList.getNumber() / PAGE_BATCH_SIZE) * PAGE_BATCH_SIZE + 1;
-        int last = start + PAGE_BATCH_SIZE - 1 < boardList.getTotalPages() ? start + PAGE_BATCH_SIZE - 1 : boardList.getTotalPages();
+        int last = Math.min(start + PAGE_BATCH_SIZE - 1, boardList.getTotalPages());
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("size", size);
