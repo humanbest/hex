@@ -69,7 +69,7 @@ public class MemberController {
      * @author Rubisco
      * @see Member
      */
-    @PostMapping()
+    @GetMapping()
     public String getMemberInfoView(@AuthenticationPrincipal PrincipalDetails member) {
         memberService.getMember(member.getMember());
         return "/member/" + hexProperties.getLayout() + "/memberInfo";
