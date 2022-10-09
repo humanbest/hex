@@ -22,7 +22,7 @@ public interface GroupService {
      * @version 20220823.0
      * @author Rubisco
      */
-    void insertGroup(Group group);
+    Group insertGroup(Group group);
 
     /**
      * 그룹 목록을 조회합니다.

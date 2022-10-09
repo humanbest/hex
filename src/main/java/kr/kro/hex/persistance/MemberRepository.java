@@ -16,6 +16,6 @@ import kr.kro.hex.domain.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long>  {
     
-    @Query("select distinct m from Member m join fetch m.group where m.id = :id")
+    @Query("select m from Member m join fetch m.group where m.id = :id")
     Member findById(@Param("id") String id);
 }

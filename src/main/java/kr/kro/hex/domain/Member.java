@@ -69,6 +69,16 @@ public class Member extends BaseTime {
     @JoinColumn(name = "group_id")
     private Group group;
 
+    @PrePersist
+    protected void prePersist() {
+        updateDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
+        updateDate = LocalDateTime.now();
+    }
+
     @Transient
     private Long groupId;
 

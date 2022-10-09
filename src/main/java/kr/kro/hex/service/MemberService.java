@@ -22,7 +22,7 @@ public interface MemberService {
      * @version 20220823.0
      * @author Rubisco
      */
-    void insertMember(Member member);
+    Member insertMember(Member member);
 
     /**
      * 회원 정보 가져오기

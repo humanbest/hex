@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.kro.hex.config.HexProperties;
 import kr.kro.hex.domain.Member;
 import kr.kro.hex.persistance.GroupRepository;
 import kr.kro.hex.persistance.MemberRepository;
@@ -32,7 +33,11 @@ public class MemberServiceImpl implements MemberService {
     /** 그룹 레포지토리 */
     private final GroupRepository groupRepo;
 
+    /** 비밀번호 인코더 */
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    /** 어플리케이션 설정 객체 */
+    private final HexProperties hexProperties;
 
     /**
      * 회원 등록하기
@@ -44,9 +49,17 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     @Transactional
-    public void insertMember(Member member) {
-        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
-        memberRepo.save(member.setGroup(groupRepo.findByGroupName("Admin")));
+    public Member insertMember(Member member) {
+        
+        member.setGroup(
+            groupRepo.findByGroupName(
+                member.getGroup() == null ? 
+                hexProperties.getGroup().getGeneral() : 
+                member.getGroup().getGroupName()
+            )
+        ).setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
+        
+        return memberRepo.save(member);
     };
 
     /**
@@ -90,6 +103,7 @@ public class MemberServiceImpl implements MemberService {
      * @author Rubisco
      */
     @Override
+    @Transactional
     public void updateMember(Member member) {
         memberRepo.save(getMember(member).update(member));
     };
@@ -103,6 +117,7 @@ public class MemberServiceImpl implements MemberService {
      * @author Rubisco
      */
     @Override
+    @Transactional
     public void deleteMember(Member member) {
         memberRepo.deleteById(member.getMemberId());
     };

@@ -37,8 +37,8 @@ public class GroupServiceImpl implements GroupService {
      * @author Rubisco
      */
     @Override
-    public void insertGroup(Group group) {
-        groupRepo.save(group).getGroupId();
+    public Group insertGroup(Group group) {
+        return groupRepo.save(group);
     };
 
     /**
