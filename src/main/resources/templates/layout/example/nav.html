@@ -9,7 +9,7 @@
             <li><a th:href="@{/auth(act='login')}">로그인</a></li>     
         </ul>
         <ul sec:authorize="isAuthenticated()" class="login">
-            <li><a th:href="@{/member">회원정보</a></li>
+            <li><a th:href="@{/member}">회원정보</a></li>
             <li><a th:href="@{/logout}">로그아웃</a></li>     
         </ul>
         <ul class="nav">
