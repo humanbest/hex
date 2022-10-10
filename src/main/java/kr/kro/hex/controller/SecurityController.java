@@ -18,11 +18,11 @@ public class SecurityController {
     public String getLoginView(
         @RequestParam(value = "error", required = false)String error, 
         @RequestParam(value = "exception", required = false)String exception, 
-        RedirectAttributes redirectAttribute, 
+        RedirectAttributes redirectAttributes, 
         Model model
     ) {
         if(exception != null) {
-            redirectAttribute.addFlashAttribute("exception", exception);
+            redirectAttributes.addFlashAttribute("exception", exception);
             return "redirect:/auth?act=login";
         }
         return "member/login";

@@ -109,6 +109,22 @@ public class MemberServiceImpl implements MemberService {
     };
 
     /**
+     * 비밀번호 수정하기
+     *
+     * @param member 회원 객체
+     * @since 2022-10-10 오후 11:04
+     * @version 20221010.0
+     * @author Rubisco
+     */
+    @Override
+    @Transactional
+    public void updatePassword(Member member) {
+        Member findMember = getMember(member);
+        findMember.setPassword(member.getPassword());
+        memberRepo.save(findMember);
+    };
+
+    /**
      * 회원 삭제하기
      *
      * @param member 회원

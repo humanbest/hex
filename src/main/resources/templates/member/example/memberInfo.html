@@ -12,7 +12,6 @@
 
 <main layout:fragment="content" th:object="${member}">
       <form id="member" action="/member" th:method="patch">
-            <input type="hidden" name="memberId" th:value="*{memberId}">
             <label class="before:content-['아이디']"><input type="text" disabled th:value="*{id}"></label>
             <label class="before:content-['이름']"><input type="text" name="name" placeholder="Name" th:value="*{name}"></label>
             <label class="before:content-['닉네임']"><input type="text" name="nickName" placeholder="Nickname" th:value="*{nickName}"></label>
@@ -26,10 +25,5 @@
                   })()"></button>
             </section>
       </form>
-      <script>
-            ()=>{
-                  document.getElementById('member').addEventListener("click",this.get)
-            }
-      </script>
 </main>
 </html>

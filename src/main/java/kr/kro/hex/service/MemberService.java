@@ -54,6 +54,16 @@ public interface MemberService {
     void updateMember(Member member);
 
     /**
+     * 비밀번호 수정하기
+     *
+     * @param member 회원 객체
+     * @since 2022-10-10 오후 11:04
+     * @version 20221010.0
+     * @author Rubisco
+     */
+    void updatePassword(Member member);
+
+    /**
      * 회원 삭제하기
      *
      * @param member 회원

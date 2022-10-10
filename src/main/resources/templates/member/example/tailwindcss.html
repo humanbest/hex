@@ -20,7 +20,7 @@
 <style th:fragment="memberInfo" type="text/tailwindcss">
     #member { @apply container flex flex-col max-w-lg mx-auto gap-3 xl:gap-6 before:text-lg before:xl:text-2xl before:font-bold before:text-violet-600 before:text-center before:content-['회원정보'] }
     #member label { @apply flex flex-row w-full relative text-sm sm:text-base before:absolute before:h-[calc(100%-1.5px)] before:top-[1px] before:left-[1px] 
-        before:font-medium before:text-violet-500 before:items-center before:pl-4 before:flex before:bg-violet-300 before:shrink-0 before:w-24  before:rounded-l-md }
+        before:font-medium before:text-violet-500 before:items-center before:pl-4 before:flex before:bg-violet-300 before:shrink-0 before:w-24 before:rounded-l-md }
     #member label > input { @apply w-full pl-28 pr-3 py-2 bg-white border border-violet-300 rounded-md text-sm shadow-sm placeholder-slate-400
         focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 disabled:bg-slate-50 disabled:text-slate-500 
         disabled:border-slate-200 disabled:shadow-none invalid:border-rose-300 invalid:text-rose-500 focus:invalid:border-rose-300 
@@ -29,6 +29,13 @@
     .btn.password.update { @apply rounded-none bg-stone-400 text-stone-50 border-stone-400 hover:bg-stone-500 before:content-['\f12D'] after:content-['비밀번호_변경'] }
     .btn.write.update{ @apply rounded-r-none }
     .btn.delete { @apply rounded-l-none after:content-['회원탈퇴'] }
+</style>
+
+<style th:fragment="updatePassword" type="text/tailwindcss">
+    #member { @apply before:content-['비밀번호_변경'] }
+    #member label { @apply before:w-40 }
+    #member label > input { @apply pl-44 }
+    .btn.write.update{ @apply rounded-r-md }
 </style>
 
 </html>
