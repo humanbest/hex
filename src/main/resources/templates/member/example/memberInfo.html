@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/example/layout}"
+      th:with="member=${#authentication.principal.member}">
+
+<title layout:fragment="title">Hex - 회원정보</title>
+
+<th:block layout:fragment="customHead">
+      <style th:replace="member/example/tailwindcss :: memberInfo"></style>
+</th:block>
+
+<main layout:fragment="content" th:object="${member}">
+      <form id="member" action="/member" th:method="patch">
+            <input type="hidden" name="memberId" th:value="*{memberId}">
+            <label class="before:content-['아이디']"><input type="text" disabled th:value="*{id}"></label>
+            <label class="before:content-['이름']"><input type="text" name="name" placeholder="Name" th:value="*{name}"></label>
+            <label class="before:content-['닉네임']"><input type="text" name="nickName" placeholder="Nickname" th:value="*{nickName}"></label>
+            <label class="before:content-['이메일']"><input type="email" name="email" placeholder="Email" th:value="*{email}"></label>
+            <section class="flex flex-row">
+                  <button class="btn write update flex-1" type="button" onClick="document.getElementById('member').submit()"></button>
+                  <a class="btn password update flex-1" th:href="@{/member(act='updatePassword')}"></a>
+                  <button class="btn delete flex-1" type="button" onClick="(function(){
+                        const method = document.getElementsByName('_method')[0].value = 'delete';
+                        document.getElementById('member').submit();
+                  })()"></button>
+            </section>
+      </form>
+      <script>
+            ()=>{
+                  document.getElementById('member').addEventListener("click",this.get)
+            }
+      </script>
+</main>
+</html>

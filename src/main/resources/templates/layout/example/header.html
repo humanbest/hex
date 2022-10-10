@@ -18,6 +18,7 @@
             <div><a th:href="@{/auth(act='login')}">로그인</a></div>
         </div>
         <div sec:authorize="isAuthenticated()">
+            <div><a th:href="@{/member}">회원정보</a></div>
             <div><a th:href="@{/logout}">로그아웃</a></div>
         </div>
     </section>

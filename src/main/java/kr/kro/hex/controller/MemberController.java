@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import kr.kro.hex.auth.PrincipalDetails;
@@ -36,9 +37,9 @@ public class MemberController {
      * @author Rubisco
      */
     @GetMapping(params={"act=signUp"})
-    public String getSignUpView(@AuthenticationPrincipal PrincipalDetails member) {
+    public String getSignUpView(@AuthenticationPrincipal PrincipalDetails uDetails) {
 
-        if(member != null) return "redirect:/";
+        if(uDetails != null) return "redirect:/";
 
         return "/member/" + hexProperties.getLayout() + "/signUpForm";
     }
@@ -70,8 +71,9 @@ public class MemberController {
      * @see Member
      */
     @GetMapping()
-    public String getMemberInfoView(@AuthenticationPrincipal PrincipalDetails member) {
-        memberService.getMember(member.getMember());
+    public String getMemberInfoView(@AuthenticationPrincipal PrincipalDetails uDetails) {
+        if(uDetails == null) return "redirect:/auth?act=login";
+        memberService.getMember(uDetails.getMember());
         return "/member/" + hexProperties.getLayout() + "/memberInfo";
     }
 
@@ -85,8 +87,26 @@ public class MemberController {
      * @author Rubisco
      */
     @PatchMapping()
-    public String updateMember(@AuthenticationPrincipal PrincipalDetails member) {
-        memberService.updateMember(member.getMember());
+    public String updateMember(
+        @AuthenticationPrincipal PrincipalDetails uDetails, 
+        @RequestParam("name") String name,
+        @RequestParam("nickName") String nickName,
+        @RequestParam("email") String email,
+        @RequestParam("memberId") Long memberId
+    ) {
+        if(uDetails == null) return "redirect:/auth?act=login";
+        if(uDetails.getMember().getMemberId() != memberId) return "redirect:/logout";
+
+        Member member = Member.builder()
+                .memberId(memberId)
+                .name(name)
+                .nickName(nickName)
+                .email(email)
+                .build();
+
+        memberService.updateMember(member);
+        uDetails.getMember().update(member);
+
         return "redirect:/member";
     }
 
@@ -101,8 +121,9 @@ public class MemberController {
      * @see Member
      */
     @DeleteMapping()
-    public String DeleteMember(@AuthenticationPrincipal PrincipalDetails member) {
-        memberService.deleteMember(member.getMember());
-        return "redirect:/";
+    public String DeleteMember(@AuthenticationPrincipal PrincipalDetails uDetails) {
+        if(uDetails == null) return "redirect:/auth?act=login";
+        memberService.deleteMember(uDetails.getMember());
+        return "redirect:/logout";
     }
 }

@@ -3,7 +3,7 @@ package kr.kro.hex.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +34,7 @@ public class MemberServiceImpl implements MemberService {
     private final GroupRepository groupRepo;
 
     /** 비밀번호 인코더 */
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     /** 어플리케이션 설정 객체 */
     private final HexProperties hexProperties;
@@ -57,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
                 hexProperties.getGroup().getGeneral() : 
                 member.getGroup().getGroupName()
             )
-        ).setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
+        ).setPassword(passwordEncoder.encode(member.getPassword()));
         
         return memberRepo.save(member);
     };
