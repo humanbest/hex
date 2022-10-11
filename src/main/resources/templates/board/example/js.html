@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <script th:fragment="comment">
+
     const counter = document.querySelector('body > main > section.comment > div');
     
     function deleteComment(el) {
@@ -22,6 +23,21 @@
             li.remove();
         })
     }
+</script>
+
+<script th:fragment="simplemde(autofocus, btn)" th:inline="javascript">
+    /*<![CDATA[*/
+    const simplemode = new SimpleMDE({ 
+        element: document.getElementById("content"),
+        status: false,
+        autofocus: /*[[${autofocus}]]*/ false
+    })
+
+    document.getElementById('submitBtn').addEventListener("click", function(e){
+        document.getElementById("content").value = simplemode.value();
+        document.getElementById(/*[[${btn}]]*/).submit();
+    })
+    /*]]>*/
 </script>
 
 </html>

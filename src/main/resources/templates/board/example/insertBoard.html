@@ -9,6 +9,8 @@
 
 <th:block layout:fragment="customHead">
     <style th:replace="board/example/tailwindcss :: write"></style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/simplemde.min.css}">
+    <script th:src="@{/js/simplemde.min.js}"></script>
 </th:block>
 
 <main layout:fragment="content">
@@ -27,10 +29,10 @@
             <input class="violet" name="title" type="text"
                    th:placeholder="제목" th:value="${isBoardExist} ? *{title}">
         </section>
-        <textarea class="violet" name="content" th:rows="20" th:placeholder="내용"
+        <textarea class="violet" id="content" name="content" th:rows="20" th:placeholder="내용"
                   th:text="${isBoardExist} ? *{content}"></textarea>
-        <section class="bottom-section">
-            <label>
+        <section class="bottom-section" th:classappend="${member.group.groupName} eq ${adminGroup} ? justify-between : justify-end">
+            <label th:if="${member.group.groupName} eq ${adminGroup}">
                 <input th:if="${isBoardExist}" class="hidden" type="checkbox" th:field="*{isNotice}">
                 <input th:unless="${isBoardExist}" class="hidden" type="checkbox" name="isNotice">
                 <div class="checkbox"></div>
@@ -38,10 +40,13 @@
             <div class="flex float-right">
                 <a th:if="${isBoardExist}" class="btn back float-left" th:href="|/community/${board.documentId}|"></a>
                 <a th:unless="${isBoardExist}" class="btn back float-left" th:href="@{/community}"></a>
-                <button class="btn write float-right" th:classappend="${isBoardExist} ? 'update'"
-                        type="submit" onclick="this.submit()"></button>
+                <button id="submitBtn" class="btn write float-right" th:classappend="${isBoardExist} ? 'update'"
+                        type="button"></button>
             </div>
         </section>
     </form>
+
+    <script th:replace="board/example/js :: simplemde(autofocus=true, btn='write')"></script>
+
 </main>
 </html>

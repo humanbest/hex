@@ -9,6 +9,8 @@
 
 <th:block layout:fragment="customHead">
     <style th:replace="board/example/tailwindcss :: document"></style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/simplemde.min.css}">
+    <script th:src="@{/js/simplemde.min.js}"></script>
 </th:block>
 
 <main layout:fragment="content" th:object="${board}">
@@ -25,7 +27,7 @@
             </div>
         </div>
     </section>
-    <article class="content" th:utext="${#strings.replace(board.content, nl, '&lt;br&gt;')}"></article>
+    <article class="content" th:utext="${@commonUtil.markdown(board.content)}"></article>
     <section>
         <a class="btn back float-left" th:href="@{/community}"></a>
         <div th:if="${member.memberId} eq *{member.memberId} or ${member.group.groupName} eq ${adminGroup}" class="flex float-right gap-1.5">

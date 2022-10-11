@@ -94,7 +94,6 @@ public class BoardController {
      */
     @GetMapping("/{documentId}")
     public String getBoardView(Board board, Model model) {
-        model.addAttribute("nl", System.getProperty("line.separator"));
         model.addAttribute("board", boardService.getBoard(board));
         model.addAttribute("adminGroup", hexProperties.getGroup().getAdmin());
         return "/board/" + hexProperties.getLayout() + "/getBoard";
@@ -111,6 +110,7 @@ public class BoardController {
      */
     @GetMapping(params = "act=write")
     public String insertBoardView(Model model) {
+        model.addAttribute("adminGroup", hexProperties.getGroup().getAdmin());
         model.addAttribute("categoryList", categoryService.getCategoryList());
         return "/board/" + hexProperties.getLayout() + "/insertBoard";
     }
@@ -129,6 +129,7 @@ public class BoardController {
     @GetMapping(params = {"documentId","act=update"})
     public String updateBoardView(Board board, Model model) {
         model.addAttribute("board", boardService.getBoard(board));
+        model.addAttribute("adminGroup", hexProperties.getGroup().getAdmin());
         model.addAttribute("categoryList", categoryService.getCategoryList());
         return "/board/" + hexProperties.getLayout() + "/insertBoard";
     }
@@ -161,8 +162,7 @@ public class BoardController {
      */
     @PatchMapping(params = "documentId")
     public String updateBoard(@AuthenticationPrincipal PrincipalDetails uDetails, Board board) {
-        board = boardService.getBoard(board);
-        if(uDetails.getMember().getMemberId() != board.getMember().getMemberId() 
+        if(uDetails.getMember().getMemberId() != board.getMemberId()
             && !uDetails.getMember().getGroup().getGroupName().equals(hexProperties.getGroup().getAdmin())) return "/error/404";
         boardService.updateBoard(board);
         return "redirect:/community/"+board.getDocumentId();

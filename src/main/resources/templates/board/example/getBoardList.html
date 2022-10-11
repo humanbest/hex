@@ -27,8 +27,8 @@
                 <td class="title">
                     <a th:href="|/community/*{documentId}|">
                         <span th:text="*{title}"></span>
-                        <div class="summary">
-                            <div th:with="content=*{content}"
+                        <div class="summary" th:with="content=${@commonUtil.markdown(board.content)}">
+                            <div th:with="content=${@commonUtil.markdown(board.content)}"
                                  th:text="${content.length lt 20 ? content : 
                                     content.substring(0,20)} + ${content.length > 20 ? '...' : ''}"></div>
                         </div>

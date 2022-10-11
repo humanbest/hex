@@ -8,8 +8,10 @@
         <input type="hidden" name="memberId" th:value="${member.memberId}">
         <p class="mb-2 text-violet-400 font-semibold" th:text="${member.nickName}"></p>
         <div class="newComment">
-            <textarea class="violet" name="content" cols="30" rows="5" placeholder="내용"></textarea>
-            <button class="btn confirm"></button>
+            <section class="flex-1">
+                <textarea id="content" name="content"></textarea>
+            </section>
+            <button type="button" id="submitBtn" class="btn confirm"></button>
         </div>
     </form>
     <div class="comment_list_count"><b th:text="*{commentList.size()}"></b></div>
@@ -21,7 +23,7 @@
                     [[${#temporals.format(comment.createDate, 'yyyy-MM-dd')}]]
                 </small>
             </div>
-            <div class="comment_content" th:text="*{content}"></div>
+            <div class="comment_content" th:utext="${@commonUtil.markdown(comment.content)}"></div>
             <div th:if="${member.memberId} eq *{member.memberId} or ${member.group.groupName} eq ${adminGroup}" class="comment_menu">
                 <button class="comment_btn comment_update"></button>
                 <button onclick="deleteComment(this)" class="comment_btn comment_delete"></button>
@@ -30,6 +32,7 @@
     </ul>
 
     <script th:replace="/board/example/js :: comment"></script>
+    <script th:replace="board/example/js :: simplemde(autofocus=false, btn='comment')"></script>
 
 </section>
 </html>
