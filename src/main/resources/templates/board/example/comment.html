@@ -6,7 +6,7 @@
     <form id="comment" action="/comment" th:method="post">
         <input type="hidden" name="documentId" th:value="*{documentId}">
         <input type="hidden" name="memberId" th:value="${member.memberId}">
-        <p class="mb-2 text-violet-400 font-semibold" th:text="*{member.nickName}"></p>
+        <p class="mb-2 text-violet-400 font-semibold" th:text="${member.nickName}"></p>
         <div class="newComment">
             <textarea class="violet" name="content" cols="30" rows="5" placeholder="내용"></textarea>
             <button class="btn confirm"></button>
