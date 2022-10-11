@@ -49,7 +49,7 @@
         }else{
             var chk = confirm("정말 삭제하시겠습니까?");
             if(!chk) return;
-            fetch('/delete',{
+            fetch('/api/admin/delete',{
                 method:'post',
                 headers:{'Content-Type':'application/json'},
                 body:JSON.stringify({documentIdList:valueArr})
@@ -63,25 +63,37 @@
         
         const category = +document.getElementsByName("category")[0].value;
         const keyword = document.getElementsByName("keyword")[0].value;
+        const counter = document.querySelector('.boardCount');
 
         console.log(category, keyword);
 
         if(category === -1 || !keyword) return;
 
-        fetch('/getSearchList', {
+        fetch('/api/admin/getSearchList', {
             method:'POST',
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({category: category, keyword: keyword})
         }).then(res=>res.json()).then(data=>{
-            $('#boardtable > tbody').empty();
+            $('#boardContent').empty();
             if(data.length>=1){
                 data.forEach(item => {
-                    str='<tr>'
-                    str+= "<td>"+item.title+"</td>";
-                    str+="<td>"+item.id+"</td>";
-                    str+="</tr>"
-                    $('#boardtable').append(str);
+                    str=
+                        `
+                        <tr>
+                        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle"></td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">
+                                <input name="boardCheckBox" type="checkbox" value=${item.documentId}></td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">${item.category}</td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">
+                                <a href="/admin/board/${item.documentId}">${item.title}</a>
+                            </td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">${item.id}</td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">${item.createDate}</td>
+                        </tr>
+                        `;
+                    $('#boardContent').append(str);
                 });
+                counter.textContent = data.length;
             }
         })
     }

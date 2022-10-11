@@ -10,6 +10,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import kr.kro.hex.config.HexProperties;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -25,6 +28,7 @@ public class SecurityConfig {
 
     private final PrincipalDetailsService principalDetailsService;
     private final DataSource dataSource;
+    private final HexProperties hexProperties;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,7 +41,9 @@ public class SecurityConfig {
                 .mvcMatchers("/assets/**").authenticated()
                 .mvcMatchers("/hex/**").authenticated()
                 .mvcMatchers("/community/**").authenticated()
-                .mvcMatchers("/admin/**").hasRole("Admin")
+                .mvcMatchers("/api/**").authenticated()
+                .mvcMatchers("/api/admin/**").hasRole(hexProperties.getGroup().getAdmin())
+                .mvcMatchers("/admin/**").hasRole(hexProperties.getGroup().getAdmin())
                 .anyRequest().permitAll()
             .and()
             .formLogin()
