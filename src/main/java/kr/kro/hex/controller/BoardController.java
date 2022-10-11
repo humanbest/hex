@@ -78,7 +78,7 @@ public class BoardController {
         model.addAttribute("startPage", start);
         model.addAttribute("lastPage", last);
 
-        return "/board/" + hexProperties.getLayout() + "/getBoardList";
+        return "board/" + hexProperties.getLayout() + "/getBoardList";
     }
 
     /**
@@ -96,7 +96,7 @@ public class BoardController {
     public String getBoardView(Board board, Model model) {
         model.addAttribute("board", boardService.getBoard(board));
         model.addAttribute("adminGroup", hexProperties.getGroup().getAdmin());
-        return "/board/" + hexProperties.getLayout() + "/getBoard";
+        return "board/" + hexProperties.getLayout() + "/getBoard";
     }
 
     /**
@@ -112,7 +112,7 @@ public class BoardController {
     public String insertBoardView(Model model) {
         model.addAttribute("adminGroup", hexProperties.getGroup().getAdmin());
         model.addAttribute("categoryList", categoryService.getCategoryList());
-        return "/board/" + hexProperties.getLayout() + "/insertBoard";
+        return "board/" + hexProperties.getLayout() + "/insertBoard";
     }
 
     /**
@@ -131,7 +131,7 @@ public class BoardController {
         model.addAttribute("board", boardService.getBoard(board));
         model.addAttribute("adminGroup", hexProperties.getGroup().getAdmin());
         model.addAttribute("categoryList", categoryService.getCategoryList());
-        return "/board/" + hexProperties.getLayout() + "/insertBoard";
+        return "board/" + hexProperties.getLayout() + "/insertBoard";
     }
 
     /**

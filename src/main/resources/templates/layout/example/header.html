@@ -9,9 +9,8 @@
     <section>
         <div>
             <div><a href="#">10월 2일 (일)</a></div>
-            <div><a href="#">인기글</a></div>
-            <div><a href="#">새글</a></div>
             <div><a id="theme" href="#"></a></div>
+            <div><a th:href="@{/hex}">게임 접속</a></div>
         </div>
         <div sec:authorize="isAnonymous()">
             <div><a th:href="@{/member(act='signUp')}">회원가입</a></div>

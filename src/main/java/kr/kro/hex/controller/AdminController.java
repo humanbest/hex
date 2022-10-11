@@ -42,13 +42,13 @@ public class AdminController {
     @GetMapping("/member")
     public String getMemberListView(AdminBoardSearchDto searchDto, Model model){
         model.addAttribute("memberList", memberService.getMemberList());
-        return "/admin/" + LAYOUT + "/getList";
+        return "admin/" + LAYOUT + "/getList";
     }
     //회원 상세
     @GetMapping("/member/{memberId}")
     public String getMemberInfo(Member member, Model model){
         model.addAttribute("member", memberService.getMember(member));
-        return "/admin/" + LAYOUT +"/getMember";
+        return "admin/" + LAYOUT +"/getMember";
     }
 
     /*게시글 관련*/
@@ -63,7 +63,7 @@ public class AdminController {
         Model model
     ){
         model.addAttribute("boardList", boardService.getBoardList(pageable));
-        return "/admin/" + LAYOUT + "/getList";
+        return "admin/" + LAYOUT + "/getList";
     }
     //게시판 상세
     @GetMapping("/board/{documentId}")
@@ -95,7 +95,7 @@ public class AdminController {
     @GetMapping("/comment")
     public String getCommentList(AdminBoardSearchDto searchDto, Model model){
         model.addAttribute("commentList",commentService.getCommentList());
-        return "/admin/" + LAYOUT + "/getList";
+        return "admin/" + LAYOUT + "/getList";
     }
 
 
@@ -105,7 +105,7 @@ public class AdminController {
     @GetMapping("/character")
     public String getCharacterList(AdminBoardSearchDto searchDto, Model model){
         // model.addAttribute("getCommentList",characterService.getCharacterList());
-        return "/admin/" + LAYOUT + "/getList";
+        return "admin/" + LAYOUT + "/getList";
     }
 
     
