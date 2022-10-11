@@ -120,8 +120,8 @@ public class MemberController {
      * @param nickName 변경된 닉네임
      * @param email 변경된 이메일
      * @return redirect:/member
-     * @since 2022-09-08 오전 9:24
-     * @version 20220908.0
+     * @since 2022-10-10 오전 9:24
+     * @version 20221010.0
      * @author Rubisco
      */
     @PatchMapping()
@@ -152,8 +152,8 @@ public class MemberController {
      * @param uDetails 인증된 회원 객체
      * @param updatePasswordDto 비밀번호 변경 객체
      * @return redirect:/member
-     * @since 2022-09-08 오전 9:24
-     * @version 20220908.0
+     * @since 2022-10-10 오전 9:24
+     * @version 20221010.0
      * @author Rubisco
      * @throws UnsupportedEncodingException
      */
@@ -188,8 +188,8 @@ public class MemberController {
      *
      * @param uDetails 인증된 회원 객체
      * @return redirect:/
-     * @since 2022-09-08 오전 9:24
-     * @version 20220908.0
+     * @since 2022-10-10 오전 9:24
+     * @version 20221010.0
      * @author Rubisco
      * @see Member
      */

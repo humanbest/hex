@@ -28,7 +28,7 @@
     <article class="content" th:utext="${#strings.replace(board.content, nl, '&lt;br&gt;')}"></article>
     <section>
         <a class="btn back float-left" th:href="@{/community}"></a>
-        <div th:if="${member.memberId} eq *{member.memberId}" class="flex float-right gap-1.5">
+        <div th:if="${member.memberId} eq *{member.memberId} or ${member.group.groupName} eq ${adminGroup}" class="flex float-right gap-1.5">
             <a class="btn write update float-left" 
                 th:href="@{/community(documentId=*{documentId}, act='update')}"></a>
             <form class="float-left" action="/community" th:method="delete">

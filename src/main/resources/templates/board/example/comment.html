@@ -22,7 +22,7 @@
                 </small>
             </div>
             <div class="comment_content" th:text="*{content}"></div>
-            <div th:if="${member.memberId} eq *{member.memberId}" class="comment_menu">
+            <div th:if="${member.memberId} eq *{member.memberId} or ${member.group.groupName} eq ${adminGroup}" class="comment_menu">
                 <button class="comment_btn comment_update"></button>
                 <button onclick="deleteComment(this)" class="comment_btn comment_delete"></button>
             </div>

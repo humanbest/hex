@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +37,7 @@ public class AdminRestController {
 
     @PostMapping("/getSearchList")
     @ResponseBody
+    @RequestMapping("/api/admin")
     private ResponseEntity<List<BoardDto>> getSearchList(
         Pageable pageable,
         @RequestBody AdminBoardSearchDto adminBoardSearchDto,

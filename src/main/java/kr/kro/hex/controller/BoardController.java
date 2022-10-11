@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.kro.hex.auth.PrincipalDetails;
 import kr.kro.hex.config.HexProperties;
 import kr.kro.hex.domain.Board;
 import kr.kro.hex.service.BoardService;
@@ -94,6 +96,7 @@ public class BoardController {
     public String getBoardView(Board board, Model model) {
         model.addAttribute("nl", System.getProperty("line.separator"));
         model.addAttribute("board", boardService.getBoard(board));
+        model.addAttribute("adminGroup", hexProperties.getGroup().getAdmin());
         return "/board/" + hexProperties.getLayout() + "/getBoard";
     }
 
@@ -157,7 +160,10 @@ public class BoardController {
      * @see Board
      */
     @PatchMapping(params = "documentId")
-    public String updateBoard(Board board) {
+    public String updateBoard(@AuthenticationPrincipal PrincipalDetails uDetails, Board board) {
+        board = boardService.getBoard(board);
+        if(uDetails.getMember().getMemberId() != board.getMember().getMemberId() 
+            && !uDetails.getMember().getGroup().getGroupName().equals(hexProperties.getGroup().getAdmin())) return "/error/404";
         boardService.updateBoard(board);
         return "redirect:/community/"+board.getDocumentId();
     }
@@ -172,7 +178,10 @@ public class BoardController {
      * @author Rubisco
      */
     @DeleteMapping(params = "documentId")
-    public String deleteBoard(Board board) {
+    public String deleteBoard(@AuthenticationPrincipal PrincipalDetails uDetails, Board board) {
+        board = boardService.getBoard(board);
+        if(uDetails.getMember().getMemberId() != board.getMember().getMemberId() 
+            && !uDetails.getMember().getGroup().getGroupName().equals(hexProperties.getGroup().getAdmin())) return "/error/404";
         boardService.deleteBoard(board);
         return "redirect:/community";
     }
