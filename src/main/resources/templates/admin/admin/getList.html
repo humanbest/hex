@@ -14,16 +14,17 @@
       
 
       <th:block th:if="${boardList}">
-            <p><a href="/"></a>현재 <span th:text="${boardList.totalElements}" style="font-weight: bold">10</span>개의 게시물이 존재합니다.</p>
-            <div>
+            <p><a href="/"></a>현재 총 <span class="boardCount" th:text="${boardList.totalElements}" style="font-weight: bold">10</span>개의 게시물이 존재합니다.
+            <div class="flex justify-end">
                   <form name="searchForm" autocomplete="off" onsubmit="return false;">
                         <select name ="category">
                               <option selected value=-1>검색 내용 선택</option>
                               <option value=0>제목</option>
                               <option value=1>작성자</option>
                         </select>
-                        <input type="text" name ="keyword" value=""></input>
+                        <input class="border" type="text" name ="keyword" value=""></input>
                   </form>
+
                   <button class="btn bg-slate-400 text-white hover:bg-slate-500" type="button" onclick="getSearchList()">검색</button>
             </div>
             <table th:replace="admin/admin/board/getBoardList :: board"></table>
@@ -41,7 +42,7 @@
                               </th:block>
 
                               <th:block th:unless="${boardList.pageable.pageNumber+1 == 1 }">
-                              <a href="#" th:href="@{/admin/board(page=${boardList.pageable.pageNumber-1},size=10)}">[Previous/</a>
+                              <a href="#" th:href="@{/admin/board(page=${boardList.pageable.pageNumber}, size=10)}">[Previous/</a>
                                </th:block>
 
                         </span>
@@ -52,7 +53,7 @@
                               </th:block>
       
                               <th:block th:unless="${boardList.totalPages == boardList.number+1 }">
-                              <a href="#" th:href="@{/admin/board( page=${boardList.number}+1, size=10)}">Next]</a>
+                              <a href="#" th:href="@{/admin/board( page=${boardList.number > 1 ? boardList.number + 1 : boardList.number + 2}, size=10)}">Next]</a>
                               </th:block>
                         </span>
                         
