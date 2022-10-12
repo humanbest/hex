@@ -50,7 +50,7 @@ public class MemberController {
 
         if(uDetails != null) return "redirect:/";
 
-        return "/member/" + hexProperties.getLayout() + "/signUpForm";
+        return "member/" + hexProperties.getLayout() + "/signUpForm";
     }
 
     /**
@@ -92,7 +92,7 @@ public class MemberController {
             return "redirect:/member?act=updatePassword";
         }
 
-        return "/member/" + hexProperties.getLayout() + "/updatePassword";
+        return "member/" + hexProperties.getLayout() + "/updatePassword";
     }
 
     /**
@@ -109,7 +109,7 @@ public class MemberController {
     public String getMemberInfoView(@AuthenticationPrincipal PrincipalDetails uDetails) {
         if(uDetails == null) return "redirect:/auth?act=login";
         memberService.getMember(uDetails.getMember());
-        return "/member/" + hexProperties.getLayout() + "/memberInfo";
+        return "member/" + hexProperties.getLayout() + "/memberInfo";
     }
 
     /**
