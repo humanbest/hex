@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"> 
+
+<script th:fragment="js">
+    $(document).ready(function(){
+        $('#allcheck').on("change",function(){
+            if(this.checked){
+                $("#list").find("input").prop("checked",true);
+            }else{
+                $("#list").find("input").prop("checked",false);
+            }
+        })
+    })
+
+    function deleteValue(){
+        let valueArr = new Array();
+        let list = $("input[name = boardCheckBox]");
+        for(let i = 0; i<list.length; i++){
+            if(list[i].checked){
+                valueArr.push(list[i].value);
+            }
+        }
+    
+        if(valueArr.length == 0){
+            alert("선택된 글이 없습니다.");
+        }else{
+            var chk = confirm("정말 삭제하시겠습니까?");
+            if(!chk) return;
+            fetch('/api/admin/delete',{
+                method:'post',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({documentIdList:valueArr})
+            }).then(res=>res.json()).then(data=>{
+                window.location.href = '/admin/board';
+            })
+        } 
+    }
+    
+    function getSearchList(){
+        
+        const category = +document.getElementsByName("category")[0].value;
+        const keyword = document.getElementsByName("keyword")[0].value;
+        const counter = document.querySelector('.boardCount');
+
+        console.log(category, keyword);
+
+        if(category === -1 || !keyword) return;
+
+        fetch('/api/admin/getSearchList', {
+            method:'POST',
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({category: category, keyword: keyword})
+        }).then(res=>res.json()).then(data=>{
+            $('#boardContent').empty();
+            if(data.length>=1){
+                data.forEach(item => {
+                    str=
+                        `
+                        <tr>
+                        <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle"></td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">
+                                <input name="boardCheckBox" type="checkbox" value=${item.documentId}></td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">${item.category}</td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">
+                                <a href="/admin/board/${item.documentId}">${item.title}</a>
+                            </td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">${item.id}</td>
+                            <td class="py-2 px-3 text-xs text-center whitespace-nowrap align-middle">${item.createDate}</td>
+                        </tr>
+                        `;
+                    $('#boardContent').append(str);
+                });
+                counter.textContent = data.length;
+            }
+        })
+    }
+</script>
+
+</html>

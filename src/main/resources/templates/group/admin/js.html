@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"> 
+
+<script th:fragment="js">
+    (function(){
+        document.getElementById('group').querySelectorAll('button.update').forEach(el => {
+            el.addEventListener('click', () => actionRequest(el, 'PATCH'));
+        })
+
+        document.getElementById('group').querySelectorAll('button.delete').forEach(el => {
+            el.addEventListener('click', () => actionRequest(el, 'DELETE'));
+        })
+
+        document.querySelector('main > section.group > button.write')
+            .addEventListener('click', function(){actionRequest(this, 'POST')});
+
+        function actionRequest(el, action){console.log({
+                        groupName: el.previousElementSibling.value,
+                        groupId: el.parentElement.dataset.groupId
+                    })
+            fetch('/api/admin/group', {
+                method: action,
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(
+                    action === 'POST' ? {groupName: el.previousElementSibling.value}
+                    : action === 'DELETE' ? {groupId: el.parentElement.dataset.groupId}
+                    : {
+                        groupName: el.previousElementSibling.value,
+                        groupId: el.parentElement.dataset.groupId
+                    }
+                )
+            }).then(res=>res.json()).then(data=>{
+                switch (action) {
+                    case 'POST':
+                        el.previousElementSibling.value = '';
+                        const li = document.createElement('li');
+                        li.setAttribute('class', 'group');
+                        li.setAttribute('data-group-id', data.groupId);
+                        const input = document.createElement('input');
+                        input.setAttribute('type','text');
+                        input.setAttribute('placeholder', '그룹명');
+                        input.value = data.groupName;
+                        const updateBtn = document.createElement('button');
+                        updateBtn.classList.add('btn', 'write', 'update');
+                        updateBtn.addEventListener('click', function(){actionRequest(this, 'PATCH')});
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.classList.add('btn','delete');
+                        deleteBtn.addEventListener('click', function(){actionRequest(this, 'DELETE')});
+                        li.append(input);
+                        li.append(updateBtn);
+                        li.append(deleteBtn);
+                        document.getElementById('group').append(li);
+                        break;
+                    case 'DELETE':
+                        el.parentElement.remove();
+                        break;
+                    case 'PATCH':
+                        el.previousElementSibling.value = data.groupName;
+                        break;
+                }
+            });
+    }})();
+</script>
+
+</html>

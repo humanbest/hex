@@ -4,14 +4,14 @@
 <nav th:fragment="nav" class="hidden md:block basis-1/4 px-5 bg-slate-50 mt-5 mb-5">
   <h1 class="text-3xl text-center mt-2 ">관리 페이지</h1></br>
     <div class="mx-auto mb-3 flex flex-col items-center border-b border-gray-200 pb-10 sm:flex-row lg:w-3/5">
-        <div class="mt-6 flex-grow text-center sm:mt-0 sm:text-left">
+        <div class="flex flex-col mt-6 flex-grow text-center sm:mt-0 sm:text-left">
           <h2 class="title-font mb-2 text-lg font-medium text-gray-900">회원</h2>
           <p class="text-base leading-relaxed"></p>
-          <a class="mt-3 inline-flex items-center text-indigo-500" href="/admin/member">
+          <a class="mt-3 inline-flex items-center text-indigo-500" th:href="@{/admin/member}">
             -회원 관리
           </a>
-          <a class="mt-3 inline-flex items-center text-indigo-500" href="/admin/member">
-            -회원 등급 관리
+          <a class="mt-3 inline-flex items-center text-indigo-500" th:href="@{/admin/group}">
+            - 등급 관리
           </a>
         </div>
       </div>
@@ -19,7 +19,7 @@
         <div class="mt-6 flex-grow text-center sm:mt-0 sm:text-left">
           <h2 class="title-font mb-2 text-lg font-medium text-gray-900">게시글</h2>
           <p class="text-base leading-relaxed"></p>
-          <a class="mt-3 inline-flex items-center text-indigo-500" href="/admin/board">
+          <a class="mt-3 inline-flex items-center text-indigo-500" th:href="@{/admin/board}">
             -게시글 관리
           </a>
           

@@ -80,6 +80,7 @@ public class GroupServiceImpl implements GroupService {
      * @author Rubisco
      */
     @Override
+    @Transactional
     public void updateGroup(Group group) {
         groupRepo.save(getGroup(group).update(group));
     };
@@ -93,6 +94,7 @@ public class GroupServiceImpl implements GroupService {
      * @author Rubisco
      */
     @Override
+    @Transactional
     public void deleteGroup(Group group) {
         groupRepo.deleteById(group.getGroupId());
     };

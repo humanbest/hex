@@ -27,54 +27,5 @@
         <input type="text" th:value="*{groupName}" placeholder="그룹명"></label>
         <button class="btn write"></button>
     </section>
-
-    <script>
-
-        document.getElementById('group').querySelectorAll('button.update').forEach(el => {
-            el.addEventListener('click', () => action(el, 'patch'));
-        })
-
-        document.getElementById('group').querySelectorAll('button.delete').forEach(el => {
-            el.addEventListener('click', () => action(el, 'delete'));
-        })
-
-        document.querySelector('main > section.group > button.write')
-            .addEventListener('click', function(){action(this, 'update')});
-
-        function action(el, action){console.log(el)
-            fetch('/api/admin/group', {
-                method: action,
-                headers:{'Content-Type':'application/json'},
-                body:JSON.stringify(
-                    action === 'post' ? {groupName: el.previousElementSibling.value}
-                    : action === 'delete' ? {groupId: el.parentElement.dataset.groupId}
-                    : {
-                        groupName: el.previousElementSibling.value,
-                        groupId: el.parentElement.dataset.groupId
-                    }
-                )
-            }).then(res=>res.json()).then(data=>{
-                if(action === 'post') {
-                    el.previousElementSibling.value = '';
-                    const li = document.createElement('li');
-                    li.setAttribute('class', 'group');
-                    li.setAttribute('data-group-id', data.groupId);
-                    const input = document.createElement('input');
-                    input.setAttribute('type','text');
-                    input.setAttribute('placeholder', '그룹명');
-                    input.value = data.groupName;
-                    const updateBtn = document.createElement('button');
-                    updateBtn.classList.add('btn', 'write', 'update');
-                    updateBtn.addEventListener('click', action(this, 'patch'));
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.classList.add('btn','delete');
-                    deleteBtn.addEventListener('click', action(this, 'delete'));
-                    li.append(input);
-                    li.append(updateBtn);
-                    li.append(deleteBtn);
-                    document.getElementById('group').append(li);
-                }
-            });
-        };
-    </script>
+    <script th:replace="group/admin/js :: js"></script>
 </main>

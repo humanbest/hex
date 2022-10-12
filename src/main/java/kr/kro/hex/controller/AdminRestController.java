@@ -63,6 +63,7 @@ public class AdminRestController {
 
     @PatchMapping("/group")
     private @ResponseBody ResponseEntity<GroupDto> updateGroup(@RequestBody GroupDto groupDto) {
+        System.out.println(groupDto.getGroupName()+groupDto.getGroupId());
         groupService.updateGroup(groupDto.toEntity());
         return ResponseEntity.ok(groupDto);
     }
