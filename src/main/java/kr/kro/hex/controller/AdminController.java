@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.kro.hex.config.HexProperties;
 import kr.kro.hex.domain.Board;
 import kr.kro.hex.domain.Member;
 import kr.kro.hex.dto.AdminBoardSearchDto;
 import kr.kro.hex.service.BoardService;
 import kr.kro.hex.service.CommentService;
+import kr.kro.hex.service.GroupService;
 import kr.kro.hex.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
@@ -22,9 +24,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/admin")
 public class AdminController {
 
-    public final MemberService memberService;
-    public final BoardService boardService;
-    public final CommentService commentService;
+    private final MemberService memberService;
+    private final BoardService boardService;
+    private final CommentService commentService;
+    private final GroupService groupService;
+
+    private final HexProperties hexProperties;
+    
     // public final CharacterService characterService;
 
     private static final String LAYOUT = "admin";
@@ -108,7 +114,15 @@ public class AdminController {
         return "admin/" + LAYOUT + "/getList";
     }
 
-    
+    @GetMapping("/group")
+    public String getGroupList(Model model) {
+        model.addAttribute(groupService.getGroupList());
+        model.addAttribute(
+            "defaultGroup", 
+            new String[]{hexProperties.getGroup().getAdmin(), hexProperties.getGroup().getGeneral()}
+        );
+        return "group/" + LAYOUT + "/getGroupList";
+    }
 
     
      

@@ -24,6 +24,7 @@
         <p th:if="${exception} != null" class="mt-2 text-center text-sm text-rose-500" th:text="${exception}"></p>
       </div>
       <form class="mt-8 space-y-6" action="/auth/login" method="POST">
+        <!-- <input type="hidden" th:name="_csrf" th:value="${_csrf.token}"> -->
         <input type="hidden" name="remember" value="true">
         <div class="-space-y-px rounded-md shadow-sm">
           <div>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout/admin/layout}">
+
+<title layout:fragment="title">Hex Admin - 회원 등급 설정</title>
+
+<th:block layout:fragment="customHead">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}">
+    <style th:replace="group/admin/tailwindcss :: group"></style>
+</th:block>
+
+<main layout:fragment="content" id="groupList" class="before:content-['회원_등급_관리']">
+    <ul id="group">
+        <li class="group" th:each="groupName : ${defaultGroup}">
+            <input type="text" th:value="${groupName}" disabled></label>
+        </li>
+        <li class="group" th:each="group : ${groupList}" th:object="${group}" th:data-group-id="*{groupId}"
+            th:if="${!#arrays.contains(defaultGroup, group.groupName)}">
+            <input type="text" th:value="*{groupName}" placeholder="그룹명"></label>
+            <button class="btn write update"></button>
+            <button class="btn delete"></button>
+        </li>
+    </ul>
+    <section class="group">
+        <input type="text" th:value="*{groupName}" placeholder="그룹명"></label>
+        <button class="btn write"></button>
+    </section>
+
+    <script>
+
+        document.getElementById('group').querySelectorAll('button.update').forEach(el => {
+            el.addEventListener('click', () => action(el, 'patch'));
+        })
+
+        document.getElementById('group').querySelectorAll('button.delete').forEach(el => {
+            el.addEventListener('click', () => action(el, 'delete'));
+        })
+
+        document.querySelector('main > section.group > button.write')
+            .addEventListener('click', function(){action(this, 'update')});
+
+        function action(el, action){console.log(el)
+            fetch('/api/admin/group', {
+                method: action,
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(
+                    action === 'post' ? {groupName: el.previousElementSibling.value}
+                    : action === 'delete' ? {groupId: el.parentElement.dataset.groupId}
+                    : {
+                        groupName: el.previousElementSibling.value,
+                        groupId: el.parentElement.dataset.groupId
+                    }
+                )
+            }).then(res=>res.json()).then(data=>{
+                if(action === 'post') {
+                    el.previousElementSibling.value = '';
+                    const li = document.createElement('li');
+                    li.setAttribute('class', 'group');
+                    li.setAttribute('data-group-id', data.groupId);
+                    const input = document.createElement('input');
+                    input.setAttribute('type','text');
+                    input.setAttribute('placeholder', '그룹명');
+                    input.value = data.groupName;
+                    const updateBtn = document.createElement('button');
+                    updateBtn.classList.add('btn', 'write', 'update');
+                    updateBtn.addEventListener('click', action(this, 'patch'));
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.classList.add('btn','delete');
+                    deleteBtn.addEventListener('click', action(this, 'delete'));
+                    li.append(input);
+                    li.append(updateBtn);
+                    li.append(deleteBtn);
+                    document.getElementById('group').append(li);
+                }
+            });
+        };
+    </script>
+</main>

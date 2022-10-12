@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<style th:fragment="group" type="text/tailwindcss">
+    main { @apply flex flex-col gap-2 mx-auto }
+    #group { @apply flex flex-col gap-2 }
+    main .group { @apply flex }
+    main input { @apply flex-1 p-2 mr-2 bg-white border border-violet-300 rounded-md text-sm shadow-sm placeholder-slate-400
+        focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500 disabled:bg-slate-50 disabled:text-slate-500 
+        disabled:border-slate-200 disabled:shadow-none invalid:border-rose-300 invalid:text-rose-500 focus:invalid:border-rose-300 
+        focus:invalid:ring-rose-500 dark:bg-violet-50 }
+    .btn { 
+        @apply flex items-center gap-1.5 py-1 pr-3.5 pl-2.5 text-xs leading-relaxed border tracking-[-1px] shadow-none text-center whitespace-nowrap cursor-pointer no-underline hover:shadow 
+        before:font-['fontello'] before:transition-transform before:duration-300 before:hover:rotate-[360deg];
+        transition: border-color .4s,box-shadow .4s,background .4s,color .4s,opacity .4s;
+    }
+    .btn.write { @apply after:content-['등록'] before:content-['\E800'] bg-violet-500 hover:bg-violet-600 border-violet-500 text-violet-50 rounded-md }
+    .btn.write.update { @apply after:content-['수정'] bg-sky-500 hover:bg-sky-600 border-sky-500 text-sky-50 rounded-r-none }
+    .btn.delete { @apply after:content-['삭제'] before:content-['\E802'] bg-rose-500 hover:bg-rose-600 border-rose-500 text-rose-50 rounded-r-md }
+</style>
+
+</html>

@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +19,10 @@ import kr.kro.hex.domain.Board;
 import kr.kro.hex.dto.AdminBoardSearchDto;
 import kr.kro.hex.dto.BoardDto;
 import kr.kro.hex.dto.DocumentIdDto;
+import kr.kro.hex.dto.GroupDto;
 import kr.kro.hex.service.AdminService;
 import kr.kro.hex.service.BoardService;
+import kr.kro.hex.service.GroupService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,8 +30,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(path="/api/admin")
 public class AdminRestController {
 
-    public final AdminService adminService;
-    public final BoardService boardService;
+    private final AdminService adminService;
+    private final BoardService boardService;
+    private final GroupService groupService;
 
     //게시글 선택 삭제
     @PostMapping("/delete")
@@ -36,9 +41,8 @@ public class AdminRestController {
         return ResponseEntity.ok(documentIdDto);
     }
 
-    @PostMapping("/getSearchList")
     @ResponseBody
-    @RequestMapping("/api/admin")
+    @PostMapping("/api/admin")
     private ResponseEntity<List<BoardDto>> getSearchList(
         Pageable pageable,
         @RequestBody AdminBoardSearchDto adminBoardSearchDto,
@@ -51,5 +55,23 @@ public class AdminRestController {
         }
             return ResponseEntity.ok(boardList);
     }
+
+    @PostMapping("/group")
+    private @ResponseBody ResponseEntity<GroupDto> insertGroup(@RequestBody GroupDto groupDto) {
+        return ResponseEntity.ok(new GroupDto(groupService.insertGroup(groupDto.toEntity())));
+    }
+
+    @PatchMapping("/group")
+    private @ResponseBody ResponseEntity<GroupDto> updateGroup(@RequestBody GroupDto groupDto) {
+        groupService.updateGroup(groupDto.toEntity());
+        return ResponseEntity.ok(groupDto);
+    }
+
+    @DeleteMapping("/group")
+    private @ResponseBody ResponseEntity<GroupDto> deleteGroup(@RequestBody GroupDto groupDto) {
+        groupService.deleteGroup(groupDto.toEntity());
+        return ResponseEntity.ok(groupDto);
+    }
+
     
 }
