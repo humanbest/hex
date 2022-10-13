@@ -17,10 +17,6 @@
     <div class="w-full max-w-md space-y-8">
       <div>
         <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-violet-600 before:content-['로그인']"></h2>
-        <div class="mt-2 text-center text-sm text-rose-500">
-          <p>테스트 id: test</p>
-          <p>테스트 pw: 1234</p>
-        </div>
         <p th:if="${exception} != null" class="mt-2 text-center text-sm text-rose-500" th:text="${exception}"></p>
       </div>
       <form class="mt-8 space-y-6" action="/auth/login" method="POST">

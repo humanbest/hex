@@ -163,7 +163,7 @@ public class BoardController {
     @PatchMapping(params = "documentId")
     public String updateBoard(@AuthenticationPrincipal PrincipalDetails uDetails, Board board) {
         if(uDetails.getMember().getMemberId() != board.getMemberId()
-            && !uDetails.getMember().getGroup().getGroupName().equals(hexProperties.getGroup().getAdmin())) return "/error/404";
+            && !uDetails.getMember().getGroup().getGroupName().equals(hexProperties.getGroup().getAdmin())) return "error/404";
         boardService.updateBoard(board);
         return "redirect:/community/"+board.getDocumentId();
     }
@@ -181,7 +181,7 @@ public class BoardController {
     public String deleteBoard(@AuthenticationPrincipal PrincipalDetails uDetails, Board board) {
         board = boardService.getBoard(board);
         if(uDetails.getMember().getMemberId() != board.getMember().getMemberId() 
-            && !uDetails.getMember().getGroup().getGroupName().equals(hexProperties.getGroup().getAdmin())) return "/error/404";
+            && !uDetails.getMember().getGroup().getGroupName().equals(hexProperties.getGroup().getAdmin())) return "error/404";
         boardService.deleteBoard(board);
         return "redirect:/community";
     }

@@ -64,9 +64,9 @@
     .btn.back { @apply after:content-['목록'] }
     
     #comment { @apply flex flex-col w-full bg-violet-100 p-6 rounded-xl text-slate-500 leading-relaxed }
-    #comment > div.newComment { @apply flex gap-2 w-full }
+    #comment > div.newComment { @apply flex flex-col w-full gap-2 md:flex-row }
     /* #comment > div.newComment > textarea[name=content] { @apply resize-none p-4 flex-1 } */
-    #comment .btn.confirm { @apply w-24 justify-center bg-violet-500 hover:bg-violet-600 border-violet-500 text-violet-50 }
+    #comment .btn.confirm { @apply w-full h-10 justify-center bg-violet-500 hover:bg-violet-600 border-violet-500 text-violet-50 md:w-24 md:h-auto }
     .editor-toolbar { @apply bg-white border-violet-300 }
     .CodeMirror { @apply border-violet-300 h-40 min-h-fit }
     .editor-statusbar { @apply text-violet-500 }

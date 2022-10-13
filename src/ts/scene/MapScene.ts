@@ -3,6 +3,8 @@ import MapObject, { NodeType } from "../object/MapObject";
 import TopMenu from "../object/TopMenu";
 import MapManager from "../interface/MapManager";
 import BattleScene from "./BattleScene";
+import ShopScene from "./ShopScene";
+import InnScene from "./InnScene";
 
 
 /**
@@ -39,6 +41,8 @@ export default class MapScene extends Scene
         /** 치트키 */
         this.input.keyboard
         .on('keydown-ONE',  () => this.scene.start(BattleScene.KEY.NAME))
+        .on('keydown-TWO',  () => this.scene.start(ShopScene.KEY.NAME))
+        .on('keydown-THREE',  () => this.scene.start(InnScene.KEY.NAME))
 
         /** 이미지 로드 */
         this.load.image(MapScene.KEY.IMAGE.MAIN_MAP, "assets/images/mapScene/MainMap.png");
