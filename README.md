@@ -1,20 +1,12 @@
 ![Version v1.4][version-shield]
 
-# 웹기반 TCG : HEX (가칭)
+# HEX 프로젝트
 
-## Version history
-| 버전     | 일자        | 내용                    |
-| :-----:  | :---------: | ----------------------- |
-| V.1.0.0-alpha | 2022.07.27 | 프로젝트 재개       |
-| V.1.0.0-alpha | 2022.06.20 | 프로젝트 시작       |
+[게임 포트폴리오](/portfolio/game_storyboard.pdf)
 
-## FlowChart
+[웹 포트폴리오](/portfolio/web_storyboard.pdf)
 
-### Action 클래스의 처리 메소드
-![Action_FlowChart](./image/Action_Flow_Chart.png)
-
-
-### 클래스 다이어그램
-![Class_Diagram](./image/HEX_Class_Diagram.png)
+# 프로토타입
+http://game.rubisco.kro.kr/
 
 [version-shield]: https://img.shields.io/badge/version-v1.0.0_alpha-orange.svg
