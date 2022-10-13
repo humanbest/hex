@@ -10,3 +10,7 @@
 http://game.rubisco.kro.kr/
 
 [version-shield]: https://img.shields.io/badge/version-v1.0.0_alpha-orange.svg
+
+## 테스트 계정
+- **id**: test
+- **pw**: 1234
